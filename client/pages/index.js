@@ -1,11 +1,11 @@
-import Window from "@/components/Window";
+import GameCanvas from "@/components/GameCanvas";
 
 export default function Home() {
 
   return (
     <section className="flex center">
 
-      <Window />
+      <GameCanvas />
      
     </section>
   );

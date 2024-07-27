@@ -1,0 +1,10 @@
+[
+    { "id" : 10, "level" : 3, "rarity" : "common" },
+    { "id" : 16, "level" : 3, "rarity" : "common" },
+    { "id" : 25 , "level" : 5, "rarity" : "uncommon" },
+    { "id" : 58, "level" : 5, "rarity" : "rare" },
+    { "id" : 63, "level" : 4, "rarity" : "common" },
+    { "id" : 92, "level" : 3, "rarity" : "uncommon" },
+    { "id" : 123, "level" : 5, "rarity" : "rare" },
+    { "id" : 147, "level" : 5, "rarity" : "rare" }
+]

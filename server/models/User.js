@@ -1,4 +1,4 @@
-const { Schema, model, Types } = require('mongoose');
+const { Schema, model } = require('mongoose');
 const bcrypt = require('bcrypt');
 const SALT_FACTOR = 10;
 
@@ -19,7 +19,11 @@ const UserSchema = new Schema(
         admin : {
             type: Boolean,
             default : false
-        }
+        },
+
+        pokemon : [
+            { type : Schema.Types.ObjectId, ref: "Pokemon" }
+        ]
 
     },
 
