@@ -9,7 +9,7 @@ require('dotenv').config();
 const bcrypt = require('bcrypt');
 const SALT_FACTOR = 10;
 
-let users, starters, wild_pokemon;
+let users, starters, wild_pokemon, legendaries;
 
 const initialize = () => new Promise((resolve, reject) => { 
 
@@ -30,6 +30,13 @@ const initialize = () => new Promise((resolve, reject) => {
     fs.readFile('./data/wild.json', 'utf-8', (err, data) => {
 
         if (!err) wild_pokemon = JSON.parse(data);
+        else { reject("Failed to read wild.json file..."); return };
+
+    });
+
+    fs.readFile('./data/legendaries.json', 'utf-8', (err, data) => {
+
+        if (!err) legendaries = JSON.parse(data);
         else { reject("Failed to read wild.json file..."); return };
 
     });
@@ -59,15 +66,17 @@ const seedUsers = async () => {
 
 }
 
-const seedStarters = async () => {
+const seedPokemon = async () => {
 
     try {
 
         await Pokemon.deleteMany({});
 
+        const all_pokemon = [ ...starters, ...wild_pokemon, ...legendaries ];
+
         const pokemon = await Promise.all(
             
-            starters.map(async (p) => {
+            all_pokemon.map(async (p) => {
 
                 const obj = {};
                 const types = [];
@@ -79,25 +88,16 @@ const seedStarters = async () => {
 
                 obj.name = response.name;
                 obj.types = types;
-                obj.rarity = "starter";
-                obj.level = 5;
+                obj.pid = p.id;
 
                 return obj;
 
             })
-        )
+        );
 
-        const inserted = await Pokemon.insertMany(pokemon);
-        const user = await User.findOne({ username: "admin" });
+        await Pokemon.insertMany(pokemon);
 
-        if (user) {
-
-            user.pokemon = [ ...user.pokemon, ...inserted ];
-            await user.save();
-
-        }
-
-        console.log("Seeding Pokemon Starters completed...\n");
+        console.log("Seeding All Pokemon completed...\n");
 
     }
 
@@ -105,41 +105,38 @@ const seedStarters = async () => {
 
 }
 
-const seedWild = async () => {
+const seedTestData = async () => {
 
     const pokemon = await Promise.all(
-        
-        wild_pokemon.map(async (p) => {
 
-            const obj = {};
-            const types = [];
-            
-            const data = await fetch(`https://pokeapi.co/api/v2/pokemon/${p.id}`);
-            const response = await data.json();
+        starters.map(async (p) => {
 
-            response.types.forEach(t => types.push(t.type.name))
-
-            obj.name = response.name;
-            obj.types = types;
-            obj.rarity = p.rarity;
-            obj.level = p.level;
-
-            return obj;
+            const starter = await Pokemon.find({ pid: p.id });
+            starter.level = 5;
+            return starter;
 
         })
 
-    )
+    );
 
-    await Pokemon.insertMany(pokemon);
+    const user = await User.findOne({ username: "admin" });
 
-    console.log("Seeding Wild Pokemon completed...\n");
+    if (user) {
+
+        const starters = pokemon.map(p => ({ pokemonId: p._id, level: p.level }));
+        user.pokemon = starters;
+        await user.save();
+
+        console.log("Seeded Test Data to admin users...\n");
+
+    }
 
 }
 
 connect()
     .then(() => initialize())
     .then(() => seedUsers())
-    .then(() => seedStarters())
-    .then(() => seedWild())
+    .then(() => seedPokemon())
+    .then(() => seedTestData())
     .then(() => mongoose.connection.close())
     .catch(err => console.log(err))

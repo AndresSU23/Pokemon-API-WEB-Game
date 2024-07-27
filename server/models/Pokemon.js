@@ -2,6 +2,12 @@ const { Schema, model } = require('mongoose');
 
 const PokemonSchema = new Schema(
     {
+
+        pid : { 
+            type: Number, 
+            required: true
+        },
+
         name : {
             type : String,
             unqiue : true,
@@ -9,13 +15,6 @@ const PokemonSchema = new Schema(
         },
 
         types : [],
-
-        level : { type: Number },
-
-        rarity : { 
-            type: String, 
-            required: true
-        }
 
     },
 

@@ -2,6 +2,13 @@ const { Schema, model } = require('mongoose');
 const bcrypt = require('bcrypt');
 const SALT_FACTOR = 10;
 
+const TrainerPokemonSchema = new Schema(
+    {
+        pokemonId : { type : Schema.Types.ObjectId, ref: "Pokemon" },
+        level : { type: Number }
+    }
+);
+
 const UserSchema = new Schema(
     {
         username : {
@@ -21,9 +28,7 @@ const UserSchema = new Schema(
             default : false
         },
 
-        pokemon : [
-            { type : Schema.Types.ObjectId, ref: "Pokemon" }
-        ]
+        pokemon : [ TrainerPokemonSchema ]
 
     },
 
