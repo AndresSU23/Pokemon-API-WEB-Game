@@ -84,11 +84,21 @@ const seedPokemon = async () => {
                 const data = await fetch(`https://pokeapi.co/api/v2/pokemon/${p.id}`);
                 const response = await data.json();
 
+                // console.log(response.stats);
+
                 response.types.forEach(t => types.push(t.type.name))
 
                 obj.name = response.name;
                 obj.types = types;
                 obj.pid = p.id;
+                obj.baseStats = {
+                    hp: response.stats[0].base_stat,
+                    attack: response.stats[1].base_stat,
+                    defense: response.stats[2].base_stat,
+                    sp_attack: response.stats[3].base_stat,
+                    sp_defense: response.stats[4].base_stat,
+                    speed: response.stats[5].base_stat,
+                }
 
                 return obj;
 

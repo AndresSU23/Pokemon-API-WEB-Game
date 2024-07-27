@@ -16,6 +16,8 @@ const PokemonSchema = new Schema(
 
         types : [],
 
+        baseStats : { type: Object }
+
     },
 
     {
