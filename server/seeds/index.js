@@ -142,8 +142,12 @@ const seedMoves = async (defaultGen = 4) => {
                 moveObj.accuracy = response.accuracy;
                 moveObj.effectChance = response.effect_chance;
                 moveObj.effectEntry = response.effect_entries.length > 0 ? response.effect_entries[0].effect : null;
-                moveObj.statChange = response.stat_changes.length > 0 ? response.stat_changes[0].change : null;
-                moveObj.statName = response.stat_changes.length > 0 ? response.stat_changes[0].stat.name : null;
+
+                moveObj.statChanges = response.stat_changes.map(sc => ({
+                    change: sc.change,
+                    statName: sc.stat.name
+                }));
+
                 moveObj.target = response.target.name;
                 moveObj.type = response.type.name;
                 moveObj.power = response.power;

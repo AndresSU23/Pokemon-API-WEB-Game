@@ -1,5 +1,21 @@
 const { Schema, model } = require('mongoose');
 
+const StatChangeSchema = new Schema(
+    {
+        change: {
+            type: Number,
+            required: true
+        },
+        statName: {
+            type: String,
+            required: true
+        }
+    },
+    {
+        _id: false
+    }
+);
+
 const MoveSchema = new Schema(
     {
         id: {
@@ -24,14 +40,7 @@ const MoveSchema = new Schema(
             type: String,
             required: false
         },
-        statChange: {
-            type: Number,
-            required: false
-        },
-        statName: {
-            type: String,
-            required: false
-        },
+        statChanges: [StatChangeSchema],
         target: {
             type: String,
             required: true
