@@ -45,7 +45,7 @@ const Screen = () => {
         animateTrainerIntro();
         animateOpponentIntro();
 
-    }, [ animateTrainerIntro, animateOpponentIntro ])
+    }, [])
 
     return (
     

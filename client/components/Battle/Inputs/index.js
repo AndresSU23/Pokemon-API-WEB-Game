@@ -15,11 +15,7 @@ const Inputs = () => {
 
     }, [])
 
-    useEffect(() => {
-
-        animateSelected();
-
-    }, [ animateSelected ])
+    useEffect(() => animateSelected(), [])
 
     return (
 

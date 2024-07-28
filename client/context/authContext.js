@@ -1,7 +1,8 @@
-import { createContext, useContext, useEffect, useReducer, useCallback, useState } from "react";
-import useSWR from "swr";
+import { createContext, useContext, useEffect, useCallback, useState } from "react";
+import { fetcher } from "@/utils/fetch";
 
-const fetcher = (url) => fetch(url).then((res) => res.json());
+import useSWR from "swr";
+import axios from "axios";
 
 const AuthContext = createContext();
 
@@ -20,8 +21,44 @@ export const AuthProvider = ({ children }) => {
     
     }, []);
 
-    const context = { 
-        get
+    const login = async (username, password) => {
+
+        try {
+
+            const response = await axios.post('http://localhost:3001/api/users/login', { username, password });
+            const token = response.data.token;
+
+            localStorage.setItem('token', token);
+            setUser(response.data.username);
+            
+        } 
+        
+        catch (error) { console.error('Login failed :', error.response.data.message); }
+
+    };
+
+    const logout = useCallback(async () => localStorage.removeItem('token'), []);
+
+    useEffect(() => {
+
+        const token = localStorage.getItem('token');
+        
+        if (token) {
+
+            axios.get('http://localhost:3001/api/users/verify', { headers: { Authorization: `Bearer ${token}` } })
+                .then(async response => setUser(response.data.username))
+                .catch(error => { console.error('Token invalid'); logout(); });
+
+
+        }
+
+    }, [])
+
+    const context = {
+        user,
+        get,
+        login,
+        logout
     }
 
     return (
