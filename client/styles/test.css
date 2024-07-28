@@ -1,0 +1,261 @@
+@font-face { font-family: pokemon; src: url("./pokemon.otf"); }
+
+:root {
+    --color_green: #19ac5b;
+    --color_green_opacity: #19ac5bb0;
+    --color_green_grey: #6b957e;
+    --color_black: #242424;
+    --color_grey: #d4d4d4;
+    --color_white: #f4f4f4;
+}
+
+.easter_egg_spacer {
+    width: 540px;
+    height: 420px;
+    border: 4px solid transparent;
+    outline: 3px solid #232323;
+    border-radius: 4px;
+}
+
+.battle_screen_spacer {
+    position: relative;
+    width: 100%;
+    background: var(--color_white);
+    height: 280px;
+    overflow: hidden;
+}
+
+.battle_input_spacer {
+    width: 100%;
+    height: 140px;
+    background: var(--color_grey);
+    box-sizing: border-box;
+    border-top: 2px solid #232323;
+    font-family: "pokemon";
+    letter-spacing: 1px;
+    font-size: 10px;
+    color: var(--color_white);
+    -webkit-text-stroke: 3px var(--color_black);
+    paint-order: stroke fill;
+}
+
+.fight_input_spacer {
+    width: 100%;
+    height: 60px;
+}
+
+.options_input_spacer {
+    width: 100%;
+    height: 60px;
+}
+
+.fight_input_spacer .fight_button {
+    position: relative;
+    width: 140px;
+    height: 42px;
+    background: linear-gradient(var(--color_green), var(--color_green_grey));
+    border: 2px solid var(--color_white);
+    outline: 3px solid var(--color_black);
+    box-sizing: border-box;
+    border-radius: 7px;
+    top: 10px;
+}
+
+.options_input_spacer .items_button {
+    position: relative;
+    width: 120px;
+    height: 42px;
+    background: linear-gradient(var(--color_green), var(--color_green_grey));
+    border: 2px solid var(--color_white);
+    outline: 3px solid var(--color_black);
+    box-sizing: border-box;
+    border-radius: 7px;
+}
+
+.options_input_spacer .flee_button {
+    position: relative;
+    width: 120px;
+    height: 42px;
+    background: linear-gradient(var(--color_green), var(--color_green_grey));
+    border: 2px solid var(--color_white);
+    outline: 3px solid var(--color_black);
+    box-sizing: border-box;
+    border-radius: 7px;
+    bottom: -14px;
+    margin: 0 30px;
+}
+
+.options_input_spacer .pokemon_button {
+    position: relative;
+    width: 120px;
+    height: 42px;
+    background: linear-gradient(var(--color_green), var(--color_green_grey));
+    border: 2px solid var(--color_white);
+    outline: 3px solid var(--color_black);
+    box-sizing: border-box;
+    border-radius: 7px;
+}
+
+.opponent_spacer {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+.trainer_spacer {
+    position: absolute;
+    bottom: 0;
+    left: 20px;
+    width: 100%;
+}
+
+.trainer_stats_overlay {
+    position: absolute;
+    right: 0px;
+    bottom: 40px;
+    border-bottom: 60px solid #343434;
+	border-left: 20px solid transparent;
+	height: 0;
+	width: 240px;
+    z-index: 2;
+}
+
+.trainer_stats {
+    position: absolute;
+    right: 2px;
+    top: 10px;
+    border-bottom: 46px solid var(--color_grey);
+	border-left: 16px solid transparent;
+	height: 0;
+	width: 236px;
+    z-index: 2;
+}
+
+.trainer_stats .trainer_pokemon_line {
+    position: relative;
+    width: calc(100% - 50px);
+    min-height: 16px;
+    left: 14px;
+    top: 5px;
+    font-family: "pokemon";
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.trainer_pokemon_line h3 {
+    text-transform: uppercase;
+}
+
+.trainer_pokemon_line h4 {
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.trainer_pokemon_line h4 span {
+    margin-left: 2px;
+    font-size: 14px;
+}
+
+.trainer_hp_line {
+    position: relative;
+    top: 8px;
+    left: 55px;
+    width: 150px;
+    background: var(--color_black);
+    border-radius: 3px;
+}
+
+.trainer_hp_line h3 {
+    color: #f5d222;
+    font-weight: bold;
+    font-size: 12px;
+    margin: 1px 5px;
+}
+
+.trainer_hp_line .hp_bar {
+    width: 120px;
+    height: 6px;
+    margin-right: 3px;
+    background: var(--color_green);
+    border-radius: 1px;
+}
+
+.trainer_exp_bar {
+    position: absolute;
+    width: 160px;
+    left: 20px;
+    min-height: 4px;
+    border: 3px solid #343434;
+    background: #728cda;
+    top: 46px;
+    border-radius: 3px;
+    z-index: -1;
+}
+
+.trainer_img_spacer {
+    position: relative;
+    width: 170px;
+    height: 170px;
+    left: 20px;
+}
+
+.opponent_spacer img {
+    position: relative;
+    width: 140px;
+    height: 140px;
+    object-fit: contain;
+}
+
+.trainer_spacer img {
+    position: relative;
+    width: 170px;
+    height: 170px;
+    object-fit: contain;
+}
+
+.input_accent {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+}
+
+.input_accent_top {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 10px;
+    border-top: 3px solid var(--color_black);
+    box-sizing: border-box;
+}
+
+.input_accent_bottom {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 10px;
+    border-left: 3px solid var(--color_black);
+    box-sizing: border-box;
+}
+
+.top_left {
+    left: -9px;
+    top: -9px;
+}
+
+.top_right {
+    right: -9px;
+    top: -9px;
+    transform: rotateY(180deg);
+}
+
+.bottom_left {
+    left: -9px;
+    bottom: -9px;
+    transform: rotateX(180deg);
+}
+
+.bottom_right {
+    right: -9px;
+    bottom: -9px;
+    transform: rotateX(180deg) rotateY(180deg);
+}

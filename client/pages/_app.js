@@ -1,5 +1,6 @@
 import '../styles/reset.css';
 import '../styles/styles.css';
+import '../styles/test.css';
 
 import { AuthProvider } from '@/context/authContext';
 
