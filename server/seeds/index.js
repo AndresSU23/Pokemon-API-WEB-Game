@@ -1,7 +1,7 @@
 const fs = require('fs');
 const mongoose = require('mongoose');
 const connect = require('../config/connection');
-const { User, Pokemon } = require('../models');
+const { User, Pokemon, Move } = require('../models');
 const { axios } = require('axios');
 
 require('dotenv').config();
@@ -115,6 +115,67 @@ const seedPokemon = async () => {
 
 }
 
+const seedMoves = async (defaultGen = 4) => {
+    try {
+        await Move.deleteMany({});
+        
+        let chosenMoves = [];
+
+        for (let gen = 1; gen <= defaultGen; gen++) {
+            const genData = await fetch(`https://pokeapi.co/api/v2/generation/${gen}`);
+            const genResponse = await genData.json();
+            
+            genResponse.moves.forEach(move => chosenMoves.push(move.url));
+        }
+
+        const moves = await Promise.all(
+            chosenMoves.map(async (moveUrl) => {
+                const moveObj = {};
+                
+                const data = await fetch(moveUrl);
+                const response = await data.json();
+
+                if (!response.meta) return null;
+
+                moveObj.id = response.id;
+                moveObj.name = response.name;
+                moveObj.accuracy = response.accuracy;
+                moveObj.effectChance = response.effect_chance;
+                moveObj.effectEntry = response.effect_entries.length > 0 ? response.effect_entries[0].effect : null;
+                moveObj.statChange = response.stat_changes.length > 0 ? response.stat_changes[0].change : null;
+                moveObj.statName = response.stat_changes.length > 0 ? response.stat_changes[0].stat.name : null;
+                moveObj.target = response.target.name;
+                moveObj.type = response.type.name;
+                moveObj.power = response.power;
+                moveObj.pp = response.pp;
+                moveObj.priority = response.priority;
+                moveObj.ailment = response.meta ? response.meta.ailment.name : null;
+                moveObj.category = response.meta ? response.meta.category.name : null;
+                moveObj.critRate = response.meta ? response.meta.crit_rate : null;
+                moveObj.drain = response.meta ? response.meta.drain : null;
+                moveObj.flinchChance = response.meta ? response.meta.flinch_chance : null;
+                moveObj.healing = response.meta ? response.meta.healing : null;
+                moveObj.maxHits = response.meta ? response.meta.max_hits : null;
+                moveObj.maxTurns = response.meta ? response.meta.max_turns : null;
+                moveObj.minHits = response.meta ? response.meta.min_hits : null;
+                moveObj.minTurns = response.meta ? response.meta.min_turns : null;
+                moveObj.statChance = response.meta ? response.meta.stat_chance : null;
+
+                return moveObj;
+            })
+        );
+
+        const filteredMoves = moves.filter(move => move !== null);
+
+        await Move.insertMany(filteredMoves);
+
+        console.log("Seeding all moves completed...\n");
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+
 const seedTestData = async () => {
 
     const pokemon = await Promise.all(
@@ -128,6 +189,7 @@ const seedTestData = async () => {
         })
 
     );
+
 
     const user = await User.findOne({ username: "admin" });
 
@@ -146,6 +208,7 @@ const seedTestData = async () => {
 connect()
     .then(() => initialize())
     .then(() => seedUsers())
+    .then(() => seedMoves())
     .then(() => seedPokemon())
     .then(() => seedTestData())
     .then(() => mongoose.connection.close())
