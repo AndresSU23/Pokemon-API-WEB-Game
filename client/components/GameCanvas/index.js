@@ -1,19 +1,18 @@
 import { useRef, useState, useEffect } from 'react';
 import { Stage, useApp } from '@pixi/react';
-import { Graphics } from 'pixi.js';
+import { Graphics, Sprite, Texture } from 'pixi.js';
 import BattleEvent from '@/classes/BattleEvent';
-
-const UNIT_SIZE = 50; // Define the global unit size in pixels
+import axios from 'axios';
 
 // Player Component
-const Player = ({ position, setPosition, layout, grasses }) => {
+const Player = ({ position, setPosition, layout, grasses, tileSize }) => {
     const app = useApp();
     const playerRef = useRef(null);
 
     useEffect(() => {
         const graphics = new Graphics();
         graphics.beginFill(0x66ccff);
-        graphics.drawRect(0, 0, UNIT_SIZE, UNIT_SIZE);
+        graphics.drawRect(0, 0, tileSize, tileSize);
         graphics.endFill();
 
         playerRef.current = graphics;
@@ -35,24 +34,22 @@ const Player = ({ position, setPosition, layout, grasses }) => {
 
     useEffect(() => {
         const move = (dx, dy) => {
-            const newX = position.x + dx * UNIT_SIZE;
-            const newY = position.y + dy * UNIT_SIZE;
+            const newX = position.x + dx * tileSize;
+            const newY = position.y + dy * tileSize;
 
             // Check for collision with walls
-            const newGridX = Math.floor(newX / UNIT_SIZE);
-            const newGridY = Math.floor(newY / UNIT_SIZE);
+            const newGridX = Math.floor(newX / tileSize);
+            const newGridY = Math.floor(newY / tileSize);
 
             const wallCollision = checkCollision(newGridX, newGridY, 1);
             const grassEvent = checkCollision(newGridX, newGridY, 2);
 
-            if (!wallCollision ) {
+            if (!wallCollision) {
                 setPosition({ x: newX, y: newY });
-            }
-            else console.log('Blocked');
+            } else console.log('Blocked');
             if (grassEvent) {
                 grasses[`${newGridX},${newGridY}`].triggerEvent();
             }
-
         };
 
         const checkCollision = (gridX, gridY, check) => {
@@ -89,35 +86,36 @@ const Player = ({ position, setPosition, layout, grasses }) => {
 };
 
 // Tile Component
-const Tile = ({x, y, width, height, color}) => {
+const Tile = ({ x, y, width, height, image, tileSize }) => {
     const app = useApp();
 
     useEffect(() => {
-        const graphics = new Graphics();
-        graphics.beginFill(color);
-        graphics.drawRect(0, 0, width * UNIT_SIZE, height * UNIT_SIZE);
-        graphics.endFill();
-        graphics.x = x * UNIT_SIZE;
-        graphics.y = y * UNIT_SIZE;
-
-        app.stage.addChild(graphics);
+        const texture = Texture.from(image);
+        const sprite = new Sprite(texture);
+        sprite.width = width * tileSize;
+        sprite.height = height * tileSize;
+        sprite.x = x * tileSize;
+        sprite.y = y * tileSize;
+        app.stage.addChild(sprite);
 
         return () => {
-            app.stage.removeChild(graphics);
+            app.stage.removeChild(sprite);
         };
-    }, [app, x, y, width, height, color]);
+    }, [app, x, y, width, height, image]);
 
     return null;
-}
+};
 
 // Map Component
-const Map = ({ layout }) => {
+const Map = ({ layers, tileSize, mapName }) => {
     const tiles = [];
 
-    layout.forEach((row, y) => {
-        row.forEach((cell, x) => {
-            if (cell === 1) tiles.push({ x, y, width: 1, height: 1, color: 0xff3300 });
-            if (cell === 2) tiles.push({ x, y, width: 1, height: 1, color: 0x00ff00 });
+    layers.forEach(layer => {
+        layer.tiles.forEach(tile => {
+            const posX = parseInt(tile.x, 10);
+            const posY = parseInt(tile.y, 10);
+            const image = `/tileSets/${mapName}/tiles/tile${tile.id.toString().padStart(3, '0')}.png`;
+            tiles.push({ x: posX, y: posY, width: 1, height: 1, image, tileSize });
         });
     });
 
@@ -131,38 +129,74 @@ const Map = ({ layout }) => {
 };
 
 // GameCanvas Component
-const GameCanvas = () => {
-    const [position, setPosition] = useState({ x: 1 * UNIT_SIZE, y: 1 * UNIT_SIZE });
+const GameCanvas = ({ mapName = "map1_TheIsland" }) => {
+    const [position, setPosition] = useState({ x: 1, y: 1 });
+    const [layout, setLayout] = useState([]);
+    const [grasses, setGrasses] = useState({});
+    const [layers, setLayers] = useState([]);
+    const [tileSize, setTileSize] = useState(16);
+    const [mapWidth, setMapWidth] = useState(0);
+    const [mapHeight, setMapHeight] = useState(0);
 
-    const layout = [
-        [1, 1, 1, 1, 1, 1, 1, 1],
-        [1, 0, 0, 0, 0, 2, 2, 1],
-        [1, 1, 1, 1, 0, 0, 0, 1],
-        [1, 0, 2, 1, 0, 1, 0, 1],
-        [1, 0, 2, 2, 0, 1, 0, 1],
-        [1, 0, 0, 0, 0, 1, 0, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1],
-    ];
-    const normalGrass = new BattleEvent([{probability: 40, encounterId: 100},
-                                        {probability: 5, encounterId: 999},
-                                        {probability: 20, encounterId: -100}
-    ])
-    const grasses = {};
+    useEffect(() => {
+        const fetchMapData = async () => {
+            try {
+                const response = await axios.get(`/maps/${mapName}.json`);
+                const mapData = response.data;
 
-    for (let y = 0; y < layout.length; y++) {
-        for (let x = 0; x < layout[y].length; x++) {
-            if (layout[y][x] === 2) {
-                grasses[`${x},${y}`] = normalGrass;
+                setTileSize(mapData.tileSize);
+                setMapWidth(mapData.mapWidth);
+                setMapHeight(mapData.mapHeight);
+                setLayers(mapData.layers);
+                setPosition({ x: 20*tileSize, y: 20*tileSize })
+
+                let newLayout = Array.from({ length: mapData.mapHeight }, () => Array(mapData.mapWidth).fill(-1));
+                let newGrasses = {};
+                const battleEvents = Array.from({ length: 10 }, (_, i) => new BattleEvent([{ probability: 40, encounterId: 100 }, { probability: 5, encounterId: 999 }, { probability: 20, encounterId: -100 }]));
+
+                mapData.layers.reverse().forEach(layer => {
+                    const code = layer.name.split('_');
+                    layer.tiles.forEach(tile => {
+                        const posX = parseInt(tile.x, 10);
+                        const posY = parseInt(tile.y, 10);
+                        if (code[0] === 'e') {
+                            newLayout[posY][posX] = 2;
+                            if (code[1] === 'g') newGrasses[`${posX},${posY}`] = battleEvents[code[2]];
+                        }
+                        else if (code[0] === 'c') newLayout[posY][posX] = 1;
+                        else if (code[0] === 'p') newLayout[posY][posX] = 0;
+
+                        if (code[0] === 'o'){
+                            if (code[0] === 'p') newLayout[posY][posX] = 0;
+                            if (code[0] === 'c') newLayout[posY][posX] = 1;
+                            if (code[0] === 'e') newLayout[posY][posX] = 2;
+                        }
+                    });
+                });
+
+                newLayout = newLayout.map(row => row.map(cell => (cell === -1 ? 0 : cell)));
+
+                setLayout(newLayout);
+                setGrasses(newGrasses);
+            } catch (error) {
+                console.error('Failed to fetch map data:', error);
             }
-        }
-    }
+        };
+
+        fetchMapData();
+    }, [mapName]);
 
     return (
-        <Stage width={800} height={600} options={{ backgroundColor: 0x000000 }}>
-            <Map layout={layout} />
-            <Player position={position} setPosition={setPosition} layout={layout} grasses={grasses} />
+        <Stage width={tileSize*mapWidth} height={tileSize*mapHeight} options={{ backgroundColor: 0x000000 }}>
+            {layout.length > 0 && (
+                <>
+                    <Map layers={layers} tileSize={tileSize} mapWidth={mapWidth} mapHeight={mapHeight} mapName={mapName} />
+                    <Player position={position} setPosition={setPosition} layout={layout} grasses={grasses} tileSize={tileSize} />
+                </>
+            )}
         </Stage>
     );
 };
 
 export default GameCanvas;
+
