@@ -23,6 +23,7 @@ const MoveSchema = new Schema(
             required: true,
             unique: true
         },
+        
         name: {
             type: String,
             required: true,

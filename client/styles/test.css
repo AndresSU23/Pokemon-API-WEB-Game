@@ -11,7 +11,7 @@
 
 .easter_egg_spacer {
     width: 540px;
-    height: 420px;
+    height: fit-content;
     border: 4px solid transparent;
     outline: 3px solid #232323;
     border-radius: 4px;
@@ -31,16 +31,19 @@
 .battle_input_spacer {
     width: 100%;
     height: 140px;
-    background: var(--color_grey);
+    background: linear-gradient(#f4f4f4, #ccc);
     box-sizing: border-box;
+    border: none;
     border-top: 2px solid #232323;
     font-family: "pokemon";
-    letter-spacing: 1px;
+    letter-spacing: 2px;
     font-size: 10px;
     color: var(--color_white);
     -webkit-text-stroke: 3px var(--color_black);
     paint-order: stroke fill;
 }
+
+.test_menu_div:focus { outline: none; }
 
 .fight_input_spacer {
     width: 100%;
@@ -171,6 +174,7 @@
 .trainer_hp_line h3 {
     color: #f5d222;
     font-weight: bold;
+    font-family: "arial";
     font-size: 12px;
     margin: 1px 5px;
 }

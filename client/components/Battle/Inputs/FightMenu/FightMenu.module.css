@@ -1,0 +1,82 @@
+.fight_menu_spacer {
+    position: relative;
+    width: 100%;
+    height: 180px;
+    background: linear-gradient(#f4f4f4, #ccc);
+    box-sizing: border-box;
+    border: none;
+    border-top: 2px solid #232323;
+    font-family: "pokemon";
+    letter-spacing: 2px;
+    font-size: 10px;
+    color: var(--color_white);
+    -webkit-text-stroke: 3px var(--color_black);
+    paint-order: stroke fill;
+}
+
+.move_inputs_spacer {
+    position: relative;
+    width: 100%;
+    height: 70%;
+    margin-left: 10px;
+    margin-top: 5px;
+}
+
+.move_input_button {
+    position: relative;
+    margin: 5px 5px;
+    width: calc(50% - 20px);
+    height: 60px;
+    background: linear-gradient(#eee 50%, #ccc 60%);
+    border-radius: 5px;
+    border: 2px solid #f4f4f4;
+    box-sizing: border-box;
+    outline: 3px solid #232323;
+}
+
+.move_input_text_spacer {
+    width: calc(100% - 14px);
+    height: calc(100% - 8px);
+    background: #f4f4f4;
+    border-radius: 4px;
+    opacity: 1;
+}
+
+.move_input_text_spacer h3 {
+    font-family: "pokemon";
+    color: #f4f4f4;
+    -webkit-text-stroke: 2px var(#aaa);
+    paint-order: stroke fill;
+    letter-spacing: 2px;
+    font-size: 12px;
+}
+
+.move_input_text_spacer span {
+    margin-top: 6px;
+}
+
+.move_type {
+    width: 60px;
+    height: 20px;
+    margin-right: 15px;
+    border-radius: 5px;
+    border: 1px solid #aaa;
+}
+
+.move_pp {
+    color: black;
+    -webkit-text-stroke: 1px;
+    paint-order: normal;
+    font-weight: bold;
+    letter-spacing: 3px;
+    font-size: 12px;
+}
+
+.normal { background: linear-gradient(#eee 50%, #ccc 60%); }
+.psychic { background: linear-gradient(#bb4e60 50%, #942d3e 60%); }
+.thunder { background: linear-gradient(#eded62 50%, #cbcb14 60%); }
+.dragon { background: linear-gradient(#6c43e7 50%, #3511a0 60%); }
+
+.inactive {
+    opacity: 0.3!important;
+}

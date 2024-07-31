@@ -1,0 +1,37 @@
+.form_spacer {
+    position: relative;
+    width: 360px;
+    height: 200px;
+    background: linear-gradient(#f4f4f4, #ddd);
+    border: 3px solid #fff;
+    outline: 2px solid #232323;
+    border-radius: 5px;
+    justify-content: center;
+    align-items: center;
+}
+
+.form_spacer input {
+    width: calc(100% - 140px);
+    margin-bottom: 10px;
+    height: 26px;
+    padding: 0 10px;
+}
+
+.form_spacer button {
+    border-radius: 3px;
+    border: 2px solid #f4f4f4;
+    color: #f4f4f4;
+    outline: 2px solid #232323;
+    background: linear-gradient(red, rgb(167, 71, 71));
+    width: 140px;
+    height: 34px;
+    font-family: "pokemon";
+    font-weight: bold;
+    font-size: 12px;
+    letter-spacing: 2px;
+    -webkit-text-stroke: 2px var(--color_black);
+    paint-order: stroke fill;
+    margin-top: 20px;
+}
+
+.form_spacer button:hover { cursor: pointer; }

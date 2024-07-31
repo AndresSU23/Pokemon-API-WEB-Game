@@ -2,7 +2,6 @@ const fs = require('fs');
 const mongoose = require('mongoose');
 const connect = require('../config/connection');
 const { User, Pokemon, Move } = require('../models');
-const { axios } = require('axios');
 
 require('dotenv').config();
 
@@ -99,6 +98,19 @@ const seedPokemon = async () => {
                     sp_defense: response.stats[4].base_stat,
                     speed: response.stats[5].base_stat,
                 }
+
+                const learnSet = await Promise.all( 
+                    
+                    response.moves.map(async (m) => {
+                    
+                        const move = await Move.findOne({ name: m.move.name })
+                        if (move) return move._id;
+
+                    })
+
+                )
+
+                obj.learnSet = learnSet;
 
                 return obj;
 
@@ -212,7 +224,7 @@ const seedTestData = async () => {
 connect()
     .then(() => initialize())
     .then(() => seedUsers())
-    .then(() => seedMoves())
+    // .then(() => seedMoves())
     .then(() => seedPokemon())
     .then(() => seedTestData())
     .then(() => mongoose.connection.close())

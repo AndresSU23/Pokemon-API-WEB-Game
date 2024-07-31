@@ -1,0 +1,1 @@
+const { User, Move, Pokemon } = require('../models');

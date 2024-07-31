@@ -1,0 +1,50 @@
+.map_menu_spacer {
+    position: relative;
+    height: 500px;
+    width: 180px;
+    border: 2px solid #232323;
+    border-radius: 5px;
+    background: #f4f4f4;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.map_button {
+    position: relative;
+    width: calc(100% - 20px);
+    height: 50px;
+    background: linear-gradient(red, rgb(146, 50, 50));
+    border-radius: 3px;
+    margin-top: 10px;
+    font-family: "pokemon";
+    letter-spacing: 1px;
+    font-size: 12px;
+    box-sizing: border-box;
+    border: 2px solid #f4f4f4;
+    outline: 2px solid #232323;
+    -webkit-text-stroke: 2px var(--color_white);
+    paint-order: stroke fill;
+    font-weight: bold;
+}
+
+.map_button:last-child {
+    position: absolute;
+    bottom: 10px;
+}
+
+.map_button_icon {
+    position: relative;
+    width: 20px;
+    height: 100%;
+    margin: 0 15px;
+}
+
+.map_button_text {
+    position: relative;
+}
+
+.map_button_icon span {
+    color: #f4f4f4;
+    font-size: 20px;
+    paint-order: stroke fill;
+}

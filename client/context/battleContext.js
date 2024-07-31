@@ -11,6 +11,8 @@ export const BattleProvider = ({ children }) => {
 
     const { user } = useAuth();
 
+    const [ menu, setMenu ] = useState(null);
+
     const get = useCallback(async (url) => {
 
         const { data, error } = (user) ? useSWR(`http://localhost:3001/api/${url}`, fetcher) : { data: null, error: "No token presented..." };
@@ -30,6 +32,8 @@ export const BattleProvider = ({ children }) => {
     const context = {
 
         getUserMoves,
+        menu,
+        setMenu
 
     }
 

@@ -1,5 +1,6 @@
 import { useAuth } from "@/context/authContext";
 import { useEffect, useState } from "react";
+import styles from "./Login.module.css";
 
 const Login = () => {
 
@@ -19,7 +20,7 @@ const Login = () => {
     return (
         <section className="flex center">
 
-            <form className="flex col" onSubmit={handleSubmit}>
+            <form className={"flex col " + styles.form_spacer} onSubmit={handleSubmit}>
 
                 <input type="text" placeholder="Username" onChange={(e) => setUsername(e.target.value)} />
                 <input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
