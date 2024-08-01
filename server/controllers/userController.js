@@ -1,4 +1,4 @@
-const { User, Pokemon } = require('../models');
+const { User, Pokemon, WildPokemon } = require('../models');
 const { checkUser, jwtOptions } = require('../utils/auth');
 const jwt = require('jsonwebtoken');
 
@@ -78,11 +78,7 @@ const userController = {
         try {
 
             const user = await User.findOne({ username: req.user.username });
-
-            const new_pokemon = {
-                pokemonId : req.body.pid,
-                level : req.body.level
-            }
+            const new_pokemon = await WildPokemon.create({ pokemonId: req.body.pid, level: req.body.level });
 
             user.pokemon = [ ...user.pokemon, new_pokemon ];
             await user.save();
