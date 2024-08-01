@@ -50,11 +50,11 @@ const FightMenu = () => {
                         </div>
                     </div>
 
-                    <div className={"flex center " + styles.move_input_button + " " + styles.lightning}>
+                    <div className={"flex center " + styles.move_input_button + " " + styles.electric}>
                         <div className={"flex center col " + styles.move_input_text_spacer}>
                             <h3>Thunder</h3>
                             <span className="flex row">
-                                <div className={"flex center " + styles.move_type + " " + styles.lightning}></div>
+                                <div className={"flex center " + styles.move_type + " " + styles.electric}></div>
                                 <div className={"flex center " + styles.move_pp}>PP 10/10</div>
                             </span>
                         </div>

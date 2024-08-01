@@ -14,6 +14,7 @@ const PokemonSchema = new Schema(
             required: true
         },
 
+        rarity: { type: String },
         sprite: { type: Object },
         types : [],
         baseStats : { type: Object },

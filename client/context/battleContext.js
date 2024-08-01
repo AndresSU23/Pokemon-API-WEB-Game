@@ -13,6 +13,7 @@ export const BattleProvider = ({ children }) => {
     const { user, logout } = useAuth();
 
     const [ menu, setMenu ] = useState(null);
+    const [ opponent, setOpponent ] = useState(null);
 
     const get = useCallback(async (url) => {
 
@@ -21,10 +22,27 @@ export const BattleProvider = ({ children }) => {
 
     }, []);
 
+    const getRandomWildPokemon = useCallback( async () => {
+
+        const token = localStorage.getItem('token');
+
+        axios.get('http://localhost:3001/api/battle/wild', { headers: { Authorization: `Bearer ${token}` } })
+            .then(async response => setOpponent(response.data))
+            .catch(error => { console.error('Token invalid'); logout(); });
+
+    }, []);
+
+    useEffect(() => {
+
+        getRandomWildPokemon();
+
+    }, [])
+
     const context = {
 
         menu,
-        setMenu
+        setMenu,
+        opponent
 
     }
 

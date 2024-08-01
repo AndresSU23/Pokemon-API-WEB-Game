@@ -81,7 +81,7 @@
 
 .normal { background: linear-gradient(#eee 50%, #ccc 60%); }
 .psychic { background: linear-gradient(#bb4e60 50%, #942d3e 60%); }
-.lightning { background: linear-gradient(#eded62 50%, #cbcb14 60%); }
+.electric { background: linear-gradient(#eded62 50%, #cbcb14 60%); }
 .dragon { background: linear-gradient(#6c43e7 50%, #3511a0 60%); }
 
 .cancel_button {

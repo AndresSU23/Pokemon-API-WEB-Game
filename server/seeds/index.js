@@ -90,6 +90,7 @@ const seedPokemon = async () => {
                 obj.name = response.name;
                 obj.types = types;
                 obj.pid = p.id;
+                obj.rarity = (p.rarity) ? p.rarity : null; 
 
                 obj.baseStats = {
                     hp: response.stats[0].base_stat,
@@ -102,7 +103,9 @@ const seedPokemon = async () => {
 
                 obj.sprite = { 
                     default: response.sprites.versions['generation-iv']['heartgold-soulsilver'].front_default,
-                    shiny: response.sprites.versions['generation-iv']['heartgold-soulsilver'].front_shiny
+                    shiny: response.sprites.versions['generation-iv']['heartgold-soulsilver'].front_shiny,
+                    back: response.sprites.versions['generation-iv']['heartgold-soulsilver'].back_default,
+                    back_shiny: response.sprites.versions['generation-iv']['heartgold-soulsilver'].back_shiny
                 }
 
                 const learnSet = await Promise.all( 
@@ -134,7 +137,9 @@ const seedPokemon = async () => {
 }
 
 const seedMoves = async (defaultGen = 4) => {
+
     try {
+
         await Move.deleteMany({});
         
         let chosenMoves = [];
@@ -192,9 +197,11 @@ const seedMoves = async (defaultGen = 4) => {
         await Move.insertMany(filteredMoves);
 
         console.log("Seeding all moves completed...\n");
-    } catch (error) {
-        console.log(error);
-    }
+
+    } 
+    
+    catch (error) { console.log(error); }
+
 }
 
 
@@ -222,6 +229,8 @@ const seedTestData = async () => {
         console.log("Seeded Test Data to admin users...\n");
 
     }
+
+    await WildPokemon.deleteMany();
 
 }
 
