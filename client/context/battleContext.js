@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useReducer, useCallback, useState } from "react";
 import { fetcher } from "@/utils/fetch";
 import useSWR from "swr";
+import axios from "axios";
 import { useAuth } from "./authContext";
 
 const BattleContext = createContext();
@@ -9,7 +10,7 @@ export const useBattle = () => useContext(BattleContext);
 
 export const BattleProvider = ({ children }) => {
 
-    const { user } = useAuth();
+    const { user, logout } = useAuth();
 
     const [ menu, setMenu ] = useState(null);
 
@@ -20,18 +21,8 @@ export const BattleProvider = ({ children }) => {
 
     }, []);
 
-    const getUserMoves = useCallback(async (url, pid) => {
-
-        console.log(user)
-
-        // const moves = await get(`/users/pokemon/${pid}/moves`);
-        // return moves;
-
-    }, [ user ]);
-
     const context = {
 
-        getUserMoves,
         menu,
         setMenu
 

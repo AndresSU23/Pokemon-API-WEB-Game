@@ -11,6 +11,7 @@ export const useAuth = () => useContext(AuthContext);
 export const AuthProvider = ({ children }) => {
 
     const [ user, setUser ] = useState();
+    const [ userPokemon, setUserPokemon ] = useState([]);
 
     const get = useCallback(async (url) => {
 
@@ -39,6 +40,16 @@ export const AuthProvider = ({ children }) => {
 
     const logout = useCallback(async () => localStorage.removeItem('token'), []);
 
+    const getUserPokemon = useCallback(async (url, pid) => {
+
+        const token = localStorage.getItem('token');
+
+        axios.get('http://localhost:3001/api/users/pokemon', { headers: { Authorization: `Bearer ${token}` } })
+            .then(async response => setUserPokemon(response.data))
+            .catch(error => { console.error('Token invalid'); logout(); });
+
+    }, []);
+
     useEffect(() => {
 
         const token = localStorage.getItem('token');
@@ -52,10 +63,13 @@ export const AuthProvider = ({ children }) => {
 
         }
 
-    }, [])
+    }, []);
+
+    useEffect(() => { getUserPokemon(); }, []);
 
     const context = {
         user,
+        userPokemon,
         get,
         login,
         logout

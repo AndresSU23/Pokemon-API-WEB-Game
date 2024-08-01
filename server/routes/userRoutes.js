@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const { userAuth, adminAuth } = require('../utils/auth');
 
-const { loginUser, verifyUser } = require('../controllers/userController');
+const { loginUser, verifyUser, getUserPokemon, addPokemon } = require('../controllers/userController');
 
 router
     .route('/login')
@@ -10,6 +10,11 @@ router
 router
     .route('/verify')
     .get(userAuth, verifyUser);
+
+router
+    .route('/pokemon')
+    .get(userAuth, getUserPokemon)
+    .post(userAuth, addPokemon);
 
 
 module.exports = router;

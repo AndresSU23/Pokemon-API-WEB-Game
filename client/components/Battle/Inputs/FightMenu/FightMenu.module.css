@@ -12,6 +12,7 @@
     color: var(--color_white);
     -webkit-text-stroke: 3px var(--color_black);
     paint-order: stroke fill;
+    overflow: hidden;
 }
 
 .move_inputs_spacer {
@@ -36,13 +37,15 @@
 
 .move_input_text_spacer {
     width: calc(100% - 14px);
-    height: calc(100% - 8px);
-    background: #f4f4f4;
+    height: calc(100% - 6px);
+    background: linear-gradient(#f4f4f4 50%, #ccc 60%);
     border-radius: 4px;
     opacity: 1;
 }
 
 .move_input_text_spacer h3 {
+    position: relative;
+    top: 4px;
     font-family: "pokemon";
     color: #f4f4f4;
     -webkit-text-stroke: 2px var(#aaa);
@@ -52,7 +55,11 @@
 }
 
 .move_input_text_spacer span {
+    position: relative;
     margin-top: 6px;
+    top: 4px;
+    justify-content: space-between;
+    width: calc(100% - 50px);
 }
 
 .move_type {
@@ -74,8 +81,22 @@
 
 .normal { background: linear-gradient(#eee 50%, #ccc 60%); }
 .psychic { background: linear-gradient(#bb4e60 50%, #942d3e 60%); }
-.thunder { background: linear-gradient(#eded62 50%, #cbcb14 60%); }
+.lightning { background: linear-gradient(#eded62 50%, #cbcb14 60%); }
 .dragon { background: linear-gradient(#6c43e7 50%, #3511a0 60%); }
+
+.cancel_button {
+    position: absolute;
+    bottom: -4px;
+    width: 70%;
+    height: 30px;
+    background: linear-gradient(#1d5de7 50%, #1746ab 60%);
+    justify-self: center;
+    align-self: center;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border: 2px solid #f4f4f4;
+    outline: 3px solid #232323;
+}
 
 .inactive {
     opacity: 0.3!important;

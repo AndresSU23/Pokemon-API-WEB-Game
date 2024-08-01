@@ -1,75 +1,86 @@
 import { useEffect, useRef, useState } from "react";
 import styles from "./PokemonMenu.module.css";
 import { Icon } from '@iconify-icon/react';
+import { useAuth } from "@/context/authContext";
+import PokemonItem from "./PokemonItem";
 
 const PokemonMenu = (props) => {
 
     const menuRef = useRef();
     const subMenuRef = useRef();
 
-    const [ selected, setSelected ] = useState(1);
-    const [ pokemon, setPokemon ] = useState(null);
-    const [ subSelected, setSubSelected ] = useState(null);
+    const { userPokemon } = useAuth();
 
-    const handleSubDown = (e) => {
+    // const [ selected, setSelected ] = useState(1);
+    // const [ pokemon, setPokemon ] = useState(null);
+    // const [ subSelected, setSubSelected ] = useState(null);
 
-        e.stopPropagation();
+    // const handleSubDown = (e) => {
 
-        if (e.key === "ArrowDown") setSubSelected((prev) => (prev < 3) ? prev + 1 : prev);
-        if (e.key === "ArrowUp") setSubSelected((prev) => (prev > 1) ? prev - 1 : prev);
-        if (e.key === "Enter") { setPokemon(null); setSubSelected(null); menuRef.current.focus(); }
+    //     e.stopPropagation();
 
-    }
+    //     if (e.key === "ArrowDown") setSubSelected((prev) => (prev < 3) ? prev + 1 : prev);
+    //     if (e.key === "ArrowUp") setSubSelected((prev) => (prev > 1) ? prev - 1 : prev);
+    //     if (e.key === "Enter") { setPokemon(null); setSubSelected(null); menuRef.current.focus(); }
+
+    // }
 
     const handleKeyDown = (e) => {
 
-        if (e.key === "Enter") {
+        // if (e.key === "Enter") {
 
-            if (selected === 1) { 
+        //     if (selected === 1) { 
 
-                setPokemon(1); 
-                setSubSelected(1);
+        //         setPokemon(1); 
+        //         setSubSelected(1);
 
-            }
+        //     }
 
-            if (selected === 7) console.log("?");
+        //     if (selected === 7) console.log("?");
 
-        }
+        // }
 
-        if (e.key === "ArrowDown") {
-            setSelected((prev) => {
-                if (prev < 7) return prev + 1;
-                else return prev; 
-            })
-        }
+        // if (e.key === "ArrowDown") {
+        //     setSelected((prev) => {
+        //         if (prev < 7) return prev + 1;
+        //         else return prev; 
+        //     })
+        // }
 
-        if (e.key === "ArrowUp") {
-            setSelected((prev) => {
-                if (prev > 1) return prev - 1;
-                else return prev; 
-            })
-        }
+        // if (e.key === "ArrowUp") {
+        //     setSelected((prev) => {
+        //         if (prev > 1) return prev - 1;
+        //         else return prev; 
+        //     })
+        // }
 
     }
 
-    useEffect(() => menuRef.current && menuRef.current.focus(), [])
+    // useEffect(() => menuRef.current && menuRef.current.focus(), [])
 
-    useEffect(() => {
+    // useEffect(() => {
 
-        if (subSelected) {
+    //     if (subSelected) {
 
-            subMenuRef.current && subMenuRef.current.focus();
-            menuRef.current && menuRef.current.blur();
+    //         subMenuRef.current && subMenuRef.current.focus();
+    //         menuRef.current && menuRef.current.blur();
 
-        }
+    //     }
     
-    }, [ subSelected ])
+    // }, [ subSelected ])
 
     return (
         <div ref={menuRef} tabIndex={0} className={"flex " + styles.pokemon_menu_spacer} onKeyDown={handleKeyDown}>
 
             <div className={"flex wrap " + styles.pokemon_menu}>
-                <div className={"flex row center " + styles.pokemon_item + " " + `${selected === 1 ? styles.selected : ""}`}>
+
+            {
+                userPokemon.map((p) => <PokemonItem pokemon={p} />)
+            }
+
+                
+
+                {/* <div className={"flex row center " + styles.pokemon_item + " " + `${selected === 1 ? styles.selected : ""}`}>
                     <div className={"flex center " + styles.pokemon_icon}><img src="./images/test/opponent/mew.png" /></div>
                     <div className={"flex col " + styles.pokemon_info_spacer}>
                         <h2>Mew</h2>
@@ -85,6 +96,7 @@ const PokemonMenu = (props) => {
                     <div className={"flex center " + styles.pokemon_level}><h3>Lv. <span>5</span></h3></div>
                     <div className={styles.pokeball_bg}><Icon icon="hugeicons:pokeball" /></div>
                 </div>
+
                 <div className={"flex " + styles.pokemon_item + " " + `${selected === 2 ? styles.selected : ""}`}>
                     <div className={styles.pokeball_bg}><Icon icon="hugeicons:pokeball" /></div>
                 </div>
@@ -99,19 +111,19 @@ const PokemonMenu = (props) => {
                 </div>
                 <div className={"flex " + styles.pokemon_item + " " + `${selected === 6 ? styles.selected : ""}`}>
                     <div className={styles.pokeball_bg}><Icon icon="hugeicons:pokeball" /></div>
-                </div>
+                </div> */}
             </div>
 
             <div className={"flex row " + styles.pokemon_info_text}>
                 <div className={"flex " + styles.pokemon_info_message}>
                     <p>Choose a Pokemon.</p>
                 </div>
-                <div className={"flex center " + styles.pokemon_info_cancel  + " " + `${selected === 7 ? styles.selected : ""}`}>
+                {/* <div className={"flex center " + styles.pokemon_info_cancel  + " " + `${selected === 7 ? styles.selected : ""}`}>
                     Cancel
-                </div>
+                </div> */}
             </div>
 
-            {
+            {/* {
                 pokemon
 
                     &&
@@ -122,7 +134,7 @@ const PokemonMenu = (props) => {
                             <li><span className={`${subSelected === 3 && styles.sub_selected}`}><Icon icon="teenyicons:right-solid" /></span>Cancel</li>
 
                     </div>
-            }
+            } */}
 
         </div>
     )

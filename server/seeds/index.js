@@ -1,7 +1,7 @@
 const fs = require('fs');
 const mongoose = require('mongoose');
 const connect = require('../config/connection');
-const { User, Pokemon, Move } = require('../models');
+const { User, Pokemon, WildPokemon, Move } = require('../models');
 
 require('dotenv').config();
 
@@ -90,6 +90,7 @@ const seedPokemon = async () => {
                 obj.name = response.name;
                 obj.types = types;
                 obj.pid = p.id;
+
                 obj.baseStats = {
                     hp: response.stats[0].base_stat,
                     attack: response.stats[1].base_stat,
@@ -97,6 +98,11 @@ const seedPokemon = async () => {
                     sp_attack: response.stats[3].base_stat,
                     sp_defense: response.stats[4].base_stat,
                     speed: response.stats[5].base_stat,
+                }
+
+                obj.sprite = { 
+                    default: response.sprites.versions['generation-iv']['heartgold-soulsilver'].front_default,
+                    shiny: response.sprites.versions['generation-iv']['heartgold-soulsilver'].front_shiny
                 }
 
                 const learnSet = await Promise.all( 
@@ -198,20 +204,18 @@ const seedTestData = async () => {
 
         starters.map(async (p) => {
 
-            const starter = await Pokemon.find({ pid: p.id });
-            starter.level = 5;
-            return starter;
+            const new_pokemon = await WildPokemon.create({ pokemonId: p.id, level: 5, rarity: "starter" });
+            return new_pokemon;
 
         })
 
     );
 
-
     const user = await User.findOne({ username: "admin" });
 
     if (user) {
 
-        const starters = pokemon.map(p => ({ pokemonId: p._id, level: p.level }));
+        const starters = pokemon.map(p => ({ pokemonId: p.pokemonId, level: p.level, shiny: p.shiny, ivs: p.ivs }));
         user.pokemon = starters;
         await user.save();
 

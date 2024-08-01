@@ -4,8 +4,17 @@ const SALT_FACTOR = 10;
 
 const TrainerPokemonSchema = new Schema(
     {
-        pokemonId : { type : Schema.Types.ObjectId, ref: "Pokemon" },
-        level : { type: Number }
+        pokemonId : { type : Number },
+        level : { type: Number },
+        shiny: { type: Boolean },
+        ivs: {
+            hp: { type: Number },
+            attack: { type: Number },
+            defense: { type: Number },
+            sp_attack: { type: Number },
+            sp_defense: { type: Number },
+            speed: { type: Number }
+        }
     }
 );
 
