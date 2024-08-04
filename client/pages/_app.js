@@ -3,11 +3,14 @@ import '../styles/styles.css';
 import '../styles/test.css';
 
 import { AuthProvider } from '@/context/authContext';
+import { BattleProvider } from '@/context/battleContext';
 
 export default function App({ Component, pageProps }) {
   return (
     <AuthProvider>
-      <Component {...pageProps} />
+      <BattleProvider>
+        <Component {...pageProps} />
+      </BattleProvider>
     </AuthProvider>
   );
 }

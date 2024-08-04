@@ -6,50 +6,6 @@ import { useAuth } from "./authContext";
 
 const NO_EVENT_TYPE = 10;
 
-class Odds {
-    constructor (rarity, pokemonObj = null, probability = null) {
-        this.rarity = rarity;
-        this.pokemonObj = pokemonObj;
-        if (probability) this.probability = probability;
-        else {
-            switch (rarity) {
-                case "common":
-                    this.probability = 20;
-                    break;
-                case "uncommon":
-                    this.probability = 15;
-                    break;
-                case "rare":
-                    this.probability = 10;
-                    break;
-                default:
-                    this.probability = 0;
-                    break;
-            }
-        }
-    }
-
-    setPokemonObj(pokemonObj) {this.pokemonObj = pokemonObj}
-}
-class BattleEvent {
-    constructor (odds) {
-        this.odds = odds
-    }
-
-    triggerEvent() {
-        const random = Math.floor(Math.random() * 100);
-        let floor = 0;
-        for (let i in this.odds) {
-            if (floor >= random && random <= this.odds[i].probability) {
-                console.log(`Battle Event triggered`);
-                console.log(this.odds[i].pokemonObj);
-                setOpponent(this.odds[i].pokemonObj)
-                setMenu("fight")
-            }
-            floor += this.odds[i].probability();
-        }
-    }
-}
 
 const BattleContext = createContext();
 
@@ -62,6 +18,49 @@ export const BattleProvider = ({ children }) => {
     const [ menu, setMenu ] = useState(null);
     const [ opponent, setOpponent ] = useState(null);
     const [ encounters, setEncounters ] = useState(null);
+
+    class Odds {
+        constructor (rarity, pokemonObj = null, probability = null) {
+            this.rarity = rarity;
+            this.pokemonObj = pokemonObj;
+            if (probability) this.probability = probability;
+            else {
+                switch (rarity) {
+                    case "common":
+                        this.probability = 20;
+                        break;
+                    case "uncommon":
+                        this.probability = 15;
+                        break;
+                    case "rare":
+                        this.probability = 10;
+                        break;
+                    default:
+                        this.probability = 0;
+                        break;
+                }
+            }
+        }
+        setPokemonObj(pokemonObj) {this.pokemonObj = pokemonObj}
+    }
+    class BattleEvent {
+        constructor (odds) {
+            this.odds = odds
+        }
+        triggerEvent() {
+            const random = Math.floor(Math.random() * 100);
+            let floor = 0;
+            for (let i in this.odds) {
+                if (floor >= random && random <= this.odds[i].probability) {
+                    console.log(`Battle Event triggered`);
+                    console.log(this.odds[i].pokemonObj);
+                    setOpponent(this.odds[i].pokemonObj)
+                    setMenu("fight")
+                }
+                floor += this.odds[i].probability;
+            }
+        }
+    }
 
     const get = useCallback(async (url) => {
 
@@ -78,7 +77,6 @@ export const BattleProvider = ({ children }) => {
             for (let i = 0; i < odds.length; i++) {
                 const pokemonObj = await getRandomWildPokemonByRarity(odds[i].rarity);
                 odds[i].setPokemonObj(pokemonObj);
-                console.log(odds[i]);
             }
             tempEncounters[i] = new BattleEvent(odds);
         }
@@ -86,18 +84,20 @@ export const BattleProvider = ({ children }) => {
 
     }, []);
 
-    const getRandomWildPokemonByRarity = useCallback( async (rarity) => {
-
+    const getRandomWildPokemonByRarity = useCallback(async (rarity) => {
         const token = localStorage.getItem('token');
 
-        let response = axios.get('http://localhost:3001/api/battle/wild', {
-            params: { rarity },
-            headers: { Authorization: `Bearer ${token}` }
-        })
-            .catch(error => { console.error('Token invalid'); logout(); });
-        return response.data;
-
+        try {
+            const response = await axios.get(`http://localhost:3001/api/battle/test/${rarity}`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            return response.data;
+        } catch (error) {
+            console.error('Token invalid or other error occurred:', error);
+            logout();
+        }
     }, []);
+
 
     const getRandomWildPokemon = useCallback( async () => {
 
@@ -110,10 +110,11 @@ export const BattleProvider = ({ children }) => {
     }, []);
 
     useEffect(() => {
-
+        console.log(`Current User: ${user}`);
+        
         (user) && setRandomEncounterPerGrass();
 
-    }, [])
+    }, [user])
 
     const context = {
 

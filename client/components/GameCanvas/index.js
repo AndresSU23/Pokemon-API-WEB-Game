@@ -1,14 +1,14 @@
 import { useRef, useState, useEffect } from 'react';
 import { Stage, useApp } from '@pixi/react';
 import { Graphics, Sprite, Texture } from 'pixi.js';
-import { useBattle, BattleProvider } from '@/context/battleContext';
+import { useBattle } from '@/context/battleContext';
 import axios from 'axios';
 
 // Player Component
-const Player = ({ position, setPosition, layout, grasses, tileSize }) => {
+const Player = ({ position, setPosition, layout, grasses, tileSize, encounters }) => {
     const app = useApp();
     
-    const { encounters } = useBattle();
+    
     const playerRef = useRef(null);
 
     useEffect(() => {
@@ -45,12 +45,12 @@ const Player = ({ position, setPosition, layout, grasses, tileSize }) => {
 
             const wallCollision = checkCollision(newGridX, newGridY, 1);
             const grassEvent = checkCollision(newGridX, newGridY, 2);
-
+            
             if (!wallCollision) {
                 setPosition({ x: newX, y: newY });
             } else console.log('Blocked');
             if (grassEvent) {
-                encounters[grasses[`${newGridX},${newGridY}`]].triggeEvent();
+                encounters[grasses[`${newGridX},${newGridY}`]].triggerEvent();
             }
         };
 
@@ -139,6 +139,7 @@ const GameCanvas = ({ mapName = "map1_TheIsland" }) => {
     const [tileSize, setTileSize] = useState(16);
     const [mapWidth, setMapWidth] = useState(0);
     const [mapHeight, setMapHeight] = useState(0);
+    const { encounters } = useBattle();
 
     useEffect(() => {
         const fetchMapData = async () => {
@@ -193,9 +194,7 @@ const GameCanvas = ({ mapName = "map1_TheIsland" }) => {
                 {layout.length > 0 && (
                     <>
                         <Map layers={layers} tileSize={tileSize} mapWidth={mapWidth} mapHeight={mapHeight} mapName={mapName} />
-                        <BattleProvider>
-                            <Player position={position} setPosition={setPosition} layout={layout} grasses={grasses} tileSize={tileSize} />
-                        </BattleProvider>
+                        <Player position={position} setPosition={setPosition} layout={layout} grasses={grasses} tileSize={tileSize} encounters={encounters}/>
                     </>
                 )}
             </Stage>
