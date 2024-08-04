@@ -1,17 +1,19 @@
 import { useRef, useState, useEffect } from 'react';
 import { Stage, useApp } from '@pixi/react';
 import { Graphics, Sprite, Texture } from 'pixi.js';
-import BattleEvent from '@/classes/BattleEvent';
+import { useBattle, BattleProvider } from '@/context/battleContext';
 import axios from 'axios';
 
 // Player Component
 const Player = ({ position, setPosition, layout, grasses, tileSize }) => {
     const app = useApp();
+    
+    const { encounters } = useBattle();
     const playerRef = useRef(null);
 
     useEffect(() => {
         const graphics = new Graphics();
-        graphics.beginFill(0x66ccff);
+        graphics.beginFill(0x581845);
         graphics.drawRect(0, 0, tileSize, tileSize);
         graphics.endFill();
 
@@ -48,7 +50,7 @@ const Player = ({ position, setPosition, layout, grasses, tileSize }) => {
                 setPosition({ x: newX, y: newY });
             } else console.log('Blocked');
             if (grassEvent) {
-                grasses[`${newGridX},${newGridY}`].triggerEvent();
+                encounters[grasses[`${newGridX},${newGridY}`]].triggeEvent();
             }
         };
 
@@ -152,7 +154,6 @@ const GameCanvas = ({ mapName = "map1_TheIsland" }) => {
 
                 let newLayout = Array.from({ length: mapData.mapHeight }, () => Array(mapData.mapWidth).fill(-1));
                 let newGrasses = {};
-                const battleEvents = Array.from({ length: 10 }, (_, i) => new BattleEvent([{ probability: 40, encounterId: 100 }, { probability: 5, encounterId: 999 }, { probability: 20, encounterId: -100 }]));
 
                 mapData.layers.reverse().forEach(layer => {
                     const code = layer.name.split('_');
@@ -161,7 +162,7 @@ const GameCanvas = ({ mapName = "map1_TheIsland" }) => {
                         const posY = parseInt(tile.y, 10);
                         if (code[0] === 'e') {
                             newLayout[posY][posX] = 2;
-                            if (code[1] === 'g') newGrasses[`${posX},${posY}`] = battleEvents[code[2]];
+                            if (code[1] === 'g') newGrasses[`${posX},${posY}`] = code[2];
                         }
                         else if (code[0] === 'c') newLayout[posY][posX] = 1;
                         else if (code[0] === 'p') newLayout[posY][posX] = 0;
@@ -187,14 +188,17 @@ const GameCanvas = ({ mapName = "map1_TheIsland" }) => {
     }, [mapName]);
 
     return (
-        <Stage width={tileSize*mapWidth} height={tileSize*mapHeight} options={{ backgroundColor: 0x000000 }}>
-            {layout.length > 0 && (
-                <>
-                    <Map layers={layers} tileSize={tileSize} mapWidth={mapWidth} mapHeight={mapHeight} mapName={mapName} />
-                    <Player position={position} setPosition={setPosition} layout={layout} grasses={grasses} tileSize={tileSize} />
-                </>
-            )}
-        </Stage>
+        
+            <Stage width={tileSize*mapWidth} height={tileSize*mapHeight} options={{ backgroundColor: 0x000000 }}>
+                {layout.length > 0 && (
+                    <>
+                        <Map layers={layers} tileSize={tileSize} mapWidth={mapWidth} mapHeight={mapHeight} mapName={mapName} />
+                        <BattleProvider>
+                            <Player position={position} setPosition={setPosition} layout={layout} grasses={grasses} tileSize={tileSize} />
+                        </BattleProvider>
+                    </>
+                )}
+            </Stage>
     );
 };
 
