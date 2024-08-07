@@ -15,7 +15,8 @@ export const BattleProvider = ({ children }) => {
 
     const { user, logout } = useAuth();
 
-    const [ menu, setMenu ] = useState("null");
+    const [ menu, setMenu ] = useState(null);
+    const [ screen, setScreen ] = useState("map")
     const [ opponent, setOpponent ] = useState(null);
     const [ encounters, setEncounters ] = useState(null);
 
@@ -54,9 +55,8 @@ export const BattleProvider = ({ children }) => {
             for (let i in this.odds) {
                 if (floor >= random && random <= (floor + this.odds[i].probability)) {
                     console.log(`Battle Event triggered`);
-
-                    setOpponent(this.odds[i].pokemonObj)
-                    setMenu("fight")
+                    setScreen("battle");
+                    setOpponent(this.odds[i].pokemonObj);
                     return this.odds[i].pokemonObj;
                 }
                 floor += this.odds[i].probability;
@@ -84,8 +84,7 @@ export const BattleProvider = ({ children }) => {
             tempEncounters[i] = new BattleEvent(odds);
         }
         setEncounters(tempEncounters)
-        setMenu("map")
-        console.log(menu);
+        setScreen("map");
     }, []);
 
     const getRandomWildPokemonByRarity = useCallback(async (rarity) => {
@@ -123,6 +122,7 @@ export const BattleProvider = ({ children }) => {
     const context = {
 
         menu,
+        screen,
         setMenu,
         opponent,
         encounters

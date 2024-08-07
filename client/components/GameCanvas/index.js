@@ -5,7 +5,7 @@ import { useBattle } from '@/context/battleContext';
 import axios from 'axios';
 
 // Player Component
-const Player = ({ position, setPosition, layout, grasses, tileSize, encounters, menu }) => {
+const Player = ({ position, setPosition, layout, grasses, tileSize, encounters, screen }) => {
     const app = useApp();
     
     
@@ -60,8 +60,12 @@ const Player = ({ position, setPosition, layout, grasses, tileSize, encounters, 
         };
 
         const handleKeyDown = (e) => {
-            if (menu === "map")
-            {switch (e.key) {
+            if (screen === "map")
+            {
+
+                console.log("?")
+
+                switch (e.key) {
                 case 'ArrowUp':
                     move(0, -1);
                     break;
@@ -140,7 +144,7 @@ const GameCanvas = ({ mapName = "map1_TheIsland" }) => {
     const [tileSize, setTileSize] = useState(16);
     const [mapWidth, setMapWidth] = useState(0);
     const [mapHeight, setMapHeight] = useState(0);
-    const { encounters, menu } = useBattle();
+    const { encounters, screen } = useBattle();
 
     useEffect(() => {
         const fetchMapData = async () => {
@@ -195,7 +199,7 @@ const GameCanvas = ({ mapName = "map1_TheIsland" }) => {
                 {layout.length > 0 && (
                     <>
                         <Map layers={layers} tileSize={tileSize} mapWidth={mapWidth} mapHeight={mapHeight} mapName={mapName} />
-                        <Player position={position} setPosition={setPosition} layout={layout} grasses={grasses} tileSize={tileSize} encounters={encounters} menu={menu}/>
+                        <Player position={position} setPosition={setPosition} layout={layout} grasses={grasses} tileSize={tileSize} encounters={encounters} screen={screen}/>
                     </>
                 )}
             </Stage>

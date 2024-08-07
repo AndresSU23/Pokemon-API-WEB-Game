@@ -8,7 +8,7 @@ import { useBattle } from '@/context/battleContext';
 export default function Home() {
 
   const { user } = useAuth();
-  const { menu } = useBattle();
+  const { screen } = useBattle();
 
 
   if (!user) {
@@ -17,8 +17,8 @@ export default function Home() {
 
   return (
     <section className="flex center">
-      {menu === "map" && <GameCanvas />}
-      {menu === "fight" && <Battle />}
+      {screen === "map" && <GameCanvas />}
+      {screen === "battle" && <Battle />}
     </section>
   );
 }
