@@ -66,31 +66,23 @@ const seedUsers = async () => {
 }
 
 const seedPokemon = async () => {
-
     try {
-
         await Pokemon.deleteMany({});
 
-        const all_pokemon = [ ...starters, ...wild_pokemon, ...legendaries ];
-
         const pokemon = await Promise.all(
-            
-            all_pokemon.map(async (p) => {
-
+            Array.from({ length: 493 }, async (_, index) => {
+                const id = index + 1;
                 const obj = {};
                 const types = [];
                 
-                const data = await fetch(`https://pokeapi.co/api/v2/pokemon/${p.id}`);
+                const data = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
                 const response = await data.json();
 
-                // console.log(response.stats);
-
-                response.types.forEach(t => types.push(t.type.name))
+                response.types.forEach(t => types.push(t.type.name));
 
                 obj.name = response.name;
                 obj.types = types;
-                obj.pid = p.id;
-                obj.rarity = (p.rarity) ? p.rarity : null; 
+                obj.pid = id;
 
                 obj.baseStats = {
                     hp: response.stats[0].base_stat,
@@ -99,6 +91,21 @@ const seedPokemon = async () => {
                     sp_attack: response.stats[3].base_stat,
                     sp_defense: response.stats[4].base_stat,
                     speed: response.stats[5].base_stat,
+                };
+
+                let totalStats = 0;
+                for (let stat in obj.baseStats) {
+                    if (obj.baseStats.hasOwnProperty(stat)) {
+                        totalStats += obj.baseStats[stat];
+                    }
+                }
+
+                if (totalStats < 300) {
+                    obj.rarity = 'common';
+                } else if (totalStats < 500) {
+                    obj.rarity = 'uncommon';
+                } else {
+                    obj.rarity = 'rare';
                 }
 
                 obj.sprite = { 
@@ -106,23 +113,18 @@ const seedPokemon = async () => {
                     shiny: response.sprites.versions['generation-iv']['heartgold-soulsilver'].front_shiny,
                     back: response.sprites.versions['generation-iv']['heartgold-soulsilver'].back_default,
                     back_shiny: response.sprites.versions['generation-iv']['heartgold-soulsilver'].back_shiny
-                }
+                };
 
-                const learnSet = await Promise.all( 
-                    
+                const learnSet = await Promise.all(
                     response.moves.map(async (m) => {
-                    
-                        const move = await Move.findOne({ name: m.move.name })
+                        const move = await Move.findOne({ name: m.move.name });
                         if (move) return move._id;
-
                     })
+                );
 
-                )
-
-                obj.learnSet = learnSet;
+                obj.learnSet = learnSet.filter(id => id);  // filter out undefined values
 
                 return obj;
-
             })
         );
 
@@ -130,11 +132,11 @@ const seedPokemon = async () => {
 
         console.log("Seeding All Pokemon completed...\n");
 
+    } catch (error) {
+        console.log(error);
     }
+};
 
-    catch (error) { console.log(error); }
-
-}
 
 const seedMoves = async (defaultGen = 4) => {
 
@@ -237,7 +239,7 @@ const seedTestData = async () => {
 connect()
     .then(() => initialize())
     .then(() => seedUsers())
-    // .then(() => seedMoves())
+    .then(() => seedMoves())
     .then(() => seedPokemon())
     .then(() => seedTestData())
     .then(() => mongoose.connection.close())

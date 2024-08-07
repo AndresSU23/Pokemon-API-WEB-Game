@@ -196,7 +196,7 @@ const GameCanvas = ({ mapName = "map1_TheIsland" }) => {
     return (
         
             <Stage width={tileSize*mapWidth} height={tileSize*mapHeight} options={{ backgroundColor: 0x000000 }}>
-                {layout.length > 0 && (
+                {layout.length > 0 && encounters &&(
                     <>
                         <Map layers={layers} tileSize={tileSize} mapWidth={mapWidth} mapHeight={mapHeight} mapName={mapName} />
                         <Player position={position} setPosition={setPosition} layout={layout} grasses={grasses} tileSize={tileSize} encounters={encounters} screen={screen}/>
