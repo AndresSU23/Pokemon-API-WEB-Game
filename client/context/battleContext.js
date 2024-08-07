@@ -15,7 +15,7 @@ export const BattleProvider = ({ children }) => {
 
     const { user, logout } = useAuth();
 
-    const [ menu, setMenu ] = useState(null);
+    const [ menu, setMenu ] = useState("null");
     const [ opponent, setOpponent ] = useState(null);
     const [ encounters, setEncounters ] = useState(null);
 
@@ -27,13 +27,13 @@ export const BattleProvider = ({ children }) => {
             else {
                 switch (rarity) {
                     case "common":
-                        this.probability = 20;
-                        break;
-                    case "uncommon":
                         this.probability = 15;
                         break;
-                    case "rare":
+                    case "uncommon":
                         this.probability = 10;
+                        break;
+                    case "rare":
+                        this.probability = 5;
                         break;
                     default:
                         this.probability = 0;
@@ -50,12 +50,14 @@ export const BattleProvider = ({ children }) => {
         triggerEvent() {
             const random = Math.floor(Math.random() * 100);
             let floor = 0;
+
             for (let i in this.odds) {
-                if (floor >= random && random <= this.odds[i].probability) {
+                if (floor >= random && random <= (floor + this.odds[i].probability)) {
                     console.log(`Battle Event triggered`);
-                    console.log(this.odds[i].pokemonObj);
+
                     setOpponent(this.odds[i].pokemonObj)
                     setMenu("fight")
+                    return this.odds[i].pokemonObj;
                 }
                 floor += this.odds[i].probability;
             }
@@ -70,7 +72,8 @@ export const BattleProvider = ({ children }) => {
     }, []);
 
     const setRandomEncounterPerGrass = useCallback( async () => {
-
+        
+        
         let tempEncounters = {}
         for (let i = 0; i < NO_EVENT_TYPE; i++) {
             let odds = [new Odds("common"), new Odds("common"), new Odds("uncommon"), new Odds("uncommon"), new Odds("rare")]
@@ -81,7 +84,8 @@ export const BattleProvider = ({ children }) => {
             tempEncounters[i] = new BattleEvent(odds);
         }
         setEncounters(tempEncounters)
-
+        setMenu("map")
+        console.log(menu);
     }, []);
 
     const getRandomWildPokemonByRarity = useCallback(async (rarity) => {

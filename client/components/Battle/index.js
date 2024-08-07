@@ -9,7 +9,7 @@ const Battle = () => {
 
     useEffect(() => {
 
-        console.log(userPokemon);
+        //console.log(userPokemon);
 
     }, [ userPokemon ])
 

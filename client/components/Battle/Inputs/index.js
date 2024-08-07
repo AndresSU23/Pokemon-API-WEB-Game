@@ -30,8 +30,8 @@ const Inputs = () => {
 
     }
 
-    useEffect(() => menuRef && menuRef.current.focus(), []);
-
+    useEffect(() => menuRef && menuRef.current, []);
+    //useEffect(() => menuRef && menuRef.current.focus(), []);
     return (
 
         <>

@@ -5,7 +5,7 @@ import { useBattle } from '@/context/battleContext';
 import axios from 'axios';
 
 // Player Component
-const Player = ({ position, setPosition, layout, grasses, tileSize, encounters }) => {
+const Player = ({ position, setPosition, layout, grasses, tileSize, encounters, menu }) => {
     const app = useApp();
     
     
@@ -21,7 +21,7 @@ const Player = ({ position, setPosition, layout, grasses, tileSize, encounters }
         app.stage.addChild(graphics);
 
         return () => {
-            if (playerRef.current) {
+            if (playerRef.current && app.stage) {
                 app.stage.removeChild(playerRef.current);
             }
         };
@@ -60,7 +60,8 @@ const Player = ({ position, setPosition, layout, grasses, tileSize, encounters }
         };
 
         const handleKeyDown = (e) => {
-            switch (e.key) {
+            if (menu === "map")
+            {switch (e.key) {
                 case 'ArrowUp':
                     move(0, -1);
                     break;
@@ -75,7 +76,7 @@ const Player = ({ position, setPosition, layout, grasses, tileSize, encounters }
                     break;
                 default:
                     break;
-            }
+            }}
         };
 
         window.addEventListener('keydown', handleKeyDown);
@@ -101,7 +102,7 @@ const Tile = ({ x, y, width, height, image, tileSize }) => {
         app.stage.addChild(sprite);
 
         return () => {
-            app.stage.removeChild(sprite);
+            if (app.stage) app.stage.removeChild(sprite);
         };
     }, [app, x, y, width, height, image]);
 
@@ -139,7 +140,7 @@ const GameCanvas = ({ mapName = "map1_TheIsland" }) => {
     const [tileSize, setTileSize] = useState(16);
     const [mapWidth, setMapWidth] = useState(0);
     const [mapHeight, setMapHeight] = useState(0);
-    const { encounters } = useBattle();
+    const { encounters, menu } = useBattle();
 
     useEffect(() => {
         const fetchMapData = async () => {
@@ -194,7 +195,7 @@ const GameCanvas = ({ mapName = "map1_TheIsland" }) => {
                 {layout.length > 0 && (
                     <>
                         <Map layers={layers} tileSize={tileSize} mapWidth={mapWidth} mapHeight={mapHeight} mapName={mapName} />
-                        <Player position={position} setPosition={setPosition} layout={layout} grasses={grasses} tileSize={tileSize} encounters={encounters}/>
+                        <Player position={position} setPosition={setPosition} layout={layout} grasses={grasses} tileSize={tileSize} encounters={encounters} menu={menu}/>
                     </>
                 )}
             </Stage>
