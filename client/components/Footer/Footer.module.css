@@ -1,0 +1,12 @@
+.footer_spacer {
+    position: fixed;
+    bottom: 0;
+    background: #232323;
+    border-top: 2px solid #fff;
+    outline: 3px solid #343434;
+    height: 80px;
+    width: 100%;
+    font-family: "pokemon";
+    color: #f4f4f4;
+    letter-spacing: 1px;
+}

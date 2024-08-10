@@ -124,6 +124,7 @@ export const BattleProvider = ({ children }) => {
         menu,
         screen,
         setMenu,
+        setScreen,
         opponent,
         encounters
 

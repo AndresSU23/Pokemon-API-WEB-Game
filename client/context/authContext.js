@@ -38,7 +38,7 @@ export const AuthProvider = ({ children }) => {
 
     };
 
-    const logout = useCallback(async () => localStorage.removeItem('token'), []);
+    const logout = useCallback(async () => { localStorage.removeItem('token'); setUser(null); }, []);
 
     const getUserPokemon = useCallback(async (url, pid) => {
 

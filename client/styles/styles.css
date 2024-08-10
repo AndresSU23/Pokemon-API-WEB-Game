@@ -13,7 +13,13 @@ section {
 }
 
 .flex { display: flex; }
+
 .center { justify-content: center; align-items: center; }
+.even { justify-content: space-evenly; }
+.between { justify-content: space-between; }
+.around { justify-content: space-around; }
+
 .row { flex-direction: row; }
 .col { flex-direction: column; }
+
 .wrap { flex-wrap: wrap; }

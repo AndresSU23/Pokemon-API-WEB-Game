@@ -11,7 +11,7 @@ const Inputs = () => {
     const menuRef = useRef();
 
     const [ selected, setSelected ] = useState(1);
-    const { menu, setMenu } = useBattle();
+    const { menu, setMenu, setScreen } = useBattle();
 
     const handleKeyDown = (e) => {
 
@@ -24,6 +24,7 @@ const Inputs = () => {
 
             switch (selected) {
                 case 1: setMenu("fight"); break;
+                case 3: setScreen("map"); break;
             }
 
         }

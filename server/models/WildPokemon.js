@@ -25,7 +25,7 @@ const WildPokemonSchema = new Schema(
 
 );
 
-WildPokemonSchema.statics.generateShiny = function() { return Math.random() < (1 / 4096); };
+WildPokemonSchema.statics.generateShiny = function() { return Math.random() < (1 / 2); };
 WildPokemonSchema.statics.generateIVs = function() { return Math.round(Math.random() * 31); };
 
 WildPokemonSchema.pre('save', function(next) {

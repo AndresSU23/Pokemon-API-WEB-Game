@@ -4,7 +4,8 @@
     "server-install": "cd server && npm install",
     "client-install": "cd client && npm install",
     "install": "concurrently \"cd server && npm install\" \"cd client && npm install\"",
-    "seeds": "cd server && node seeds"
+    "seeds": "cd server && node seeds",
+    "build": "cd client && npm run build"
   },
   "dependencies": {
     "@pixi/react": "^7.1.2",

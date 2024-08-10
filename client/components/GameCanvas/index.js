@@ -2,10 +2,12 @@ import { useRef, useState, useEffect } from 'react';
 import { Stage, useApp } from '@pixi/react';
 import { Graphics, Sprite, Texture } from 'pixi.js';
 import { useBattle } from '@/context/battleContext';
+import styles from "./GameCanvas.module.css";
 import axios from 'axios';
+import MapMenu from '../Menus/MapMenu';
 
 // Player Component
-const Player = ({ position, setPosition, layout, grasses, tileSize, encounters, screen }) => {
+const Player = ({ position, setPosition, layout, grasses, tileSize, encounters, screen, setMenu }) => {
     const app = useApp();
     
     
@@ -78,6 +80,8 @@ const Player = ({ position, setPosition, layout, grasses, tileSize, encounters, 
                 case 'ArrowRight':
                     move(1, 0);
                     break;
+                case 'Escape':
+                    setMenu(prev => setMenu(!prev));
                 default:
                     break;
             }}
@@ -137,7 +141,8 @@ const Map = ({ layers, tileSize, mapName }) => {
 
 // GameCanvas Component
 const GameCanvas = ({ mapName = "map1_TheIsland" }) => {
-    const [position, setPosition] = useState({ x: 1, y: 1 });
+
+    const [position, setPosition] = useState(null);
     const [layout, setLayout] = useState([]);
     const [grasses, setGrasses] = useState({});
     const [layers, setLayers] = useState([]);
@@ -145,6 +150,7 @@ const GameCanvas = ({ mapName = "map1_TheIsland" }) => {
     const [mapWidth, setMapWidth] = useState(0);
     const [mapHeight, setMapHeight] = useState(0);
     const { encounters, screen } = useBattle();
+    const [ menuVisible, setMenuVisible ] = useState(false);
 
     useEffect(() => {
         const fetchMapData = async () => {
@@ -156,7 +162,7 @@ const GameCanvas = ({ mapName = "map1_TheIsland" }) => {
                 setMapWidth(mapData.mapWidth);
                 setMapHeight(mapData.mapHeight);
                 setLayers(mapData.layers);
-                setPosition({ x: 20*tileSize, y: 20*tileSize })
+                // setPosition({ x: 20*tileSize, y: 20*tileSize })
 
                 let newLayout = Array.from({ length: mapData.mapHeight }, () => Array(mapData.mapWidth).fill(-1));
                 let newGrasses = {};
@@ -193,16 +199,27 @@ const GameCanvas = ({ mapName = "map1_TheIsland" }) => {
         fetchMapData();
     }, [mapName]);
 
+    useEffect(() => {
+
+        (tileSize) && setPosition({ x: 20*tileSize, y: 20*tileSize })
+
+    }, [ tileSize ])
+
     return (
+        <div className={styles.map_spacer}>
         
             <Stage width={tileSize*mapWidth} height={tileSize*mapHeight} options={{ backgroundColor: 0x000000 }}>
                 {layout.length > 0 && encounters &&(
                     <>
                         <Map layers={layers} tileSize={tileSize} mapWidth={mapWidth} mapHeight={mapHeight} mapName={mapName} />
-                        <Player position={position} setPosition={setPosition} layout={layout} grasses={grasses} tileSize={tileSize} encounters={encounters} screen={screen}/>
+                        <Player position={position} setPosition={setPosition} setMenu={setMenuVisible} layout={layout} grasses={grasses} tileSize={tileSize} encounters={encounters} screen={screen}/>
                     </>
                 )}
             </Stage>
+
+            { menuVisible && <MapMenu /> }
+
+        </div>
     );
 };
 

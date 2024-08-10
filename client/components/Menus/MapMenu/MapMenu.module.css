@@ -1,6 +1,8 @@
 .map_menu_spacer {
-    position: relative;
-    height: 500px;
+    position: absolute;
+    right: 0;
+    top: 0; 
+    height: 496px;
     width: 180px;
     border: 2px solid #232323;
     border-radius: 5px;

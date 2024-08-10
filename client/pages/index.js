@@ -1,8 +1,12 @@
 import GameCanvas from "@/components/GameCanvas";
 import Battle from "@/components/Battle";
 import Login from "@/components/Login";
+import Nav from "@/components/Nav";
+
 import { useAuth } from '@/context/authContext';
 import { useBattle } from '@/context/battleContext';
+import { useEffect } from "react";
+import Footer from "@/components/Footer";
 
 
 export default function Home() {
@@ -10,15 +14,24 @@ export default function Home() {
   const { user } = useAuth();
   const { screen } = useBattle();
 
-
-  if (!user) {
-    return <Login />;
-  }
-
   return (
     <section className="flex center">
-      {screen === "map" && <GameCanvas />}
-      {screen === "battle" && <Battle />}
+
+      <Nav />
+      { user && 
+
+        <>
+
+          {screen === "map" && <GameCanvas />}
+          {screen === "battle" && <Battle />}
+        
+        </>
+      }
+
+      { !user && <Login /> }
+      
+      <Footer />
+
     </section>
   );
 }

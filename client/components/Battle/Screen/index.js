@@ -63,7 +63,7 @@ const Screen = () => {
         <div className="flex battle_screen_spacer">
 
             <div className="flex opponent_spacer">
-                { opponent && <img ref={opponentRef} src={opponent.shiny ? opponent.sprite.front_shiny : opponent.sprite.default} alt="opponent pokemon" /> }
+                { opponent && <img ref={opponentRef} src={opponent.shiny ? opponent.sprite.shiny : opponent.sprite.default} alt="opponent pokemon" /> }
             </div>
 
             { userPokemon.length > 0 && 
