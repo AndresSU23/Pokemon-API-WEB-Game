@@ -142,14 +142,12 @@ const Map = ({ layers, tileSize, mapName }) => {
 // GameCanvas Component
 const GameCanvas = ({ mapName = "map1_TheIsland" }) => {
 
-    const [position, setPosition] = useState(null);
     const [layout, setLayout] = useState([]);
     const [grasses, setGrasses] = useState({});
     const [layers, setLayers] = useState([]);
-    const [tileSize, setTileSize] = useState(16);
     const [mapWidth, setMapWidth] = useState(0);
     const [mapHeight, setMapHeight] = useState(0);
-    const { encounters, screen } = useBattle();
+    const { encounters, screen, position, setPosition, tileSize, setTileSize } = useBattle();
     const [ menuVisible, setMenuVisible ] = useState(false);
 
     useEffect(() => {
@@ -162,7 +160,6 @@ const GameCanvas = ({ mapName = "map1_TheIsland" }) => {
                 setMapWidth(mapData.mapWidth);
                 setMapHeight(mapData.mapHeight);
                 setLayers(mapData.layers);
-                // setPosition({ x: 20*tileSize, y: 20*tileSize })
 
                 let newLayout = Array.from({ length: mapData.mapHeight }, () => Array(mapData.mapWidth).fill(-1));
                 let newGrasses = {};
@@ -199,11 +196,7 @@ const GameCanvas = ({ mapName = "map1_TheIsland" }) => {
         fetchMapData();
     }, [mapName]);
 
-    useEffect(() => {
 
-        (tileSize) && setPosition({ x: 20*tileSize, y: 20*tileSize })
-
-    }, [ tileSize ])
 
     return (
         <div className={styles.map_spacer}>

@@ -621,3 +621,62 @@ function calculateDamage({
   // Return the final damage, rounded down to the nearest whole number
   return Math.floor(finalDamage);
 }
+
+function willHit(targetStats, attackerStats, moveAccuracy) {
+  // Calculate the hit probability
+  const hitProbability = attackerStats.accuracy * moveAccuracy * (1 - targetStats.evasion);
+
+  // Generate a random number between 0 and 100
+  const randomNumber = Math.random() * 100;
+
+  // Determine if the attack hits
+  return randomNumber <= hitProbability;
+}
+
+function getMovePriority(moveName) {
+  const priorityTable = {
+    "+5": ["Helping Hand"],
+    "+4": ["Magic Coat", "Snatch"],
+    "+3": ["Detect", "Endure", "Follow Me", "Protect"],
+    "+2": ["Feint"],
+    "+1": ["Aqua Jet", "Bide", "Bullet Punch", "ExtremeSpeed", "Fake Out", "Ice Shard", "Mach Punch",
+          "Quick Attack", "Shadow Sneak", "Sucker Punch", "Vacuum Wave"],
+    "0": ["All other moves"],
+    "-1": ["Vital Throw"],
+    "-3": ["Focus Punch"],
+    "-4": ["Avalanche", "Revenge"],
+    "-5": ["Counter", "Mirror Coat"],
+    "-6": ["Roar", "Whirlwind"],
+    "-7": ["Trick Room", "fleeing"]
+  };
+
+  for (const priority in priorityTable) {
+    if (priorityTable[priority].includes(moveName)) {
+      return parseInt(priority, 10);
+    }
+  }
+  return 0; // Default priority for all other moves
+}
+
+function determineMoveOrder(targetMove, attackerMove, targetSpeed, attackerSpeed) {
+  // Get priorities
+  const targetPriority = getMovePriority(targetMove);
+  const attackerPriority = getMovePriority(attackerMove);
+
+  // Compare priorities
+  if (attackerPriority > targetPriority) {
+    return [attackerMove, targetMove];
+  } else if (attackerPriority < targetPriority) {
+    return [targetMove, attackerMove];
+  } else {
+    // If priorities are the same, compare speeds
+    if (attackerSpeed > targetSpeed) {
+      return [attackerMove, targetMove];
+    } else if (attackerSpeed < targetSpeed) {
+      return [targetMove, attackerMove];
+    } else {
+      // If both speeds are the same, it could be random or attacker first
+      return [attackerMove, targetMove]; // or you can randomize
+    }
+  }
+}

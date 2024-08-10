@@ -1,14 +1,18 @@
 const router = require('express').Router();
 const { userAuth, adminAuth } = require('../utils/auth');
 
-const { getRandomPokemon, getPokemonByRarity } = require('../controllers/battleController');
+const { getRandomPokemon, getPokemonByRarity, getWildPokemonById } = require('../controllers/battleController');
 
 router
     .route('/wild')
     .get(userAuth, getRandomPokemon);
 
 router
-    .route('/test/:rarity')
+    .route('/grass/:rarity')
     .get(userAuth, getPokemonByRarity);
+
+router
+    .route('/encounter/:pid')
+    .get(userAuth, getWildPokemonById);
 
 module.exports = router;

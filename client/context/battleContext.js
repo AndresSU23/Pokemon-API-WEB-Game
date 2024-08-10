@@ -17,13 +17,15 @@ export const BattleProvider = ({ children }) => {
 
     const [ menu, setMenu ] = useState(null);
     const [ screen, setScreen ] = useState("map")
+    const [ position, setPosition ] = useState({ x: 112, y: 240 })
     const [ opponent, setOpponent ] = useState(null);
     const [ encounters, setEncounters ] = useState(null);
+    const [tileSize, setTileSize] = useState(16);
 
     class Odds {
-        constructor (rarity, pokemonObj = null, probability = null) {
+        constructor (rarity, pokemonId = null, probability = null) {
             this.rarity = rarity;
-            this.pokemonObj = pokemonObj;
+            this.pokemonId = pokemonId;
             if (probability) this.probability = probability;
             else {
                 switch (rarity) {
@@ -42,22 +44,24 @@ export const BattleProvider = ({ children }) => {
                 }
             }
         }
-        setPokemonObj(pokemonObj) {this.pokemonObj = pokemonObj}
+        setPokemonObj(pokemonId) {this.pokemonId = pokemonId}
     }
     class BattleEvent {
         constructor (odds) {
             this.odds = odds
         }
-        triggerEvent() {
+        async triggerEvent() {
             const random = Math.floor(Math.random() * 100);
             let floor = 0;
 
             for (let i in this.odds) {
                 if (floor >= random && random <= (floor + this.odds[i].probability)) {
+
+                    let wildPokemon = await getWildPokemonById(this.odds[i].pokemonId)
                     console.log(`Battle Event triggered`);
                     setScreen("battle");
-                    setOpponent(this.odds[i].pokemonObj);
-                    return this.odds[i].pokemonObj;
+                    setOpponent(wildPokemon);
+                    return this.odds[i].pokemonId;
                 }
                 floor += this.odds[i].probability;
             }
@@ -91,7 +95,23 @@ export const BattleProvider = ({ children }) => {
         const token = localStorage.getItem('token');
 
         try {
-            const response = await axios.get(`http://localhost:3001/api/battle/test/${rarity}`, {
+            const response = await axios.get(`http://localhost:3001/api/battle/grass/${rarity}`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            return response.data;
+        } catch (error) {
+            console.error('Token invalid or other error occurred:', error);
+            logout();
+        }
+    }, []);
+
+    const getWildPokemonById = useCallback(async (pid) => {
+        console.log(pid);
+        
+        const token = localStorage.getItem('token');
+
+        try {
+            const response = await axios.get(`http://localhost:3001/api/battle/encounter/${pid}`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             return response.data;
@@ -126,7 +146,11 @@ export const BattleProvider = ({ children }) => {
         setMenu,
         setScreen,
         opponent,
-        encounters
+        encounters,
+        position,
+        setPosition,
+        tileSize,
+        setTileSize
 
     }
 
