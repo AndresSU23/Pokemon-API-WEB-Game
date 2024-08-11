@@ -2,6 +2,34 @@ const { Schema, model } = require('mongoose');
 const bcrypt = require('bcrypt');
 const SALT_FACTOR = 10;
 
+function initializePokedex() {
+    return {
+        pokedex: Array.from({ length: 493 }, (_, i) => ({
+            pid: i + 1,
+            caught: false,
+            seen: false
+        }))
+    };
+}
+
+const PokedexSchema = new Schema(
+    {
+        pokedex: [
+            {
+                pid: { type: Number, required: true },
+                caught: { type: Boolean, default: false },
+                seen: { type: Boolean, default: false }
+            }
+        ]
+    },
+    {
+        toJSON: {
+            virtuals: true,
+            getters: true
+        }
+    }
+);
+
 const TrainerPokemonSchema = new Schema(
     {
         pokemonId : { type : Number },
@@ -37,7 +65,13 @@ const UserSchema = new Schema(
             default : false
         },
 
-        pokemon : [ TrainerPokemonSchema ]
+        pokemon : [ TrainerPokemonSchema ],
+
+        pokedex: {
+            type: PokedexSchema,
+            default: initializePokedex() // Initialize the pokedex on schema creation
+        },
+
 
     },
 
