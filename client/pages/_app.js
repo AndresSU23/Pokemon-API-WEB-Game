@@ -1,3 +1,4 @@
+import { MenuProvider } from '@/context/menuContext';
 import '../styles/reset.css';
 import '../styles/styles.css';
 import '../styles/test.css';
@@ -9,7 +10,9 @@ export default function App({ Component, pageProps }) {
   return (
     <AuthProvider>
       <BattleProvider>
-        <Component {...pageProps} />
+        <MenuProvider>
+          <Component {...pageProps} />
+        </MenuProvider>
       </BattleProvider>
     </AuthProvider>
   );

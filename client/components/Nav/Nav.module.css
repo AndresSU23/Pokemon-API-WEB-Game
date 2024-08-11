@@ -39,6 +39,7 @@
 }
 
 .display_spacer {
+    display: none;
     width: 375px;
     position: absolute;
     top: 62px;

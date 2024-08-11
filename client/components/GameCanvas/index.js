@@ -5,6 +5,9 @@ import { useBattle } from '@/context/battleContext';
 import styles from "./GameCanvas.module.css";
 import axios from 'axios';
 import MapMenu from '../Menus/MapMenu';
+import { useMenu } from '@/context/menuContext';
+import Pokemon from '../Menus/Pokedex/Pokemon';
+import PokemonMenu from '../Menus/PokemonMenu';
 
 // Player Component
 const Player = ({ position, setPosition, layout, grasses, tileSize, encounters, screen, setMenu }) => {
@@ -148,7 +151,9 @@ const GameCanvas = ({ mapName = "map1_TheIsland" }) => {
     const [mapWidth, setMapWidth] = useState(0);
     const [mapHeight, setMapHeight] = useState(0);
     const { encounters, screen, position, setPosition, tileSize, setTileSize } = useBattle();
+
     const [ menuVisible, setMenuVisible ] = useState(false);
+    const { mapMenu, setMapMenu } = useMenu();
 
     useEffect(() => {
         const fetchMapData = async () => {
@@ -210,7 +215,9 @@ const GameCanvas = ({ mapName = "map1_TheIsland" }) => {
                 )}
             </Stage>
 
-            { menuVisible && <MapMenu /> }
+            { menuVisible && <MapMenu onClick={(input) => setMapMenu(input)} /> }
+            { (menuVisible && mapMenu === "pokedex") && <Pokemon id={1} /> }
+            { (menuVisible && mapMenu === "pokemon") && <PokemonMenu /> }
 
         </div>
     );

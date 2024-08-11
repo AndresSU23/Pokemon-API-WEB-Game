@@ -1,10 +1,13 @@
 .pokedex_spacer {
+    position: absolute;
     width: 600px;
-    height: 420px;
+    height: 440px;
     background: #fff;
     border: 2px solid #fff;
-    outline: 3px solid #aaa;
+    outline: 2px solid #343434;
     border-radius: 5px;
+    top: 30px;
+    left: 30px;
 }
 
 .pokedex_spacer .top_spacer {

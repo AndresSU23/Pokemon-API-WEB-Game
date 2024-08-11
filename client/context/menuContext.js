@@ -5,7 +5,18 @@ import { useAuth } from "./authContext";
 
 const MenuContext = createContext();
 
+export const useMenu = () => useContext(MenuContext);
+
 export const MenuProvider = ({ children }) => {
+
+    const [ mapMenu, setMapMenu ] = useState(null);
+
+    const context = {
+
+        mapMenu,
+        setMapMenu
+
+    }
 
     return (
         <MenuContext.Provider value={context}>

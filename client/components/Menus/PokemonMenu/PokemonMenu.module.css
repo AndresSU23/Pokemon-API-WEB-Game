@@ -1,19 +1,21 @@
 .pokemon_menu_spacer {
-    position: relative;
+    position: absolute;
     width: 700px;
-    height: 500px;
+    height: 440px;
     background: #f4f4f4;
     border: 2px solid #232323;
     box-sizing: border-box;
-    margin: 0 20px;
+    margin: 0 30px;
     border-radius: 5px;
     justify-content: center;
+    z-index: 99;
+    top: 30px;
 }
 
 .pokemon_menu {
     position: relative;
     width: calc(100% - 20px);
-    height: 350px;
+    height: 280px;
     margin-top: 10px;
     justify-content: center;
 }
@@ -21,7 +23,7 @@
 .pokemon_item {
     position: relative;
     width: calc(50% - 10px);
-    height: 100px;
+    height: 80px;
     background: black;
     border-radius: 3px;
     background: linear-gradient(rgb(61, 181, 173) 50%, rgb(29, 117, 126) 60%);
@@ -40,8 +42,8 @@
 }
 
 .pokemon_icon img {
-    width: 100px;
-    height: 100px;
+    width: 80px;
+    height: 80px;
 }
 
 .pokemon_info_spacer {
