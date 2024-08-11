@@ -119,3 +119,84 @@
     font-size: 18px;
     line-height: 24px;
 }
+
+.pokedex_options_spacer {
+    background: #eee;
+    border-radius: 5px;
+    border: 2px solid #444;
+    width: calc(100% - 30px);
+    height: 50px;
+    margin: 10px 15px;
+    align-items: center;
+}
+
+.pokedex_search {
+    margin-left: 20px;
+    height: 30px;
+}
+
+.pokedex_sort {
+    margin-right: 20px;
+    height: 30px;
+}
+
+.pokedex_search span, .pokedex_sort span {
+    margin-right: 5px;
+    background: linear-gradient(#444, #333);
+    padding: 5px;
+    color: #fff;
+    border-radius: 3px;
+    border: 2px solid #444;
+}
+
+.pokedex_search input {
+    border-radius: 3px;
+    outline: none;
+    border: 2px solid #444;
+    padding: 2px 5px;
+}
+
+.pokedex_sort .select {
+    background: white;
+    width: 140px;
+    height: 30px;
+    border: 2px solid #444;
+    box-sizing: border-box;
+    border-radius: 3px;
+}
+
+.pokedex_list {
+    position: relative;
+    width: 60%;
+    margin: 0 15px;
+}
+
+.pokedex_item {
+    position: relative;
+    height: 30px;
+    align-items: center;
+    background: #eee;
+    margin-bottom: 6px;
+    padding: 0 10px;
+    border-radius: 3px;
+    box-sizing: border-box;
+    border: 2px solid #444;
+    font-family: "pokemon";
+    letter-spacing: 1px;
+}
+
+.pokedex_scroller {
+    position: relative;
+    width: 20px;
+    height: 100%;
+}
+
+.pokedex_scroller span {
+    position: absolute;
+    width: 100%;
+    height: 20px;
+    font-size: 20px;
+}
+
+.pokedex_scroller span:first-child { top: 0; }
+.pokedex_scroller span:last-child { bottom: 5px; }

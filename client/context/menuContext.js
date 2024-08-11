@@ -10,11 +10,14 @@ export const useMenu = () => useContext(MenuContext);
 export const MenuProvider = ({ children }) => {
 
     const [ mapMenu, setMapMenu ] = useState(null);
+    const [ pokemonId, setPokemonId ] = useState(null);
 
     const context = {
 
         mapMenu,
-        setMapMenu
+        setMapMenu,
+        pokemonId,
+        setPokemonId
 
     }
 

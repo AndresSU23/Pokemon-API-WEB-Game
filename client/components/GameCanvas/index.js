@@ -8,9 +8,10 @@ import MapMenu from '../Menus/MapMenu';
 import { useMenu } from '@/context/menuContext';
 import Pokemon from '../Menus/Pokedex/Pokemon';
 import PokemonMenu from '../Menus/PokemonMenu';
+import Pokedex from '../Menus/Pokedex';
 
 // Player Component
-const Player = ({ position, setPosition, layout, grasses, tileSize, encounters, screen, setMenu }) => {
+const Player = ({ position, setPosition, layout, grasses, tileSize, encounters, screen, setMenu, setPokemonId }) => {
     const app = useApp();
     
     
@@ -85,6 +86,7 @@ const Player = ({ position, setPosition, layout, grasses, tileSize, encounters, 
                     break;
                 case 'Escape':
                     setMenu(prev => setMenu(!prev));
+                    setPokemonId(null);
                 default:
                     break;
             }}
@@ -153,7 +155,7 @@ const GameCanvas = ({ mapName = "map1_TheIsland" }) => {
     const { encounters, screen, position, setPosition, tileSize, setTileSize } = useBattle();
 
     const [ menuVisible, setMenuVisible ] = useState(false);
-    const { mapMenu, setMapMenu } = useMenu();
+    const { mapMenu, setMapMenu, pokemonId, setPokemonId } = useMenu();
 
     useEffect(() => {
         const fetchMapData = async () => {
@@ -210,13 +212,14 @@ const GameCanvas = ({ mapName = "map1_TheIsland" }) => {
                 {layout.length > 0 && encounters &&(
                     <>
                         <Map layers={layers} tileSize={tileSize} mapWidth={mapWidth} mapHeight={mapHeight} mapName={mapName} />
-                        <Player position={position} setPosition={setPosition} setMenu={setMenuVisible} layout={layout} grasses={grasses} tileSize={tileSize} encounters={encounters} screen={screen}/>
+                        <Player position={position} setPosition={setPosition} setMenu={setMenuVisible} setPokemonId={setPokemonId} layout={layout} grasses={grasses} tileSize={tileSize} encounters={encounters} screen={screen}/>
                     </>
                 )}
             </Stage>
 
             { menuVisible && <MapMenu onClick={(input) => setMapMenu(input)} /> }
-            { (menuVisible && mapMenu === "pokedex") && <Pokemon id={1} /> }
+            { (menuVisible && mapMenu === "pokedex" && !pokemonId) && <Pokedex /> }
+            { (menuVisible && mapMenu === "pokedex" && pokemonId) && <Pokemon id={pokemonId}/> }
             { (menuVisible && mapMenu === "pokemon") && <PokemonMenu /> }
 
         </div>
