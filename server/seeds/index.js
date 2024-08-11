@@ -123,7 +123,7 @@ const seedPokemon = async () => {
                 const learnSet = await Promise.all(
                     response.moves.map(async (m) => {
                         const move = await Move.findOne({ name: m.move.name });
-                        if (move) return move._id;
+                        if (move) return {moveId: move._id, level: m.version_group_details[0].level_learned_at};
                     })
                 );
 

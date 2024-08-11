@@ -20,7 +20,7 @@ export const BattleProvider = ({ children }) => {
     const [ position, setPosition ] = useState({ x: 112, y: 240 })
     const [ opponent, setOpponent ] = useState(null);
     const [ encounters, setEncounters ] = useState(null);
-    const [tileSize, setTileSize] = useState(16);
+    const [ tileSize, setTileSize ] = useState(16);
 
     class Odds {
         constructor (rarity, pokemonId = null, probability = null) {

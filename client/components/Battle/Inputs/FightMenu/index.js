@@ -1,4 +1,5 @@
 import { useBattle } from "@/context/battleContext";
+import { useAuth } from '@/context/authContext';
 import { useRef, useState } from "react";
 import styles from "./FightMenu.module.css";
 
@@ -7,6 +8,8 @@ const FightMenu = () => {
     const menuRef = useRef();
     const { menu, setMenu } = useBattle();
     const [ selected, setSelected ] = useState(1);
+    const { userPokemon } = useAuth();
+    const [ userMoves, setUserMoves ] = useState([])
 
     const handleKeyDown = () => {
 
@@ -19,7 +22,8 @@ const FightMenu = () => {
             <div className={"flex col " + styles.fight_menu_spacer}>
 
                 <div className={"flex row wrap " + styles.move_inputs_spacer}>
-
+                    
+                {userMoves.map((move) => (
                     <div className={"flex center " + styles.move_input_button}>
                         <div className={"flex center col " + styles.move_input_text_spacer}>
                             <h3>Pound</h3>
@@ -29,6 +33,7 @@ const FightMenu = () => {
                             </span>
                         </div>
                     </div>
+                ))}
 
                     <div className={"flex center " + styles.move_input_button + " " + styles.dragon}>
                         <div className={"flex center col " + styles.move_input_text_spacer}>

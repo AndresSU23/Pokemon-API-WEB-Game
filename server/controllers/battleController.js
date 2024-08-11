@@ -1,4 +1,4 @@
-const { Pokemon, WildPokemon } = require('../models');
+const { Pokemon, WildPokemon, Move } = require('../models');
 
 const battleController = {
 
@@ -45,6 +45,26 @@ const battleController = {
                 return res.status(404).json({ message: "Pokémon not found" });
             }
             const new_pokemon = await WildPokemon.create({ pokemonId: pokemonData.pid, level: 5 });
+
+            const eligibleMoves = pokemonData.learnSet
+            .filter(move => move.level <= new_pokemon.level)
+            .sort((a, b) => b.level - a.level);
+
+            const shuffledMoves = eligibleMoves
+                .sort(() => 0.5 - Math.random())
+                .slice(0, 4);
+
+                const moveSet = await Promise.all(shuffledMoves.map(async (move) => {
+                    const moveData = await Move.findById(move.moveId);
+
+                    return {
+                        moveId: moveData._id,
+                        pp: moveData.pp,
+                        ppMax: moveData.pp
+                    };
+                }));
+
+                new_pokemon.moveSet = moveSet;
 
             const pokemon = {
                 ...new_pokemon.toObject(),

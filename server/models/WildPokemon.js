@@ -1,5 +1,5 @@
 const { Schema, model } = require('mongoose');
-
+const { Pokemon } = require('./Pokemon');
 const WildPokemonSchema = new Schema(
     {
         pokemonId : { type: Number },
@@ -13,7 +13,8 @@ const WildPokemonSchema = new Schema(
             sp_attack: { type: Number },
             sp_defense: { type: Number },
             speed: { type: Number }
-        }
+        },
+        moveSet:  [ {moveId: { type : Schema.Types.ObjectId, ref: "Move" }, pp: Number, ppMax: Number} ]
     },
 
     {
@@ -47,6 +48,7 @@ WildPokemonSchema.pre('save', function(next) {
     next();
     
 });
+
 
 const WildPokemon = model('WildPokemon', WildPokemonSchema);
 
