@@ -19,6 +19,7 @@ const PokemonSchema = new Schema(
         types : [],
         baseStats : { type: Object },
         learnSet: [ { type : Schema.Types.ObjectId, ref: "Move" } ],
+        description : { type: String }
 
     },
 

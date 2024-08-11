@@ -1,0 +1,118 @@
+.pokedex_spacer {
+    width: 600px;
+    height: 420px;
+    background: #fff;
+    border: 2px solid #fff;
+    outline: 3px solid #aaa;
+    border-radius: 5px;
+}
+
+.pokedex_spacer .top_spacer {
+    position: relative;
+    width: 100%;
+    height: 55%;
+}
+
+.top_spacer img {
+    width: 200px;
+}
+
+.pokedex_name {
+    position: relative;
+    width: 360px;
+    height: 56px;
+    background: #fff;
+    margin: 10px 15px;
+    border-radius: 5px;
+    border: 2px solid #444;
+}
+
+.pokedex_name h2 {
+    position: relative;
+    background: rgb(196, 33, 33);
+    height: 50%;
+    box-sizing: border-box;
+    border-bottom: 4px solid rgb(205, 134, 134);
+    font-family: "pokemon";
+    padding: 3px 20px;
+    color: var(--color_white);
+    -webkit-text-stroke: 2px var(--color_black);
+    paint-order: stroke fill;
+    letter-spacing: 1px;
+}
+
+.pokedex_name h2 span {
+    margin-left: 40px;
+}
+
+.pokedex_stats {
+    position: relative;
+    margin: 0 15px;
+    width: 360px;
+    height: fit-content;
+}
+
+.pokedex_types span {
+    width: 80px;
+    height: 30px;
+    border: 2px solid #444;
+    border-radius: 5px;
+    font-family: "pokemon";
+    text-transform: uppercase;
+}
+
+.pokedex_types span:nth-child(2) {
+    margin-left: 10px;
+}
+
+.pokedex_sizes {
+    width: 360px;
+    height: 80px;
+    background: #eee;
+    border: 2px solid #444;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+.pokedex_sizes h2 {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin: 0 20px;
+    font-family: "pokemon";
+    font-size: 18px;
+    height: 50%;
+}
+
+.pokedex_sizes h2:first-child {
+    border-bottom: 3px dotted #444;
+}
+
+.pokedex_sizes h2 span {
+    margin-left: 20px;
+}
+
+.pokedex_desc {
+    position: relative;
+    width: calc(100% - 30px);
+    height: 120px;
+    margin: 15px;
+    background: linear-gradient(#444 92%, #333 8%);
+    box-sizing: border-box;
+    border: 2px solid #fff;
+    outline: 2px solid #444;
+    border-radius: 5px;
+}
+
+.pokedex_desc p {
+    position: relative;
+    width: calc(100% - 70px);
+    background: #fff;
+    height: calc(100% - 50px);
+    border-radius: 5px;
+    margin-left: 20px;
+    padding: 15px;
+    font-family: "pokemon";
+    font-size: 18px;
+    line-height: 24px;
+}

@@ -115,6 +115,11 @@ const seedPokemon = async () => {
                     back_shiny: response.sprites.versions['generation-iv']['heartgold-soulsilver'].back_shiny
                 };
 
+                const desc_response = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${id}`);
+                const desc_data = await desc_response.json();
+
+                obj.description = desc_data.flavor_text_entries[0].flavor_text;
+
                 const learnSet = await Promise.all(
                     response.moves.map(async (m) => {
                         const move = await Move.findOne({ name: m.move.name });
