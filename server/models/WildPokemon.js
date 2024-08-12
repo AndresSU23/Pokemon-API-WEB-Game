@@ -48,7 +48,8 @@ WildPokemonSchema.pre('save', async function(next) {
         const eligibleMoves = pokemonData.learnSet
             .filter(move => move.level <= this.level)
             .sort((a, b) => b.level - a.level);
-        console.log(eligibleMoves);
+            
+        // console.log(eligibleMoves);
         
         const shuffledMoves = eligibleMoves
             .sort(() => 0.5 - Math.random())

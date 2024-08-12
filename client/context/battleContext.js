@@ -102,6 +102,7 @@ export const BattleProvider = ({ children }) => {
         }
         setEncounters(tempEncounters)
         setScreen("map");
+
     }, []);
 
     const getRandomWildPokemonByRarity = useCallback(async (rarity) => {
@@ -162,17 +163,19 @@ export const BattleProvider = ({ children }) => {
         
         (user) && setRandomEncounterPerGrass();
 
-    }, [user])
+    }, [ user ])
 
     useEffect(() => {
 
-        userPokemon && userPokemon[0] && userPokemon[0].moveSet && setMoveSet(userPokemon[0].moveSet, setUserMoves);
-    }, [userPokemon[0]]);
+        (userPokemon && userPokemon[0] && userPokemon[0].moveSet) && setMoveSet(userPokemon[0].moveSet, setUserMoves);
+    
+    }, [ userPokemon ]);
 
     useEffect(() => {
-        opponent && opponent.moveSet && setMoveSet(opponent.moveSet, setOpponentMoves);
+
+        (opponent && opponent.moveSet) && setMoveSet(opponent.moveSet, setOpponentMoves);
         
-    }, [opponent]);
+    }, [ opponent ]);
 
     const context = {
 

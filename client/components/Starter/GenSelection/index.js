@@ -9,7 +9,7 @@ const GenSelection = ({ setGen }) => {
                 <p>Select your Generation!</p>
             </div>
 
-            <div className="select_gen flex row wrap">
+            <div className={styles.select_gen + " flex row wrap"}>
 
                 <button onClick={() => setGen(1)}>Gen 1</button>
                 <button onClick={() => setGen(2)}>Gen 2</button>

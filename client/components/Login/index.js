@@ -22,6 +22,10 @@ const Login = () => {
 
             <form className={"flex col " + styles.form_spacer} onSubmit={handleSubmit}>
 
+            <div className={styles.login_header + " flex center"}>
+                <h2>Login Menu</h2>    
+            </div>
+
                 <input type="text" placeholder="Username" onChange={(e) => setUsername(e.target.value)} />
                 <input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
 

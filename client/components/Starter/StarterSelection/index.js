@@ -86,6 +86,10 @@ const StarterSelection = ({ pokemon }) => {
             }
                     
             </div>
+            
+            <div className={styles.back_button_spacer}>
+                <button onClick={() => setLoginMenu("gen")}>Back</button>
+            </div>
         
         </>
     )

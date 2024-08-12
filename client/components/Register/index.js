@@ -30,22 +30,28 @@ const Register = () => {
     const handleConfirmChange = (value) => setConfirm(value);
 
     return (
-        <>
+        <section className="flex center">
         
             { !user &&
 
                 <div className={styles.register_spacer}>
-                    <form className={"flex col"}>
+                    <form className={"flex col " + styles.form_spacer}>
+
+                        <div className={styles.login_header + " flex center"}>
+                            <h2>Register Menu</h2>    
+                        </div>
+
                         <input type="text" placeholder="Enter username..." onChange={(e) => handleUsernameChange(e.target.value)} />
                         <input type="password" placeholder="Enter password..." onChange={(e) => handlePasswordChange(e.target.value)} />
                         <input type="password" placeholder="Confirm password..." onChange={(e) => handleConfirmChange(e.target.value)} />
                         <button type="submit" onClick={(e) => registerSubmit(e)}>Register</button>
+
                     </form>
                 </div>
 
             }
 
-        </>
+        </section>
     )
     
 }
