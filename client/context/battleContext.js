@@ -13,7 +13,7 @@ export const useBattle = () => useContext(BattleContext);
 
 export const BattleProvider = ({ children }) => {
 
-    const { user, logout } = useAuth();
+    const { user, logout, userPokemon } = useAuth();
 
     const [ menu, setMenu ] = useState(null);
     const [ screen, setScreen ] = useState("map")
@@ -21,6 +21,8 @@ export const BattleProvider = ({ children }) => {
     const [ opponent, setOpponent ] = useState(null);
     const [ encounters, setEncounters ] = useState(null);
     const [ tileSize, setTileSize ] = useState(16);
+    const [ userMoves, setUserMoves ] = useState([])
+    const [ opponentMoves, setOpponentMoves ] = useState([])
 
     class Odds {
         constructor (rarity, pokemonId = null, probability = null) {
@@ -68,6 +70,15 @@ export const BattleProvider = ({ children }) => {
         }
     }
 
+    async function setMoveSet(moveSet, setMoves) {
+        let moves = []
+        for (let i = 0; i < moveSet.length; i++) {
+            const moveInfo = opponent.moveSet[i];
+            moves[i] = await getMoveById(moveInfo.moveId);;
+        }
+        setMoves(moves)
+    }
+
     const get = useCallback(async (url) => {
 
         const { data, error } = (user) ? useSWR(`http://localhost:3001/api/${url}`, fetcher) : { data: null, error: "No token presented..." };
@@ -106,8 +117,6 @@ export const BattleProvider = ({ children }) => {
     }, []);
 
     const getWildPokemonById = useCallback(async (pid) => {
-        console.log(pid);
-        
         const token = localStorage.getItem('token');
 
         try {
@@ -132,12 +141,36 @@ export const BattleProvider = ({ children }) => {
 
     }, []);
 
+    const getMoveById = useCallback(async (moveId) => {
+        const token = localStorage.getItem('token');
+
+        try {
+            const response = await axios.get(`http://localhost:3001/api/battle/move/${moveId}`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            return response.data;
+        } catch (error) {
+            console.error('Token invalid or other error occurred:', error);
+            logout();
+        }
+    })
+
     useEffect(() => {
         console.log(`Current User: ${user}`);
         
         (user) && setRandomEncounterPerGrass();
 
     }, [user])
+
+    useEffect(() => {
+        userPokemon && userPokemon[0] && userPokemon[0].moveSet && setMoveSet(userPokemon[0].moveSet, setUserMoves);
+        console.log(userPokemon);
+        console.log(userMoves);
+    }, [userPokemon[0]]);
+
+    useEffect(() => {
+        opponent && opponent.moveSet && setMoveSet(opponent.moveSet, setOpponentMoves);
+    }, [opponent]);
 
     const context = {
 
@@ -150,7 +183,9 @@ export const BattleProvider = ({ children }) => {
         position,
         setPosition,
         tileSize,
-        setTileSize
+        setTileSize,
+        opponentMoves,
+        userMoves
 
     }
 

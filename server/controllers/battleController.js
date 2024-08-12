@@ -76,6 +76,23 @@ const battleController = {
             console.error("Error retrieving wild Pokémon:", error);
             res.status(500).json({ message: "Internal server error" });
         }
+    },
+
+    async getMoveById(req, res) {
+        try {
+            const { moveId } = req.params;
+
+            const move = await Move.findById(moveId);
+
+            if (!move) {
+                return res.status(404).json({ message: "Move not found" });
+            }
+
+            res.json(move);
+        } catch (error) {
+            console.error("Error retrieving move:", error);
+            res.status(500).json({ message: "Internal server error" });
+        }
     }
 }
 

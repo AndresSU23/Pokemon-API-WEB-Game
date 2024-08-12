@@ -58,7 +58,8 @@ const userController = {
                     ...user_p.toObject(),
                     level: p.level,
                     shiny : p.shiny,
-                    ivs : p.ivs
+                    ivs : p.ivs,
+                    moveSet: p.moveSet,
                 }
             
             });
