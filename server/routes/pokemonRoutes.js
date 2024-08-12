@@ -1,12 +1,15 @@
 const router = require('express').Router();
 const { userAuth, adminAuth } = require('../utils/auth');
 
-const { getPokedex, getPokemonById } = require('../controllers/pokemonController');
-const { route } = require('./battleRoutes');
+const { getPokedex, getPokemonById, getStarters } = require('../controllers/pokemonController');
 
 router
     .route('/')
     .get(getPokedex);
+
+router
+    .route('/starters')
+    .get(getStarters);
 
 router
     .route('/:id')

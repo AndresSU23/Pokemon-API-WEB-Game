@@ -1,7 +1,11 @@
 const router = require('express').Router();
 const { userAuth, adminAuth } = require('../utils/auth');
 
-const { loginUser, verifyUser, getUserPokemon, addPokemon } = require('../controllers/userController');
+const { loginUser, verifyUser, getUserPokemon, addPokemon, registerUser } = require('../controllers/userController');
+
+router
+    .route('/')
+    .post(registerUser)
 
 router
     .route('/login')

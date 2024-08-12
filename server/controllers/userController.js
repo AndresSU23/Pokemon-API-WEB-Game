@@ -79,17 +79,16 @@ const userController = {
         try {
 
             const user = await User.findOne({ username: req.user.username });
-            const new_pokemon = await WildPokemon.create({ pokemonId: req.body.pid, level: req.body.level });
 
-            user.pokemon = [ ...user.pokemon, new_pokemon ];
+            user.pokemon = [ ...user.pokemon, req.body.pokemon ];
             await user.save();
 
-            res.json(new_pokemon);
+            res.json(req.body);
 
         }
 
         catch (error) { res.json(error); }
-        
+
     }
 
 }

@@ -1,0 +1,39 @@
+.starter_spacer {
+    height: 500px;
+    width: 700px;
+    background: var(--color_black);
+    border-radius: 5px;
+    font-family: "pokemon";
+    border: 2px solid #fff;
+    outline: 2px solid #444;
+}
+
+.select_starter {
+    position: relative;
+    width: 100%;
+}
+
+.select_starter .choice {
+    width: calc(100% / 3);
+    height: 100px;
+}
+
+.select_starter .selected_pokemon_spacer {
+    position: absolute;
+    top: -40px;
+    width: calc(70% / 3);
+    height: 100px;
+}
+
+.choice:hover { cursor: pointer; }
+
+.selected_pokemon_spacer img {
+    opacity: 0;
+}
+
+.select_message {
+    color: var(--color_white);
+    height: 100px;
+    width: 100%;
+    font-family: "pokemon";
+}

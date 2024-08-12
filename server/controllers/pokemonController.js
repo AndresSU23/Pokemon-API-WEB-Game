@@ -1,4 +1,4 @@
-const { Pokemon } = require('../models');
+const { Pokemon, WildPokemon } = require('../models');
 
 const pokemonController = {
 
@@ -44,7 +44,44 @@ const pokemonController = {
             .then(data => res.json(data))
             .catch(err => res.json(err))
 
+    },
+
+    async getStarters(req, res) {
+
+        const starter_array = [1, 4, 7, 152, 155, 158, 252, 255, 258, 387, 390, 393];
+    
+        try {
+
+            const starters = await Promise.all(starter_array.map(async (id) => {
+
+                try {
+    
+                    const new_pokemon = await WildPokemon.create({ pokemonId: id, level: 5, rarity: "starter" });
+                    return new_pokemon;
+
+                } 
+                
+                catch (err) {
+                    console.log(`Error fetching data for pid ${id}:`, err);
+                    return null;
+                }
+
+            }));
+            
+            const filteredStarters = starters.filter(starter => starter !== null);
+            if (filteredStarters.length === 0) return res.status(404).json({ message: "No starters found" });
+    
+            res.json(filteredStarters);
+
+        } catch (err) {
+
+            console.log('Error in getStarters:', err);
+            res.status(500).json({ error: 'Internal Server Error' });
+
+        }
     }
+    
+    
 
 }
 

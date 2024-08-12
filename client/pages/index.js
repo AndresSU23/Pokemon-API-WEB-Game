@@ -5,20 +5,21 @@ import Nav from "@/components/Nav";
 
 import { useAuth } from '@/context/authContext';
 import { useBattle } from '@/context/battleContext';
-import { useEffect } from "react";
 import Footer from "@/components/Footer";
+import Register from "@/components/Register";
+import Starter from "@/components/Starter";
 
 
 export default function Home() {
 
-  const { user } = useAuth();
+  const { user, loginMenu } = useAuth();
   const { screen } = useBattle();
 
   return (
     <section className="flex center">
 
       <Nav />
-      { user && 
+      { (user && loginMenu !== "starter") &&
 
         <>
 
@@ -28,7 +29,9 @@ export default function Home() {
         </>
       }
 
-      { !user && <Login /> }
+      { (!user && loginMenu === "login") && <Login /> }
+      { (!user && loginMenu === "register") &&<Register /> }
+      { (user && loginMenu === "starter") &&<Starter /> }
       
       <Footer />
 

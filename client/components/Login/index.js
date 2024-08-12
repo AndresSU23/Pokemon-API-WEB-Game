@@ -4,7 +4,7 @@ import styles from "./Login.module.css";
 
 const Login = () => {
 
-    const { login } = useAuth();
+    const { login, setLoginMenu } = useAuth();
 
     const [ username, setUsername ] = useState('');
     const [ password, setPassword ] = useState('');
@@ -25,7 +25,12 @@ const Login = () => {
                 <input type="text" placeholder="Username" onChange={(e) => setUsername(e.target.value)} />
                 <input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
 
-                <button type="submit">Login</button>
+                <div className={"flex row"}>
+
+                    <button type="submit">Login</button>
+                    <button onClick={() =>  setLoginMenu("register")}>Register</button>
+
+                </div>
 
             </form>
 
