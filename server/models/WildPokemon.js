@@ -1,5 +1,6 @@
 const { Schema, model } = require('mongoose');
-const { Pokemon } = require('./Pokemon');
+const Pokemon = require('./Pokemon');
+const Move = require('./Move');
 const WildPokemonSchema = new Schema(
     {
         pokemonId : { type: Number },
@@ -29,7 +30,7 @@ const WildPokemonSchema = new Schema(
 WildPokemonSchema.statics.generateShiny = function() { return Math.random() < (1 / 2); };
 WildPokemonSchema.statics.generateIVs = function() { return Math.round(Math.random() * 31); };
 
-WildPokemonSchema.pre('save', function(next) {
+WildPokemonSchema.pre('save', async function(next) {
 
     if (this.isNew) {
 
@@ -42,6 +43,27 @@ WildPokemonSchema.pre('save', function(next) {
             sp_defense: this.constructor.generateIVs(),
             speed: this.constructor.generateIVs()
         };
+
+        const pokemonData = await Pokemon.findOne({ pid: this.pokemonId });
+        const eligibleMoves = pokemonData.learnSet
+            .filter(move => move.level <= this.level)
+            .sort((a, b) => b.level - a.level);
+        console.log(eligibleMoves);
+        
+        const shuffledMoves = eligibleMoves
+            .sort(() => 0.5 - Math.random())
+            .slice(0, 4);
+
+        const moveSet = await Promise.all(shuffledMoves.map(async (move) => {
+            const moveData = await Move.findById(move.moveId);
+            return {
+                moveId: moveData._id,
+                pp: moveData.pp,
+                ppMax: moveData.pp
+            };
+        }));
+        
+        this.moveSet = moveSet;
 
     }
 

@@ -76,6 +76,7 @@ export const BattleProvider = ({ children }) => {
             const moveInfo = opponent.moveSet[i];
             moves[i] = await getMoveById(moveInfo.moveId);;
         }
+
         setMoves(moves)
     }
 
@@ -163,13 +164,13 @@ export const BattleProvider = ({ children }) => {
     }, [user])
 
     useEffect(() => {
+
         userPokemon && userPokemon[0] && userPokemon[0].moveSet && setMoveSet(userPokemon[0].moveSet, setUserMoves);
-        console.log(userPokemon);
-        console.log(userMoves);
     }, [userPokemon[0]]);
 
     useEffect(() => {
         opponent && opponent.moveSet && setMoveSet(opponent.moveSet, setOpponentMoves);
+        
     }, [opponent]);
 
     const context = {
