@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import styles from "./Pokedex.module.css";
+import { useMenu } from "@/context/menuContext";
 
 const Pokemon = ({ id }) => {
 
     const [ pokemon, setPokemon ] = useState(null);
+    const { setPokemonId } = useMenu();
 
     useEffect(() => {
 
@@ -52,11 +54,13 @@ const Pokemon = ({ id }) => {
                             </div>
                         </div>
                     </div>
-                    <div className={styles.bottom_spacer + " flex col"}>
+                    <div className={styles.bottom_spacer + " flex col center"}>
                         <div className={styles.pokedex_desc + " flex center"}>
                             <p>{pokemon.description}</p>
                         </div>
+                        <button onClick={() => setPokemonId(null)}>Back</button>
                     </div>
+
                 </>
             }
         </div>

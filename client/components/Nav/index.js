@@ -4,8 +4,15 @@ import { useState } from "react";
 
 const Nav = () => {
 
-    const { user, logout } = useAuth();
+    const { user, logout, setLoginMenu } = useAuth();
     const [ display, setDisplay ] = useState(null);
+
+    const handleLogout = () => {
+
+        logout();
+        setLoginMenu("login");
+
+    }
 
     return (
         <div className={styles.nav_spacer + " flex between"}>
@@ -19,9 +26,11 @@ const Nav = () => {
                 <li className={"flex center"}>{ user ? user : "Login"}</li>
             </div>
 
-            <div className={styles.display_spacer + " flex center"}>
-                <button onClick={logout}>Logout</button>
-            </div>
+            { user && 
+                <div className={styles.display_spacer + " flex center"}>
+                    <button onClick={handleLogout}>Logout</button>
+                </div>
+            }
 
         </div>
     )

@@ -219,7 +219,7 @@ const GameCanvas = ({ mapName = "map1_TheIsland" }) => {
 
             { menuVisible && <MapMenu onClick={(input) => setMapMenu(input)} /> }
             { (menuVisible && mapMenu === "pokedex" && !pokemonId) && <Pokedex /> }
-            { (menuVisible && mapMenu === "pokedex" && pokemonId) && <Pokemon id={pokemonId}/> }
+            { (menuVisible && mapMenu === "pokedex" && pokemonId) && <Pokemon id={pokemonId} /> }
             { (menuVisible && mapMenu === "pokemon") && <PokemonMenu /> }
 
         </div>

@@ -55,7 +55,10 @@ const Pokedex = () => {
                     <div className={styles.pokedex_list_spacer + " flex row"}>
                         <div className={styles.pokedex_list + " flex col"}>
                             {   pokemonList.slice((page - 1) * ITEMS, page * ITEMS).map((data, index) =>
-                                    <div className={styles.pokedex_item + " flex"} onClick={() => { setPokemonId(data.pid); }}>{data.name.charAt(0).toUpperCase() + data.name.slice(1)}</div>
+                                    <div className={styles.pokedex_item + " flex"} onClick={() => { setPokemonId(data.pid); }}>
+                                        {data.name.charAt(0).toUpperCase() + data.name.slice(1)}
+                                        <img src={data.sprite.default} />
+                                    </div>
                                 )
                             }
                         </div>

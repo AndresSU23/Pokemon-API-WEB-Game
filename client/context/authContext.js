@@ -39,7 +39,12 @@ export const AuthProvider = ({ children }) => {
 
     };
 
-    const logout = useCallback(async () => { localStorage.removeItem('token'); setUser(null); }, []);
+    const logout = useCallback(async () => { 
+        
+        localStorage.removeItem('token'); 
+        setUser(null);
+
+    }, []);
 
     const register = async (username, password) => {
 

@@ -47,9 +47,18 @@ const PokemonMenu = (props) => {
 
             <div className={"flex wrap " + styles.pokemon_menu}>
 
-            {
-                userPokemon.map((p) => <PokemonItem pokemon={p} />)
-            }
+            { userPokemon.map((p) => <PokemonItem pokemon={p} />) }
+
+            { Array.from({ length: 6 - userPokemon.length }, () => 1).map(p => 
+
+                <div className={"flex row center " + styles.pokemon_item}>
+                    <div className={"flex col " + styles.pokemon_info_spacer}>
+                    </div>
+                    <div className={styles.pokeball_bg}><Icon icon="hugeicons:pokeball" /></div>
+                </div>
+
+            ) }
+
             </div>
 
             <div className={"flex row " + styles.pokemon_info_text}>
