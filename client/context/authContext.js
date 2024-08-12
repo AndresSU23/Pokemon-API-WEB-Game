@@ -108,7 +108,7 @@ export const AuthProvider = ({ children }) => {
 
     }, []);
 
-    useEffect(() => { getUserPokemon(); }, [ user ]);
+    useEffect(() => { getUserPokemon(); }, [ user, loginMenu, userPokemon ]);
 
     useEffect(() => {
 

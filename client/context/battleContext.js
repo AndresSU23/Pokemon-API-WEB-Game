@@ -71,9 +71,10 @@ export const BattleProvider = ({ children }) => {
     }
 
     async function setMoveSet(moveSet, setMoves) {
+
         let moves = []
         for (let i = 0; i < moveSet.length; i++) {
-            const moveInfo = opponent.moveSet[i];
+            const moveInfo = moveSet[i];
             moves[i] = await getMoveById(moveInfo.moveId);;
         }
 
