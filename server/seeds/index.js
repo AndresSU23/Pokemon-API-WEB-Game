@@ -228,7 +228,7 @@ const seedTestData = async () => {
 connect()
     .then(() => initialize())
     .then(() => seedUsers())
-    .then(() => seedMoves())
+    // .then(() => seedMoves())
     .then(() => seedPokemon())
     .then(() => seedTestData())
     .then(() => mongoose.connection.close())

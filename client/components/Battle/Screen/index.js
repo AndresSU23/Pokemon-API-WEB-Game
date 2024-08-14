@@ -38,24 +38,24 @@ const Screen = () => {
 
             { userPokemon.length > 0 && 
             
-            <div className="flex row trainer_spacer">
-                <div className="flex center trainer_img_spacer">
-                    <img ref={trainerRef} src={userPokemon[0].shiny ? userPokemon[0].sprite.back_shiny : userPokemon[0].sprite.back} alt="trainer pokemon" />
-                </div>
-                <div ref={trainerStatsRef} className="flex trainer_stats_overlay">
-                    <div className="flex col trainer_stats">
-                        <div className="flex row trainer_pokemon_line">
-                            <h3>{userPokemon[0].name}</h3>
-                            <h4>Lv<span>{userPokemon[0].level}</span></h4>
+                <div className="flex row trainer_spacer">
+                    <div className="flex center trainer_img_spacer">
+                        <img ref={trainerRef} src={userPokemon[0].shiny ? userPokemon[0].sprite.back_shiny : userPokemon[0].sprite.back} alt="trainer pokemon" />
+                    </div>
+                    <div ref={trainerStatsRef} className="flex trainer_stats_overlay">
+                        <div className="flex col trainer_stats">
+                            <div className="flex row trainer_pokemon_line">
+                                <h3>{userPokemon[0].name}</h3>
+                                <h4>Lv<span>{userPokemon[0].level}</span></h4>
+                            </div>
+                            <div className="flex row center trainer_hp_line">
+                                <h3>HP</h3>
+                                <span className="hp_bar"></span>
+                            </div>
+                            <div className="flex trainer_exp_bar"></div>
                         </div>
-                        <div className="flex row center trainer_hp_line">
-                            <h3>HP</h3>
-                            <span className="hp_bar"></span>
-                        </div>
-                        <div className="flex trainer_exp_bar"></div>
                     </div>
                 </div>
-            </div>
             
             }
 

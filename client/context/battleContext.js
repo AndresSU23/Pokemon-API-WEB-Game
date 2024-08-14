@@ -26,6 +26,7 @@ export const BattleProvider = ({ children }) => {
     const [ opponentMoves, setOpponentMoves ] =  useState([]);
     const [ userAction, setUserAction ] = useState(null);
     const [ opponentAction, setOpponentAction ] = useState(null);
+    const [ message, setMessage ] = useState(null);
 
     class Odds {
         constructor (rarity, pokemonId = null, probability = null) {
@@ -250,7 +251,11 @@ export const BattleProvider = ({ children }) => {
 
     useEffect(() => {
 
-        if (screen === "map") getUserPokemon();
+        if (screen === "map") { 
+            getUserPokemon();
+            setMessage(null);
+            setMenu(null);
+        }
 
     }, [ screen ])
 
@@ -265,6 +270,8 @@ export const BattleProvider = ({ children }) => {
         position,
         setPosition,
         tileSize,
+        message, 
+        setMessage,
         setTileSize,
         opponentMoves,
         userMoves,
