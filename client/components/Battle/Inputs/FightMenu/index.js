@@ -13,7 +13,7 @@ const formatMoveName = (name) => {
 const FightMenu = () => {
 
     const menuRef = useRef();
-    const { menu, setMenu, userMoves } = useBattle();
+    const { menu, setMenu, userMoves, setUserAction } = useBattle();
     const [ selected, setSelected ] = useState(1);
     const [ selectedPokemon, setSelectedPokemon ] = useState(null);
     const { userPokemon } = useAuth();
@@ -27,7 +27,11 @@ const FightMenu = () => {
 
         if (e.key === "Enter") {
 
-            if (selected >= 1 && selected <= 4) console.log(userMoves[selected - 1]);
+            if (selected >= 1 && selected <= 4){
+                console.log(userMoves[selected - 1]);
+                setMenu(null)
+                setUserAction(userMoves[selected - 1]);
+            }
             else if (selected === 5) setMenu(null)
 
         }
@@ -51,12 +55,12 @@ const FightMenu = () => {
         <div tabIndex={0} ref={menuRef} className="flex test_menu_div" onKeyDown={handleKeyDown}>
 
             <div className={"flex col " + styles.fight_menu_spacer}>
-
                 <div className={"flex row wrap " + styles.move_inputs_spacer}>
                 { userMoves.map((move, index) => (
-                    <div key={index} className={"flex center " + styles.move_input_button + ` ${(index === (selected - 1)) ? styles.selected : ""}`}>
+                    <div key={index} className={"flex center " + styles.move_input_button + ` ${(index === (selected - 1)) ? styles.selected : ""}`}
+                    >
                         <div className={"flex center col " + styles.move_input_text_spacer}>
-                            <h3>{formatMoveName(move.name)}</h3>    
+                            <h3>{formatMoveName(move.name)}</h3>
                             <span className="flex row">
                             <div className={"flex center " + styles.move_type + " " + styles[move.type]}>{move.type.toUpperCase()}</div>
                             <div className={"flex center " + styles.move_pp}>PP {userPokemon[0].moveSet[index].pp}/{userPokemon[0].moveSet[index].ppMax}</div>

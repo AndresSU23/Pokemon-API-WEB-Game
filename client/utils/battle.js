@@ -369,7 +369,6 @@ function calculateModifiers({
   targetStatus = "",
   targetAbility = "",
   targetPassive = [""],
-  targetAbility = "",
   moveUsed = "",
   targetItem = {name: "", type: "", multilplier: ""},
   attackerItem = {name: "", type: "", multilplier: ""},
@@ -497,7 +496,6 @@ function calculateModifiers({
     flashFire,
     critical,
     item,
-    meFirst,
     randomFactor,
     stab,
     type1,
@@ -513,7 +511,7 @@ function calculateModifiers({
  * Calculates the damage dealt by a Pokémon move based on various factors.
  *
  * @param {Object} params - An object containing all necessary parameters.
- * @param {Array} params.userTypes - Types of the attacking Pokémon.
+ * @param {Array} params.targetTypes - Types of the attacking Pokémon.
  * @param {Object} params.targetStats - Stats of the defending Pokémon.
  * @param {Object} params.targetStatus - Status effects on the defending Pokémon.
  * @param {String} params.targetAbility - Ability of the defending Pokémon.
@@ -533,7 +531,7 @@ function calculateModifiers({
  * @returns {Number} - The final calculated damage.
  */
 function calculateDamage({
-  userTypes,
+  targetTypes,
   targetStats,
   targetStatus,
   targetAbility,
@@ -548,17 +546,19 @@ function calculateDamage({
   moveType,
   movePower,
   moveCategory,
-  weather
+  weather,
+  isDoubleBattle,
+  numTargets
 }) {
 
   // Calculate type effectiveness for both of the user's types
   const moveTypeEffectiveness = {
-    type1: userTypes[0] ? damageMultiplier(userTypes[0], moveType) : 1,
-    type2: userTypes[1] ? damageMultiplier(userTypes[1], moveType) : 1
+    type1: targetTypes[0] ? damageMultiplier(targetTypes[0], moveType) : 1,
+    type2: targetTypes[1] ? damageMultiplier(targetTypes[1], moveType) : 1
   };
 
   // Check if the move has STAB (Same-Type Attack Bonus)
-  const isStab = userTypes[0] === moveType || userTypes[1] === moveType;
+  const isStab = targetTypes[0] === moveType || targetTypes[1] === moveType;
 
   // Determine if the move results in a critical hit (probability of 1/24)
   const isCriticalHit = (1 / 24) < Math.random();
@@ -597,10 +597,20 @@ function calculateDamage({
   }
   const baseDamage =
     (((2 * attackerLevel) / 5 + 2) * movePower * (attack / defense)) / 50;
+  let effectiveness = null;
+  if (modifiers.type1 * modifiers.type2 >= 2) {
+    effectiveness = "Super Effective"
+  }
+  else if (modifiers.type1 * modifiers.type2 == 0) {
+    effectiveness = "Immune"
+  }
+  else if (modifiers.type1 * modifiers.type2 < 1){
+    effectiveness = "Not Very Effective"
+  }
 
   // Step 3: Apply all the modifiers to the base damage
-  const finalDamage =
-    (baseDamage *
+  let finalDamage =
+    ((baseDamage *
     modifiers.burn *
     modifiers.screen *
     modifiers.targets *
@@ -608,7 +618,6 @@ function calculateDamage({
     modifiers.flashFire + 2) *
     modifiers.critical *
     modifiers.item *
-    modifiers.meFirst *
     modifiers.randomFactor *
     modifiers.stab *
     modifiers.type1 *
@@ -616,15 +625,15 @@ function calculateDamage({
     modifiers.srf *
     modifiers.expertBelt *
     modifiers.tintedLens *
-    modifiers.berry;
-
+    modifiers.berry)
+  
   // Return the final damage, rounded down to the nearest whole number
-  return Math.floor(finalDamage);
+  return [Math.floor(finalDamage), effectiveness];
 }
 
 function willHit(targetStats, attackerStats, moveAccuracy) {
   // Calculate the hit probability
-  const hitProbability = attackerStats.accuracy * moveAccuracy * (1 - targetStats.evasion);
+  const hitProbability = (attackerStats.accuracy ? attackerStats.accuracy : 100) * moveAccuracy * (100 - (targetStats.evasion ? targetStats.evasion : 15));
 
   // Generate a random number between 0 and 100
   const randomNumber = Math.random() * 100;
@@ -635,19 +644,19 @@ function willHit(targetStats, attackerStats, moveAccuracy) {
 
 function getMovePriority(moveName) {
   const priorityTable = {
-    "+5": ["Helping Hand"],
-    "+4": ["Magic Coat", "Snatch"],
-    "+3": ["Detect", "Endure", "Follow Me", "Protect"],
-    "+2": ["Feint"],
-    "+1": ["Aqua Jet", "Bide", "Bullet Punch", "ExtremeSpeed", "Fake Out", "Ice Shard", "Mach Punch",
-          "Quick Attack", "Shadow Sneak", "Sucker Punch", "Vacuum Wave"],
-    "0": ["All other moves"],
-    "-1": ["Vital Throw"],
-    "-3": ["Focus Punch"],
-    "-4": ["Avalanche", "Revenge"],
-    "-5": ["Counter", "Mirror Coat"],
-    "-6": ["Roar", "Whirlwind"],
-    "-7": ["Trick Room", "fleeing"]
+    "+5": ["helping-hand"],
+    "+4": ["magic-coat", "snatch"],
+    "+3": ["detect", "endure", "follow-me", "protect"],
+    "+2": ["feint"],
+    "+1": ["aqua-jet", "bide", "bullet-punch", "extreme-speed", "fake-out", "ice-shard", "mach-punch",
+          "quick-attack", "shadow-sneak", "sucker-sunch", "vacuum-wave"],
+    "0": [""],
+    "-1": ["vital-throw"],
+    "-3": ["focus-punch"],
+    "-4": ["avalanche", "revenge"],
+    "-5": ["counter", "mirror-coat"],
+    "-6": ["roar", "whirlwind"],
+    "-7": ["trick-room", "fleeing"]
   };
 
   for (const priority in priorityTable) {
@@ -680,3 +689,5 @@ function determineMoveOrder(targetMove, attackerMove, targetSpeed, attackerSpeed
     }
   }
 }
+
+export {determineMoveOrder, willHit, calculateDamage}

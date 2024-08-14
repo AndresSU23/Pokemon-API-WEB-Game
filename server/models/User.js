@@ -44,7 +44,8 @@ const TrainerPokemonSchema = new Schema(
             sp_defense: { type: Number },
             speed: { type: Number }
         },
-        moveSet: [ { moveId: { type : Schema.Types.ObjectId, ref: "Move" }, pp: Number, ppMax: Number } ]
+        moveSet: [ { moveId: { type : Schema.Types.ObjectId, ref: "Move" }, pp: Number, ppMax: Number } ],
+        types: []
     }
 );
 

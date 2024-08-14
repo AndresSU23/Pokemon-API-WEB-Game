@@ -3,6 +3,7 @@ import { fetcher } from "@/utils/fetch";
 import useSWR from "swr";
 import axios from "axios";
 import { useAuth } from "./authContext";
+import {determineMoveOrder, willHit, calculateDamage} from "@/utils/battle";
 
 const NO_EVENT_TYPE = 10;
 
@@ -21,8 +22,10 @@ export const BattleProvider = ({ children }) => {
     const [ opponent, setOpponent ] = useState(null);
     const [ encounters, setEncounters ] = useState(null);
     const [ tileSize, setTileSize ] = useState(16);
-    const [ userMoves, setUserMoves ] = useState([])
-    const [ opponentMoves, setOpponentMoves ] = useState([])
+    const [ userMoves, setUserMoves ] = useState([]);
+    const [ opponentMoves, setOpponentMoves ] =  useState([]);
+    const [ userAction, setUserAction ] = useState(null);
+    const [ opponentAction, setOpponentAction ] = useState(null);
 
     class Odds {
         constructor (rarity, pokemonId = null, probability = null) {
@@ -162,6 +165,7 @@ export const BattleProvider = ({ children }) => {
         console.log(`Current User: ${user}`);
         
         (user) && setRandomEncounterPerGrass();
+        (!user) && setScreen("map");
 
     }, [ user ])
 
@@ -178,6 +182,71 @@ export const BattleProvider = ({ children }) => {
         
     }, [ opponent ]);
 
+    useEffect(() => {
+        if(userAction && opponentAction)
+        {
+        const order = determineMoveOrder(userAction.name, opponentAction.name,
+                                            userPokemon[0].ivs.speed, opponent.ivs.speed);
+
+        for (let i = 0; i < order.length; i++) {
+            if (order[i] == userAction.name){
+                console.log(`${ userPokemon[0].name} used ${userAction.name}`);
+                
+                if (willHit(userPokemon[0].ivs, opponent.ivs, userAction.accuracy)){
+                    const result = calculateDamage({
+                        targetTypes: opponent.types,
+                        targetStats: opponent.ivs,
+                        moveUsed: opponentAction.name,
+                        attackerLevel: userPokemon[0].level,
+                        attackerStats: userPokemon[0].ivs,
+                        moveName: userAction.name,
+                        moveType: userAction.type.toLowerCase(),
+                        movePower: userAction.power,
+                        moveCategory: userAction.category,
+                    });
+                    //updateOpponentHP(dmg)
+                    console.log(`${ userPokemon[0].name} did ${result[0]} of damage`);
+                    
+                    result[1] ? console.log(`It was ${result[1]}`) : {};
+                }
+                else {
+                    console.log("Attacked Missed")
+                }
+            }
+            else {
+                console.log(`${opponent.name} used ${opponentAction.name}`);
+                if (willHit(opponent.ivs, userPokemon[0].ivs, opponentAction.accuracy)){
+                    const result = calculateDamage({
+                        targetTypes: userPokemon[0].types,
+                        targetStats: userPokemon[0].ivs,
+                        moveUsed: userAction.name,
+                        attackerLevel: opponent.level,
+                        attackerStats: opponent.ivs,
+                        moveName: opponentAction.name,
+                        moveType: opponentAction.type.toLowerCase(),
+                        movePower: opponentAction.power,
+                        moveCategory: opponentAction.category,
+                    });
+                    //updateUserHP(dmg)
+                    console.log(`${ opponent.name} did ${result[0]} of damage`);
+                    
+                    result[1] ? console.log(`It was ${result[1]}`) : {};
+                }
+                else {
+                    console.log("Attacked Missed")
+                }
+            }
+        }
+        setUserAction(null);
+        setOpponentAction(null);
+        setMenu("fight")
+    }
+    }, [userAction, opponentAction, userMoves, opponentMoves]);
+
+    useEffect(() => {
+        (userAction && setOpponentAction(opponentMoves[0]))
+    }, [userAction, opponentMoves]);
+
     const context = {
 
         menu,
@@ -191,7 +260,8 @@ export const BattleProvider = ({ children }) => {
         tileSize,
         setTileSize,
         opponentMoves,
-        userMoves
+        userMoves,
+        setUserAction
 
     }
 

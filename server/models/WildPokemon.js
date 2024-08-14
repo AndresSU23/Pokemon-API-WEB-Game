@@ -16,7 +16,8 @@ const WildPokemonSchema = new Schema(
             sp_defense: { type: Number },
             speed: { type: Number }
         },
-        moveSet:  [ {moveId: { type : Schema.Types.ObjectId, ref: "Move" }, pp: Number, ppMax: Number} ]
+        moveSet:  [ {moveId: { type : Schema.Types.ObjectId, ref: "Move" }, pp: Number, ppMax: Number} ],
+        types: []
     },
 
     {
@@ -46,6 +47,8 @@ WildPokemonSchema.pre('save', async function(next) {
         };
 
         const pokemonData = await Pokemon.findOne({ pid: this.pokemonId });
+
+        this.types = pokemonData.types
         const eligibleMoves = pokemonData.learnSet
             .filter(move => move.level <= this.level)
             .sort((a, b) => b.level - a.level);

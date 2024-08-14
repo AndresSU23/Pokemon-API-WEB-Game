@@ -60,6 +60,7 @@ const userController = {
                     shiny : p.shiny,
                     ivs : p.ivs,
                     moveSet: p.moveSet,
+                    types: p.types
                 }
             
             });
