@@ -135,7 +135,8 @@ export const AuthProvider = ({ children }) => {
 
     const context = {
         user,
-        userPokemon,    
+        userPokemon,
+        setUserPokemon,    
         loginMenu,
         userItems,
         getUserItems,

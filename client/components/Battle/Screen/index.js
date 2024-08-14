@@ -12,6 +12,9 @@ const Screen = () => {
     const { userPokemon } = useAuth();
     const { opponent } = useBattle();
 
+    const hpPercentage =  userPokemon[0].hp > 0 ? (userPokemon[0].hp / userPokemon[0].ivs.hp) * 100 : 0;
+    const hpOppPercentage = opponent.hp > 0 ? (opponent.hp / opponent.ivs.hp) * 100 : 0;
+
     useEffect(() => {
 
         console.log(opponent)   
@@ -32,6 +35,11 @@ const Screen = () => {
                             <h3>{opponent.name}</h3>
                             <h4>Lv<span>{opponent.level}</span></h4>
                         </div>
+                        <div className="flex row center trainer_hp_line">
+                            <h3>HP</h3>
+                            <span className="hp_bar" style={{ width: `${hpOppPercentage}%` }}></span>
+                        </div>
+                        <div className="flex trainer_exp_bar"></div>
                     </div>
                 </div>
             </div>
@@ -50,7 +58,7 @@ const Screen = () => {
                             </div>
                             <div className="flex row center trainer_hp_line">
                                 <h3>HP</h3>
-                                <span className="hp_bar"></span>
+                                <span className="hp_bar" style={{ width: `${hpPercentage}%` }}></span>
                             </div>
                             <div className="flex trainer_exp_bar"></div>
                         </div>

@@ -36,17 +36,20 @@ WildPokemonSchema.pre('save', async function(next) {
 
     if (this.isNew) {
 
+        const pokemonData = await Pokemon.findOne({ pid: this.pokemonId });
+        
         this.shiny = this.constructor.generateShiny();
         this.ivs = {
-            hp: this.constructor.generateIVs(),
-            attack: this.constructor.generateIVs(),
-            defense: this.constructor.generateIVs(),
-            sp_attack: this.constructor.generateIVs(),
-            sp_defense: this.constructor.generateIVs(),
-            speed: this.constructor.generateIVs()
+            hp: this.constructor.generateIVs() + pokemonData.baseStats.hp,
+            attack: this.constructor.generateIVs() + pokemonData.baseStats.attack,
+            defense: this.constructor.generateIVs() + pokemonData.baseStats.defense,
+            sp_attack: this.constructor.generateIVs() + pokemonData.baseStats.sp_attack,
+            sp_defense: this.constructor.generateIVs() + pokemonData.baseStats.sp_defense,
+            speed: this.constructor.generateIVs() + pokemonData.baseStats.speed
         };
 
-        const pokemonData = await Pokemon.findOne({ pid: this.pokemonId });
+        this.hp = this.ivs.hp;
+
 
         this.types = pokemonData.types
         const eligibleMoves = pokemonData.learnSet

@@ -14,7 +14,7 @@ export const useBattle = () => useContext(BattleContext);
 
 export const BattleProvider = ({ children }) => {
 
-    const { user, logout, userPokemon, getUserPokemon } = useAuth();
+    const { user, logout, userPokemon, getUserPokemon, setUserPokemon } = useAuth();
 
     const [ menu, setMenu ] = useState(null);
     const [ screen, setScreen ] = useState("map")
@@ -93,8 +93,7 @@ export const BattleProvider = ({ children }) => {
     }, []);
 
     const setRandomEncounterPerGrass = useCallback( async () => {
-        
-        
+
         let tempEncounters = {}
         for (let i = 0; i < NO_EVENT_TYPE; i++) {
             let odds = [new Odds("common"), new Odds("common"), new Odds("uncommon"), new Odds("uncommon"), new Odds("rare")]
@@ -180,7 +179,6 @@ export const BattleProvider = ({ children }) => {
     useEffect(() => {
 
         (opponent && opponent.moveSet) && setMoveSet(opponent.moveSet, setOpponentMoves);
-        
     }, [ opponent ]);
 
     useEffect(() => {
@@ -208,8 +206,13 @@ export const BattleProvider = ({ children }) => {
                         moveCategory: userAction.category,
                     });
                     //updateOpponentHP(dmg)
+                    setOpponent(opponent => ({
+                        ...opponent,  // Spread the previous state
+                        hp: (opponent.hp - result[0]),  // Update only the specific property
+                      }));
                     console.log(`${ userPokemon[0].name} did ${result[0]} of damage`);
-                    
+                    console.log(`${ opponent.name} has ${opponent.hp} of hp`);
+
                     result[1] ? console.log(`It was ${result[1]}`) : {};
                 }
                 else {
@@ -231,7 +234,17 @@ export const BattleProvider = ({ children }) => {
                         moveCategory: opponentAction.category,
                     });
                     //updateUserHP(dmg)
+                    setUserPokemon(userPokemon => [
+                        {
+                          ...userPokemon[0],  // Spread the first object to keep other properties unchanged
+                          hp: (userPokemon[0].hp - result[0]),  // Update only the property you want
+                        },
+                        ...userPokemon.slice(1)  // Keep the rest of the array unchanged
+                      ]);
                     console.log(`${ opponent.name} did ${result[0]} of damage`);
+                    console.log(`${ userPokemon[0].name} has ${userPokemon[0].hp} of hp`);
+                    console.log(userPokemon[0]);
+                    
                     
                     result[1] ? console.log(`It was ${result[1]}`) : {};
                 }
@@ -253,7 +266,7 @@ export const BattleProvider = ({ children }) => {
     useEffect(() => {
 
         if (screen === "map") { 
-            getUserPokemon();
+            (!userPokemon && getUserPokemon());
             setMessage(null);
             setMenu(null);
         }

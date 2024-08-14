@@ -54,13 +54,14 @@ const userController = {
                 const user_p = await Pokemon.findOne({ pid: p.pokemonId });
                 user_p.level = p.level;
                 
-                return { 
+                return {
                     ...user_p.toObject(),
                     level: p.level,
                     shiny : p.shiny,
+                    hp: p.hp,
                     ivs : p.ivs,
                     moveSet: p.moveSet,
-                    types: p.types
+                    types: p.types,
                 }
             
             });

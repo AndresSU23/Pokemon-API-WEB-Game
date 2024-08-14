@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from 'react';
 import { Stage, useApp } from '@pixi/react';
-import { Graphics, Sprite, Texture } from 'pixi.js';
+import { Graphics, Sprite, Texture, Loader } from 'pixi.js';
 import { useBattle } from '@/context/battleContext';
 import styles from "./GameCanvas.module.css";
 import axios from 'axios';
@@ -10,26 +10,75 @@ import Pokemon from '../Menus/Pokedex/Pokemon';
 import PokemonMenu from '../Menus/PokemonMenu';
 import Pokedex from '../Menus/Pokedex';
 
+class PlayerAnimation {
+    constructor(graphics, textures) {
+      this.graphics = graphics;
+      this.textures =  textures;
+        this.currentDirection = 'down'; // Default direction
+        this.currentFrame = 0;
+        this.isMoving = false;
+        this.animationSpeed = 0.1;
+        this.frameTimer = 0;
+    }
+
+    setDirection(direction) {
+        if (this.currentDirection !== direction) {
+            this.currentDirection = direction;
+            this.currentFrame = 0; // Reset to first frame when changing direction
+        }
+    }
+
+    start() {
+        this.isMoving = true;
+    }
+
+    stop() {
+        this.isMoving = false;
+    }
+
+    update(delta) {
+        if (this.isMoving) {
+            this.frameTimer += delta * this.animationSpeed;
+            if (this.frameTimer >= 1) {
+                this.currentFrame = (this.currentFrame + 1) % this.textures[this.currentDirection].length;
+                this.frameTimer = 0;
+            }
+        }
+        this.graphics.texture = this.textures[this.currentDirection][this.currentFrame];
+    }
+}
 // Player Component
 const Player = ({ position, setPosition, layout, grasses, tileSize, encounters, screen, setMenu, setPokemonId }) => {
     const app = useApp();
-    
-    
     const playerRef = useRef(null);
+    const animationRef = useRef(null);
+    const textures = {
+        down: [Texture.from('/player/wd1.png'), Texture.from('/player/wd2.png'), Texture.from('/player/wd3.png'), Texture.from('/player/wd4.png')],
+        up: [Texture.from('/player/wu1.png'), Texture.from('/player/wu2.png'), Texture.from('/player/wu3.png'), Texture.from('/player/wu4.png')],
+        left: [Texture.from('/player/wl1.png'), Texture.from('/player/wl2.png'), Texture.from('/player/wl3.png'), Texture.from('/player/wl4.png')],
+        right: [Texture.from('/player/wr1.png'), Texture.from('/player/wr2.png'), Texture.from('/player/wr3.png'), Texture.from('/player/wr4.png')]}
 
     useEffect(() => {
-        const graphics = new Graphics();
-        graphics.beginFill(0x581845);
-        graphics.drawRect(0, 0, tileSize, tileSize);
-        graphics.endFill();
+        const sprite = new Sprite(textures.down[0]);
+        sprite.width = tileSize;
+        sprite.height = tileSize;
 
-        playerRef.current = graphics;
-        app.stage.addChild(graphics);
+        playerRef.current = sprite;
+        app.stage.addChild(sprite);
+
+        const playerAnimation = new PlayerAnimation(sprite, textures);
+        animationRef.current = playerAnimation;
+
+        app.ticker.add((delta) => {
+            playerAnimation.update(delta);
+        });
 
         return () => {
             if (playerRef.current && app.stage) {
                 app.stage.removeChild(playerRef.current);
+                app.ticker.remove(playerAnimation.update);
             }
+            
         };
     }, [app]);
 
@@ -45,13 +94,12 @@ const Player = ({ position, setPosition, layout, grasses, tileSize, encounters, 
             const newX = position.x + dx * tileSize;
             const newY = position.y + dy * tileSize;
 
-            // Check for collision with walls
             const newGridX = Math.floor(newX / tileSize);
             const newGridY = Math.floor(newY / tileSize);
 
             const wallCollision = checkCollision(newGridX, newGridY, 1);
             const grassEvent = checkCollision(newGridX, newGridY, 2);
-            
+
             if (!wallCollision) {
                 setPosition({ x: newX, y: newY });
             } else console.log('Blocked');
@@ -61,45 +109,58 @@ const Player = ({ position, setPosition, layout, grasses, tileSize, encounters, 
         };
 
         const checkCollision = (gridX, gridY, check) => {
-            if (layout[gridY][gridX] === check) return true;
-            return false;
+            return layout[gridY] && layout[gridY][gridX] === check;
         };
 
         const handleKeyDown = (e) => {
-            if (screen === "map")
-            {
-
-                console.log("?")
-
+            if (screen === "map") {
                 switch (e.key) {
-                case 'ArrowUp':
-                    move(0, -1);
-                    break;
-                case 'ArrowDown':
-                    move(0, 1);
-                    break;
-                case 'ArrowLeft':
-                    move(-1, 0);
-                    break;
-                case 'ArrowRight':
-                    move(1, 0);
-                    break;
-                case 'Escape':
-                    setMenu(prev => setMenu(!prev));
-                    setPokemonId(null);
-                default:
-                    break;
-            }}
+                    case 'ArrowUp':
+                        move(0, -1);
+                        animationRef.current.setDirection('up');
+                        animationRef.current.start();
+                        break;
+                    case 'ArrowDown':
+                        move(0, 1);
+                        animationRef.current.setDirection('down');
+                        animationRef.current.start();
+                        break;
+                    case 'ArrowLeft':
+                        move(-1, 0);
+                        animationRef.current.setDirection('left');
+                        animationRef.current.start();
+                        break;
+                    case 'ArrowRight':
+                        move(1, 0);
+                        animationRef.current.setDirection('right');
+                        animationRef.current.start();
+                        break;
+                    case 'Escape':
+                        setMenu(prev => setMenu(!prev));
+                        setPokemonId(null);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        };
+
+        const handleKeyUp = () => {
+            animationRef.current.stop();
         };
 
         window.addEventListener('keydown', handleKeyDown);
+        window.addEventListener('keyup', handleKeyUp);
+
         return () => {
             window.removeEventListener('keydown', handleKeyDown);
+            window.removeEventListener('keyup', handleKeyUp);
         };
     }, [position, layout, grasses, setPosition]);
 
     return null;
 };
+
 
 // Tile Component
 const Tile = ({ x, y, width, height, image, tileSize }) => {
