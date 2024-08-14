@@ -24,6 +24,7 @@ const Inputs = () => {
 
             switch (selected) {
                 case 1: setMenu("fight"); break;
+                case 2: setMenu("item"); break;
                 case 3: setScreen("map"); break;
             }
 
@@ -31,7 +32,7 @@ const Inputs = () => {
         
     }
 
-    useEffect(() => { menuRef && menuRef.current.focus() }, [ menuRef ]);
+    useEffect(() => { menuRef.current && menuRef.current.focus() }, [ menuRef, menu ]);
 
     return (
 
@@ -62,6 +63,7 @@ const Inputs = () => {
         }
 
         { menu === "fight" && <FightMenu /> }
+        { menu === "item" && <ItemMenu /> }
 
         </>
     

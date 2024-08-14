@@ -35,6 +35,7 @@ const TrainerPokemonSchema = new Schema(
         pokemonId : { type : Number },
         level : { type: Number },
         shiny: { type: Boolean },
+        hp: { type: Number },
         ivs: {
             hp: { type: Number },
             attack: { type: Number },
@@ -43,7 +44,7 @@ const TrainerPokemonSchema = new Schema(
             sp_defense: { type: Number },
             speed: { type: Number }
         },
-        moveSet: [ {moveId: { type : Schema.Types.ObjectId, ref: "Move" }, pp: Number, ppMax: Number} ]
+        moveSet: [ { moveId: { type : Schema.Types.ObjectId, ref: "Move" }, pp: Number, ppMax: Number } ]
     }
 );
 
@@ -65,6 +66,9 @@ const UserSchema = new Schema(
             type: Boolean,
             default : false
         },
+
+        
+        items : [ { type: Object } ],
 
         pokemon : [ TrainerPokemonSchema ],
 

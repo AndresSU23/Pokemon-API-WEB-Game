@@ -156,7 +156,7 @@ export const BattleProvider = ({ children }) => {
             console.error('Token invalid or other error occurred:', error);
             logout();
         }
-    })
+    }, [])
 
     useEffect(() => {
         console.log(`Current User: ${user}`);
@@ -168,6 +168,7 @@ export const BattleProvider = ({ children }) => {
     useEffect(() => {
 
         (userPokemon && userPokemon[0] && userPokemon[0].moveSet) && setMoveSet(userPokemon[0].moveSet, setUserMoves);
+        console.log("?")
     
     }, [ userPokemon ]);
 

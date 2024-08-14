@@ -7,6 +7,7 @@ const WildPokemonSchema = new Schema(
         level : { type : Number },
         rarity : { type : String },
         shiny : { type: Boolean, default: false },
+        hp : { type: Number },
         ivs: {
             hp: { type: Number },
             attack: { type: Number },

@@ -12,6 +12,7 @@
 
 .pokedex_spacer .top_spacer {
     position: relative;
+    margin-top: 20px;
     width: 100%;
     height: 55%;
 }
@@ -184,6 +185,10 @@
     font-family: "pokemon";
     letter-spacing: 1px;
     overflow: hidden;
+}
+
+.pokedex_item span {
+    margin-right: 10px;
 }
 
 .pokedex_item img {

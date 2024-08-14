@@ -2,6 +2,9 @@
     {
         "username" : "admin",
         "password" : "root",
-        "admin" : true
+        "admin" : true,
+        "items" : [
+            { "name" : "Pokeball", "quantity" : 5 }
+        ]
     }
 ]

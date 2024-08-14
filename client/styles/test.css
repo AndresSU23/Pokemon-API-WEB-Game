@@ -106,6 +106,7 @@
     position: absolute;
     top: 20px;
     right: 20px;
+    width: 100%;
 }
 
 .trainer_spacer {
@@ -148,16 +149,16 @@
     align-items: flex-end;
 }
 
-.trainer_pokemon_line h3 {
+.trainer_pokemon_line h3, .opponent_pokemon_line h3 {
     text-transform: uppercase;
 }
 
-.trainer_pokemon_line h4 {
+.trainer_pokemon_line h4, .opponent_pokemon_line h4 {
     font-weight: bold;
     font-size: 12px;
 }
 
-.trainer_pokemon_line h4 span {
+.trainer_pokemon_line h4 span, .opponent_pokemon_line h4 span {
     margin-left: 2px;
     font-size: 14px;
 }
@@ -208,12 +209,12 @@
 }
 
 .opponent_spacer img {
-    position: relative;
+    position: absolute;
     width: 140px;
     height: 140px;
     object-fit: contain;
-    right: 25px;
-    top: 20px;
+    right: 20px;
+    top: 15px;
 }
 
 .trainer_spacer img {
@@ -236,6 +237,39 @@
     width: 10px;
     border-top: 3px solid var(--color_black);
     box-sizing: border-box;
+}
+
+.opponent_stats_overlay {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    border-bottom: 60px solid #343434;
+	border-right: 20px solid transparent;
+	height: 0;
+	width: 240px;
+    z-index: 2;
+}
+
+.opponent_stats {
+    position: absolute;
+    left: 2px;
+    top: 10px;
+    border-bottom: 46px solid var(--color_grey);
+	border-right: 16px solid transparent;
+	height: 0;
+	width: 236px;
+    z-index: 2;
+}
+
+.opponent_stats .opponent_pokemon_line {
+    position: relative;
+    width: calc(100% - 50px);
+    min-height: 16px;
+    left: 30px;
+    top: 5px;
+    font-family: "pokemon";
+    justify-content: space-between;
+    align-items: flex-end;
 }
 
 .input_accent_bottom {

@@ -12,49 +12,9 @@ const Screen = () => {
     const { userPokemon } = useAuth();
     const { opponent } = useBattle();
 
-    // const animateTrainerIntro = useCallback(() => {
-
-    //     const trainerTime = setTimeout(() => {
-
-    //         trainerRef.current.src = './images/test/trainer/mew-shiny.png';
-    //         trainerRef.current.style.width = "272px";
-    //         trainerRef.current.style.height = "272px";
-    //         trainerRef.current.style.bottom = "-14px";
-
-    //         gsap.to(trainerRef.current, { delay: 0.3, y: 7, yoyo: true, repeat: -1, duration: 0.5 })
-    //         gsap.to(trainerStatsRef.current, { delay: 0.8, y: 4, yoyo: true, repeat: -1, duration: 0.5 })
-
-    //         clearTimeout(trainerTime);
-
-    //     }, 2100)
-
-    // }, [])
-
-    // const animateOpponentIntro = useCallback(() => {
-
-    //     const opponentTime = setTimeout(() => {
-
-    //         opponentRef.current.src = './images/test/opponent/mew.png';
-    //         opponentRef.current.style.width = "180px";
-    //         opponentRef.current.style.height = "180px";
-    //         opponentRef.current.style.top = "-14px";
-
-    //         clearTimeout(opponentTime);
-
-    //     }, 3600)
-
-    // }, [])
-
-    // useEffect(() => {
-
-    //     animateTrainerIntro();
-    //     animateOpponentIntro();
-
-    // }, [])
-
     useEffect(() => {
 
-        console.log(opponent)
+        console.log(opponent)   
 
     }, [ opponent ])
 
@@ -63,7 +23,17 @@ const Screen = () => {
         <div className="flex battle_screen_spacer">
 
             <div className="flex opponent_spacer">
-                { opponent && <img ref={opponentRef} src={opponent.shiny ? opponent.sprite.shiny : opponent.sprite.default} alt="opponent pokemon" /> }
+                <div className="flex opponent_img_spacer">
+                    { opponent && <img ref={opponentRef} src={opponent.shiny ? opponent.sprite.shiny : opponent.sprite.default} alt="opponent pokemon" /> }
+                </div>
+                <div className="flex opponent_stats_overlay">
+                    <div className="flex col opponent_stats">
+                        <div className="flex row opponent_pokemon_line">
+                            <h3>{opponent.name}</h3>
+                            <h4>Lv<span>{opponent.level}</span></h4>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             { userPokemon.length > 0 && 

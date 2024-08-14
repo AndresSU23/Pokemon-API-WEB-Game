@@ -68,6 +68,7 @@
     margin-right: 15px;
     border-radius: 5px;
     border: 1px solid #aaa;
+    letter-spacing: 3px;
 }
 
 .move_pp {
@@ -100,4 +101,8 @@
 
 .inactive {
     opacity: 0.3!important;
+}
+
+.selected {
+    outline: 3px solid red!important;
 }

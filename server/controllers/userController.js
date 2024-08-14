@@ -37,7 +37,7 @@ const userController = {
 
     registerUser({ body }, res) {
 
-        User.create({ username: body.username, password: body.password })
+        User.create({ username: body.username, password: body.password, items : [ { name: "Pokeball", quantity: 5 }] })
             .then(data => res.json(data))
             .catch(err => res.json(err))
 
@@ -84,6 +84,19 @@ const userController = {
             await user.save();
 
             res.json(req.body);
+
+        }
+
+        catch (error) { res.json(error); }
+
+    },
+
+    async getUserItems(req, res) {
+
+        try {
+
+            const user = await User.findOne({ username: req.user.username });
+            res.json(user.items);
 
         }
 
