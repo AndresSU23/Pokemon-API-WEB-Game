@@ -18,7 +18,7 @@ export const BattleProvider = ({ children }) => {
 
     const [ menu, setMenu ] = useState(null);
     const [ screen, setScreen ] = useState("map")
-    const [ position, setPosition ] = useState({ x: 112, y: 240 })
+    const [ position, setPosition ] = useState({ x: 224, y: 480 })
     const [ opponent, setOpponent ] = useState(null);
     const [ encounters, setEncounters ] = useState(null);
     const [ tileSize, setTileSize ] = useState(16);
@@ -36,13 +36,13 @@ export const BattleProvider = ({ children }) => {
             else {
                 switch (rarity) {
                     case "common":
-                        this.probability = 15;
-                        break;
-                    case "uncommon":
                         this.probability = 10;
                         break;
-                    case "rare":
+                    case "uncommon":
                         this.probability = 5;
+                        break;
+                    case "rare":
+                        this.probability = 2;
                         break;
                     default:
                         this.probability = 0;

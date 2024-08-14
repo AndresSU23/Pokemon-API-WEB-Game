@@ -17,7 +17,7 @@ class PlayerAnimation {
         this.currentDirection = 'down'; // Default direction
         this.currentFrame = 0;
         this.isMoving = false;
-        this.animationSpeed = 0.1;
+        this.animationSpeed = 0.15;
         this.frameTimer = 0;
     }
 
@@ -48,7 +48,7 @@ class PlayerAnimation {
     }
 }
 // Player Component
-const Player = ({ position, setPosition, layout, grasses, tileSize, encounters, screen, setMenu, setPokemonId }) => {
+const Player = ({ position, setPosition, layout, grasses, tileSize, encounters, screen, setMenu, setPokemonId, menuVisible }) => {
     const app = useApp();
     const playerRef = useRef(null);
     const animationRef = useRef(null);
@@ -60,8 +60,10 @@ const Player = ({ position, setPosition, layout, grasses, tileSize, encounters, 
 
     useEffect(() => {
         const sprite = new Sprite(textures.down[0]);
-        sprite.width = tileSize;
-        sprite.height = tileSize;
+        sprite.width = tileSize*2;
+        sprite.height = tileSize*2;
+
+        sprite.pivot.set(sprite.width/4, sprite.height / 2);
 
         playerRef.current = sprite;
         app.stage.addChild(sprite);
@@ -116,24 +118,28 @@ const Player = ({ position, setPosition, layout, grasses, tileSize, encounters, 
             if (screen === "map") {
                 switch (e.key) {
                     case 'ArrowUp':
-                        move(0, -1);
+                        if(!menuVisible)
+                        {move(0, -1);
                         animationRef.current.setDirection('up');
-                        animationRef.current.start();
+                        animationRef.current.start();}
                         break;
                     case 'ArrowDown':
-                        move(0, 1);
+                        if(!menuVisible)
+                        {move(0, 1);
                         animationRef.current.setDirection('down');
-                        animationRef.current.start();
+                        animationRef.current.start();}
                         break;
                     case 'ArrowLeft':
-                        move(-1, 0);
+                        if(!menuVisible)
+                        {move(-1, 0);
                         animationRef.current.setDirection('left');
-                        animationRef.current.start();
+                        animationRef.current.start();}
                         break;
                     case 'ArrowRight':
-                        move(1, 0);
+                        if(!menuVisible)
+                        {move(1, 0);
                         animationRef.current.setDirection('right');
-                        animationRef.current.start();
+                        animationRef.current.start();}
                         break;
                     case 'Escape':
                         setMenu(prev => setMenu(!prev));
@@ -218,13 +224,33 @@ const GameCanvas = ({ mapName = "map1_TheIsland" }) => {
     const [ menuVisible, setMenuVisible ] = useState(false);
     const { mapMenu, setMapMenu, pokemonId, setPokemonId } = useMenu();
 
+    const [loading, setLoading] = useState(true);
+
+    const containerWidth = 1000; // Width of the .map_spacer container
+    const containerHeight = 500; // Height of the .map_spacer container
+  
+    const xOffset = Math.max(
+        0,
+        Math.min(
+          position.x - containerWidth / 2,
+          mapWidth * tileSize - containerWidth
+        )
+      );
+      const yOffset = Math.max(
+        0,
+        Math.min(
+          position.y - containerHeight / 2,
+          mapHeight * tileSize - containerHeight
+        )
+      );
+
     useEffect(() => {
         const fetchMapData = async () => {
             try {
                 const response = await axios.get(`/maps/${mapName}.json`);
                 const mapData = response.data;
 
-                setTileSize(mapData.tileSize);
+                setTileSize(32);
                 setMapWidth(mapData.mapWidth);
                 setMapHeight(mapData.mapHeight);
                 setLayers(mapData.layers);
@@ -269,11 +295,16 @@ const GameCanvas = ({ mapName = "map1_TheIsland" }) => {
     return (
         <div className={styles.map_spacer}>
         
-            <Stage width={tileSize*mapWidth} height={tileSize*mapHeight} options={{ backgroundColor: 0x000000 }}>
+        
+            <Stage width={tileSize*mapWidth} height={tileSize*mapHeight} options={{ backgroundColor: 0x000000 }} style={{
+          position: 'absolute',
+          top: -yOffset,
+          left: -xOffset,
+        }}>
                 {layout.length > 0 && encounters &&(
                     <>
                         <Map layers={layers} tileSize={tileSize} mapWidth={mapWidth} mapHeight={mapHeight} mapName={mapName} />
-                        <Player position={position} setPosition={setPosition} setMenu={setMenuVisible} setPokemonId={setPokemonId} layout={layout} grasses={grasses} tileSize={tileSize} encounters={encounters} screen={screen}/>
+                        <Player menuVisible={menuVisible} position={position} setPosition={setPosition} setMenu={setMenuVisible} setPokemonId={setPokemonId} layout={layout} grasses={grasses} tileSize={tileSize} encounters={encounters} screen={screen}/>
                     </>
                 )}
             </Stage>
