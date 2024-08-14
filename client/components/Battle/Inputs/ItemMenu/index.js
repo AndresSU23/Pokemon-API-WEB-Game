@@ -3,20 +3,17 @@ import { useEffect, useState, useRef } from "react";
 
 import styles from "./ItemMenu.module.css";
 import { useBattle } from "@/context/battleContext";
-import { Icon } from '@iconify-icon/react';
-import { gsap } from 'gsap';
+
+import Message from "../Message";
 
 const ItemMenu = () => {
 
     const menuRef = useRef(null);
     const messageRef = useRef(null);
-    const iconRef = useRef(null);
 
     const { getUserItems, userItems, addPokemon } = useAuth();
     const [ selected, setSelected ] = useState(1);
     const { setMenu, menu, setScreen, opponent, message, setMessage } = useBattle();
-
-    const animateIcon = () => { (iconRef.current) && gsap.to(iconRef.current, { duration: 1, opacity: 0, repeat: -1, yoyo: true}) }
 
     const handleKeyDown = (e) => {
 
@@ -32,15 +29,7 @@ const ItemMenu = () => {
 
     }
 
-    const catchPokemon = async () => {
-
-        if (opponent) {
-
-            setMessage("Caught " + opponent.name.toUpperCase() + "!");
-
-        }
-
-    }
+    const catchPokemon = async () => { if (opponent) setMessage("Caught " + opponent.name.toUpperCase() + "!"); }
 
     const catchAwaitPress = async (e) => {
 
@@ -61,7 +50,7 @@ const ItemMenu = () => {
     }, [])
 
     useEffect(() => { menuRef.current && menuRef.current.focus() }, [ menuRef, menu ]);
-    useEffect(() => { messageRef.current && messageRef.current.focus(); animateIcon(); }, [ messageRef, message ]);
+    useEffect(() => { (messageRef.current) && messageRef.current.focus(); }, [ messageRef, message ]);
 
     return (
         <div tabIndex={0} ref={menuRef} className="flex center test_menu_div" onKeyDown={handleKeyDown}>
@@ -100,11 +89,7 @@ const ItemMenu = () => {
 
             }
 
-            { message && 
-                <div tabIndex={0} ref={messageRef} onKeyDown={catchAwaitPress} className={"flex center input_message"}>
-                    {message}
-                    <span ref={iconRef} className={"flex center arrow_blink"}><Icon icon="icon-park-solid:down-one" /></span>
-                </div>}
+            { message && <Message ref={messageRef} onKeyDown={catchAwaitPress} message={message} /> }
 
         </div>
     )

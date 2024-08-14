@@ -2,6 +2,7 @@ import { useBattle } from "@/context/battleContext";
 import { useAuth } from '@/context/authContext';
 import { useRef, useState, useEffect } from "react";
 import styles from "./FightMenu.module.css";
+import Message from "../Message";
 
 const formatMoveName = (name) => {
     return name
@@ -13,11 +14,12 @@ const formatMoveName = (name) => {
 const FightMenu = () => {
 
     const menuRef = useRef();
-    const { menu, setMenu, userMoves, setUserAction } = useBattle();
+    const messageRef = useRef(null);
+
+    const { menu, setMenu, userMoves, setUserAction, message, setMessage } = useBattle();
     const [ selected, setSelected ] = useState(1);
     const [ selectedPokemon, setSelectedPokemon ] = useState(null);
     const { userPokemon } = useAuth();
-
     
 
     const handleKeyDown = (e) => {
@@ -38,6 +40,17 @@ const FightMenu = () => {
 
     }
 
+    const handleMessagePress = (e) => {
+
+        if (e.key === "Enter") {
+
+            setMenu(null);
+            setMessage(null);
+
+        }
+
+    }
+
     useEffect(() => {
 
         if (userPokemon.length > 0) {
@@ -49,10 +62,15 @@ const FightMenu = () => {
     }, [ userPokemon ])
 
     useEffect(() => { (menuRef.current) && menuRef.current.focus(); }, [ menuRef ])
+    useEffect(() => { (messageRef.current) && messageRef.current.focus(); }, [ messageRef, message ]);
 
     return (
 
-        <div tabIndex={0} ref={menuRef} className="flex test_menu_div" onKeyDown={handleKeyDown}>
+            <>
+
+            { !message && 
+
+                <div tabIndex={0} ref={menuRef} className="flex test_menu_div" onKeyDown={handleKeyDown}>
 
             <div className={"flex col " + styles.fight_menu_spacer}>
                 <div className={"flex row wrap " + styles.move_inputs_spacer}>
@@ -76,7 +94,14 @@ const FightMenu = () => {
 
             </div>
 
-        </div>
+            </div>
+
+            }
+
+            { message && <Message ref={messageRef} onKeyDown={handleMessagePress} message={message} />}
+
+            </>
+
 
     )
 

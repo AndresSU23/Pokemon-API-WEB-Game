@@ -185,6 +185,7 @@ export const BattleProvider = ({ children }) => {
     }, [ opponent ]);
 
     useEffect(() => {
+        
         if(userAction && opponentAction)
         {
         const order = determineMoveOrder(userAction.name, opponentAction.name,
@@ -192,7 +193,8 @@ export const BattleProvider = ({ children }) => {
 
         for (let i = 0; i < order.length; i++) {
             if (order[i] == userAction.name){
-                console.log(`${ userPokemon[0].name} used ${userAction.name}`);
+                
+                setMessage(`${ userPokemon[0].name} used ${userAction.name}`);
                 
                 if (willHit(userPokemon[0].ivs, opponent.ivs, userAction.accuracy)){
                     const result = calculateDamage({

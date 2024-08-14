@@ -4,6 +4,7 @@ import styles from '../Battle.module.css';
 import { useBattle } from "@/context/battleContext";
 import FightMenu from "./FightMenu";
 import ItemMenu from "./ItemMenu";
+import Message from "./Message";
 
 
 const Inputs = () => {
