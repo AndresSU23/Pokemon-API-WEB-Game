@@ -4,7 +4,7 @@ import { useState } from "react";
 
 const Nav = () => {
 
-    const { user, logout, setLoginMenu } = useAuth();
+    const { user, logout, setLoginMenu, userPokemon } = useAuth();
     const [ display, setDisplay ] = useState(null);
 
     const handleLogout = () => {
@@ -27,7 +27,8 @@ const Nav = () => {
             </div>
 
             { user && 
-                <div className={styles.display_spacer + " flex center"}>
+                <div className={styles.display_spacer + " flex col center"}>
+                    <p>Total Pokemon: {userPokemon.length}</p>
                     <button onClick={handleLogout}>Logout</button>
                 </div>
             }

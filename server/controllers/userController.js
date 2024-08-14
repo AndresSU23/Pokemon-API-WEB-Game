@@ -113,7 +113,6 @@ const userController = {
             const user = await User.findOne({ username: req.user.username });
 
             user.items = req.body.items.filter(item => item.quantity !== null && item.quantity > 0);
-            console.log(user.items);
             await user.save();
 
             res.json(req.body);

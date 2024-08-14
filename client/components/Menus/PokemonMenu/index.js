@@ -7,47 +7,44 @@ import PokemonItem from "./PokemonItem";
 const PokemonMenu = (props) => {
 
     const menuRef = useRef();
-    const subMenuRef = useRef();
 
-    const { userPokemon } = useAuth();
+    const { userPokemon, setUserPokemon } = useAuth();
+
+    const [ selected, setSelected ] = useState(1);
+
 
     const handleKeyDown = (e) => {
 
-        // if (e.key === "Enter") {
+        if (e.key === "ArrowDown") setSelected(prev => (prev > userPokemon.length) ? prev : prev + 1);
+        if (e.key === "ArrowUp") setSelected(prev => (prev <= 1) ? prev : prev - 1);
 
-        //     if (selected === 1) { 
+        if (e.key === "Enter") {
 
-        //         setPokemon(1); 
-        //         setSubSelected(1);
+            if (selected <= userPokemon.length) setUserPokemon((prev) => {
 
-        //     }
+                const newOrder = [...prev];
+                const [ selectedPokemon ] = newOrder.splice(selected - 1, 1);
+                newOrder.unshift(selectedPokemon);
+                return newOrder;
+    
+            })
 
-        //     if (selected === 7) console.log("?");
-
-        // }
-
-        // if (e.key === "ArrowDown") {
-        //     setSelected((prev) => {
-        //         if (prev < 7) return prev + 1;
-        //         else return prev; 
-        //     })
-        // }
-
-        // if (e.key === "ArrowUp") {
-        //     setSelected((prev) => {
-        //         if (prev > 1) return prev - 1;
-        //         else return prev; 
-        //     })
-        // }
+        }
 
     }
+
+    useEffect(() => {
+
+        if (menuRef.current) { menuRef.current.focus(); }
+    
+    }, [ menuRef ])
 
     return (
         <div ref={menuRef} tabIndex={0} className={"flex " + styles.pokemon_menu_spacer} onKeyDown={handleKeyDown}>
 
             <div className={"flex wrap " + styles.pokemon_menu}>
 
-            { userPokemon.map((p) => <PokemonItem pokemon={p} />) }
+            { userPokemon.map((p, index) => <PokemonItem pokemon={p} selected={selected === index + 1} />) }
 
             { Array.from({ length: 6 - userPokemon.length }, () => 1).map(p => 
 

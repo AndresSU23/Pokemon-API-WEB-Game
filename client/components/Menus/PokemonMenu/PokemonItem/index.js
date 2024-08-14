@@ -4,7 +4,7 @@ import { Icon } from '@iconify-icon/react';
 const PokemonItem = (props) => {
 
     return (
-        <div className={"flex row center " + styles.pokemon_item + " " + `${props.selected === 1 ? styles.selected : ""}`}>
+        <div className={"flex row center " + styles.pokemon_item + " " + `${props.selected ? styles.selected : ""}`}>
             <div className={"flex center " + styles.pokemon_icon}><img src={props.pokemon.shiny ? props.pokemon.sprite.shiny : props.pokemon.sprite.default} /></div>
             <div className={"flex col " + styles.pokemon_info_spacer}>
                 <h2>{props.pokemon.name.charAt(0).toUpperCase() + props.pokemon.name.slice(1)}</h2>
