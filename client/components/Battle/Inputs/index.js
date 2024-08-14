@@ -5,15 +5,17 @@ import { useBattle } from "@/context/battleContext";
 import FightMenu from "./FightMenu";
 import ItemMenu from "./ItemMenu";
 import Message from "./Message";
+import PokemonMenu from "./PokemonMenu";
 
 
 const Inputs = () => {
 
     const inputRef = useRef();
     const menuRef = useRef();
+    const messageRef = useRef();
 
     const [ selected, setSelected ] = useState(1);
-    const { menu, setMenu, setScreen } = useBattle();
+    const { menu, setMenu, setScreen, message, setMessage } = useBattle();
 
     const handleKeyDown = (e) => {
 
@@ -27,20 +29,33 @@ const Inputs = () => {
             switch (selected) {
                 case 1: setMenu("fight"); break;
                 case 2: setMenu("item"); break;
-                case 3: setScreen("map"); break;
+                case 3: setMessage("Got away safely!"); setMenu("flee"); break;
+                case 4: setMenu("pokemon"); break;
             }
 
         }
         
     }
 
+    const awaitEnterPress = (e) => {
+
+        if (e.key === "Enter") {
+
+            setMessage(null);
+            setScreen("map");
+
+        }
+
+    }
+
     useEffect(() => { menuRef.current && menuRef.current.focus() }, [ menuRef, menu ]);
+    useEffect(() => { (messageRef.current) && messageRef.current.focus(); }, [ messageRef, message ]);
 
     return (
 
         <>
 
-        { !menu 
+        { (!menu && !message)
         
             &&
 
@@ -64,8 +79,11 @@ const Inputs = () => {
 
         }
 
-        { menu === "fight" && <FightMenu /> }
-        { menu === "item" && <ItemMenu /> }
+        { (menu === "fight") && <FightMenu /> }
+        { (menu === "item") && <ItemMenu /> }
+        { (menu === "pokemon") && <PokemonMenu /> }
+
+        { (menu === "flee" && message) && <Message ref={messageRef} onKeyDown={awaitEnterPress} message={message} />}
 
         </>
     

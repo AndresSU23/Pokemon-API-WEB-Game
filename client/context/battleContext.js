@@ -174,7 +174,6 @@ export const BattleProvider = ({ children }) => {
     useEffect(() => {
 
         (userPokemon && userPokemon[0] && userPokemon[0].moveSet) && setMoveSet(userPokemon[0].moveSet, setUserMoves);
-        console.log("?")
     
     }, [ userPokemon ]);
 
@@ -193,7 +192,7 @@ export const BattleProvider = ({ children }) => {
 
         for (let i = 0; i < order.length; i++) {
             if (order[i] == userAction.name){
-                
+
                 setMessage(`${ userPokemon[0].name} used ${userAction.name}`);
                 
                 if (willHit(userPokemon[0].ivs, opponent.ivs, userAction.accuracy)){

@@ -62,7 +62,7 @@ const FightMenu = () => {
     }, [ userPokemon ])
 
     useEffect(() => { (menuRef.current) && menuRef.current.focus(); }, [ menuRef ])
-    useEffect(() => { (messageRef.current) && messageRef.current.focus(); }, [ messageRef, message ]);
+    useEffect(() => { (messageRef.current) && messageRef.current.focus(); }, [ messageRef, message ]);  
 
     return (
 
@@ -80,8 +80,8 @@ const FightMenu = () => {
                         <div className={"flex center col " + styles.move_input_text_spacer}>
                             <h3>{formatMoveName(move.name)}</h3>
                             <span className="flex row">
-                            <div className={"flex center " + styles.move_type + " " + styles[move.type]}>{move.type.toUpperCase()}</div>
-                            <div className={"flex center " + styles.move_pp}>PP {userPokemon[0].moveSet[index].pp}/{userPokemon[0].moveSet[index].ppMax}</div>
+                                <div className={"flex center " + styles.move_type + " " + styles[move.type]}>{move.type.toUpperCase()}</div>
+                                <div className={"flex center " + styles.move_pp}>PP {userPokemon[0].moveSet[index].pp}/{userPokemon[0].moveSet[index].ppMax}</div>
                             </span>
                         </div>
                     </div>
@@ -98,7 +98,7 @@ const FightMenu = () => {
 
             }
 
-            { message && <Message ref={messageRef} onKeyDown={handleMessagePress} message={message} />}
+            { message && <Message ref={messageRef} onKeyDown={handleMessagePress} message={message} /> }
 
             </>
 

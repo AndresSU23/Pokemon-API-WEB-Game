@@ -140,6 +140,7 @@ export const AuthProvider = ({ children }) => {
         userItems,
         getUserItems,
         getUserPokemon,
+        setUserPokemon,
         register,
         setLoginMenu,
         getStarters,
