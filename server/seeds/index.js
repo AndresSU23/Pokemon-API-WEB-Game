@@ -166,36 +166,20 @@ const seedMoves = async (defaultGen = 4) => {
                 const response = await data.json();
 
                 if (!response.meta) return null;
+                if (response.meta.category.name.includes("damage")){
+                    moveObj.id = response.id;
+                    moveObj.name = response.name;
+                    moveObj.accuracy = response.accuracy;
+                    moveObj.target = response.target.name;
+                    moveObj.type = response.type.name;
+                    moveObj.power = response.power;
+                    moveObj.pp = response.pp;
+                    moveObj.priority = response.priority;
+                    moveObj.category = response.meta ? response.meta.category.name : null;
 
-                moveObj.id = response.id;
-                moveObj.name = response.name;
-                moveObj.accuracy = response.accuracy;
-                moveObj.effectChance = response.effect_chance;
-                moveObj.effectEntry = response.effect_entries.length > 0 ? response.effect_entries[0].effect : null;
-
-                moveObj.statChanges = response.stat_changes.map(sc => ({
-                    change: sc.change,
-                    statName: sc.stat.name
-                }));
-
-                moveObj.target = response.target.name;
-                moveObj.type = response.type.name;
-                moveObj.power = response.power;
-                moveObj.pp = response.pp;
-                moveObj.priority = response.priority;
-                moveObj.ailment = response.meta ? response.meta.ailment.name : null;
-                moveObj.category = response.meta ? response.meta.category.name : null;
-                moveObj.critRate = response.meta ? response.meta.crit_rate : null;
-                moveObj.drain = response.meta ? response.meta.drain : null;
-                moveObj.flinchChance = response.meta ? response.meta.flinch_chance : null;
-                moveObj.healing = response.meta ? response.meta.healing : null;
-                moveObj.maxHits = response.meta ? response.meta.max_hits : null;
-                moveObj.maxTurns = response.meta ? response.meta.max_turns : null;
-                moveObj.minHits = response.meta ? response.meta.min_hits : null;
-                moveObj.minTurns = response.meta ? response.meta.min_turns : null;
-                moveObj.statChance = response.meta ? response.meta.stat_chance : null;
-
-                return moveObj;
+                    return moveObj;
+                }
+                else return null
             })
         );
 
@@ -244,7 +228,7 @@ const seedTestData = async () => {
 connect()
     .then(() => initialize())
     .then(() => seedUsers())
-    // .then(() => seedMoves())
+    .then(() => seedMoves())
     .then(() => seedPokemon())
     .then(() => seedTestData())
     .then(() => mongoose.connection.close())

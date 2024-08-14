@@ -80,10 +80,78 @@
     font-size: 12px;
 }
 
-.normal { background: linear-gradient(#eee 50%, #ccc 60%); }
-.psychic { background: linear-gradient(#bb4e60 50%, #942d3e 60%); }
-.electric { background: linear-gradient(#eded62 50%, #cbcb14 60%); }
-.dragon { background: linear-gradient(#6c43e7 50%, #3511a0 60%); }
+.normal {
+    background: linear-gradient(#eee 50%, #ccc 60%);
+  }
+  
+  .psychic {
+    background: linear-gradient(#bb4e60 50%, #942d3e 60%);
+  }
+  
+  .electric {
+    background: linear-gradient(#eded62 50%, #cbcb14 60%);
+  }
+  
+  .dragon {
+    background: linear-gradient(#6c43e7 50%, #3511a0 60%);
+  }
+  
+  .fire {
+    background: linear-gradient(#f08030 50%, #d03000 60%);
+  }
+  
+  .water {
+    background: linear-gradient(#6890f0 50%, #386ceb 60%);
+  }
+  
+  .grass {
+    background: linear-gradient(#78c850 50%, #4e8234 60%);
+  }
+  
+  .ice {
+    background: linear-gradient(#98d8d8 50%, #63c6c6 60%);
+  }
+  
+  .fighting {
+    background: linear-gradient(#c03028 50%, #7d1f1a 60%);
+  }
+  
+  .poison {
+    background: linear-gradient(#a040a0 50%, #682a68 60%);
+  }
+  
+  .ground {
+    background: linear-gradient(#e0c068 50%, #d8a033 60%);
+  }
+  
+  .flying {
+    background: linear-gradient(#a890f0 50%, #705898 60%);
+  }
+  
+  .bug {
+    background: linear-gradient(#a8b820 50%, #6d7815 60%);
+  }
+  
+  .rock {
+    background: linear-gradient(#b8a038 50%, #786824 60%);
+  }
+  
+  .ghost {
+    background: linear-gradient(#705898 50%, #493963 60%);
+  }
+  
+  .dark {
+    background: linear-gradient(#705848 50%, #49392f 60%);
+  }
+  
+  .steel {
+    background: linear-gradient(#b8b8d0 50%, #787887 60%);
+  }
+  
+  .fairy {
+    background: linear-gradient(#ee99ac 50%, #d685ad 60%);
+  }
+  
 
 .cancel_button {
     position: absolute;
