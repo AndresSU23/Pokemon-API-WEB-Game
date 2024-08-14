@@ -104,6 +104,24 @@ const userController = {
 
         catch (error) { res.json(error); }
 
+    },
+
+    async updateUserItems(req, res) {
+
+        try {
+
+            const user = await User.findOne({ username: req.user.username });
+
+            user.items = req.body.items.filter(item => item.quantity !== null && item.quantity > 0);
+            console.log(user.items);
+            await user.save();
+
+            res.json(req.body);
+
+        }
+
+        catch (error) { res.json(error); }
+
     }
 
 }

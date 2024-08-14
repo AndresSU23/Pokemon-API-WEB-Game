@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const { userAuth, adminAuth } = require('../utils/auth');
 
-const { loginUser, verifyUser, getUserPokemon, addPokemon, registerUser, getUserItems } = require('../controllers/userController');
+const { loginUser, verifyUser, getUserPokemon, addPokemon, registerUser, getUserItems, updateUserItems } = require('../controllers/userController');
 
 router
     .route('/')
@@ -22,7 +22,8 @@ router
 
 router
     .route('/items')
-    .get(userAuth, getUserItems);
+    .get(userAuth, getUserItems)
+    .put(userAuth, updateUserItems);
 
 
 module.exports = router;

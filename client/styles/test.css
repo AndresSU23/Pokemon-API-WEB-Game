@@ -306,16 +306,18 @@
 
 .input_message {
     position: relative;
-    height: 200px;
+    height: 140px;
     font-family: "pokemon";
     width: calc(100% - 4px);
     background: linear-gradient(#eee 50%, #ccc 60%);
     border: 2px solid #fff;
     outline: 3px solid #444;
     z-index: 9;
+    font-weight: bold;
     box-sizing: border-box;
     border-radius: 5px;
-    top: -5px;
+    top: -2px;
+    left: 2px;
 }
 
 .arrow_blink {

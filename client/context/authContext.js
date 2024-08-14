@@ -84,9 +84,13 @@ export const AuthProvider = ({ children }) => {
 
         const token = localStorage.getItem('token');
 
-        await axios.get('http://localhost:3001/api/users/pokemon', { headers: { Authorization: `Bearer ${token}` } })
-            .then(async response => setUserPokemon(response.data))
-            .catch(error => { console.error('Token invalid'); logout(); });
+        if (token) {
+
+            await axios.get('http://localhost:3001/api/users/pokemon', { headers: { Authorization: `Bearer ${token}` } })
+                .then(async response => setUserPokemon(response.data))
+                .catch(error => { console.error('Token invalid'); logout(); });
+
+        }
 
     }, []);
 
@@ -94,11 +98,31 @@ export const AuthProvider = ({ children }) => {
 
         const token = localStorage.getItem('token');
 
-        await axios.get('http://localhost:3001/api/users/items', { headers: { Authorization: `Bearer ${token}` } })
-            .then(async response => setUserItems(response.data))
-            .catch(error => { console.error('Token invalid'); logout(); });
+        if (token) {
 
-    })
+            await axios.get('http://localhost:3001/api/users/items', { headers: { Authorization: `Bearer ${token}` } })
+                .then(async response => setUserItems(response.data))
+                .catch(error => { console.error('Token invalid'); logout(); });
+
+        }
+
+    }, []);
+
+    const updateUserItems = useCallback(async (items) => {
+
+        console.log(items)
+
+        const token = localStorage.getItem('token');
+
+        if (token) {
+
+            await axios.put('http://localhost:3001/api/users/items', { items }, { headers: { Authorization: `Bearer ${token}` }})
+                    .then(data => console.log(data))
+                    .catch(err => console.log(err))
+
+        }
+
+    }, []);
 
     const getStarters = useCallback(async () => {
 
@@ -141,6 +165,7 @@ export const AuthProvider = ({ children }) => {
         userItems,
         getUserItems,
         getUserPokemon,
+        updateUserItems,
         setUserPokemon,
         register,
         setLoginMenu,

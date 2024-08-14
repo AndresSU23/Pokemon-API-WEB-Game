@@ -11,7 +11,7 @@ const ItemMenu = () => {
     const menuRef = useRef(null);
     const messageRef = useRef(null);
 
-    const { getUserItems, userItems, addPokemon } = useAuth();
+    const { getUserItems, userItems, addPokemon, updateUserItems } = useAuth();
     const [ selected, setSelected ] = useState(1);
     const { setMenu, menu, setScreen, opponent, message, setMessage } = useBattle();
 
@@ -29,15 +29,37 @@ const ItemMenu = () => {
 
     }
 
-    const catchPokemon = async () => { if (opponent) setMessage("Caught " + opponent.name.toUpperCase() + "!"); }
+    const catchPokemon = async () => { 
+        if (opponent && userItems[0].quantity > 0) setMessage("Caught " + opponent.name.toUpperCase() + "!");
+        else setMessage("Error");
+    }
 
     const catchAwaitPress = async (e) => {
 
         if (e.key === "Enter") {
 
-            await addPokemon(opponent);
-            setMenu(null);
-            setScreen("map");
+            if (userItems[0].quantity > 0) {
+
+                await addPokemon(opponent);
+
+                const updatedItems = userItems.map(item => {
+                    if (item.name.toLowerCase() === "pokeball" && item.quantity > 0) {
+                        return { ...item, quantity: item.quantity - 1 };
+                    }
+                    return item;
+                });
+
+                await updateUserItems(updatedItems);
+
+                setMenu(null);
+                setScreen("map");
+
+            }
+
+            else {
+                setMenu(null);
+                setScreen("map");
+            }
 
         }
 

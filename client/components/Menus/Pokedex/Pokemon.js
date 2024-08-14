@@ -13,7 +13,7 @@ const Pokemon = ({ id }) => {
 
             await fetch(`http://localhost:3001/api/pokedex/${id}`)
                 .then(async (data) => await data.json())
-                .then((data) => setPokemon(data))
+                .then((data) => { console.log(data.description.replace(/\n/g, ' ').toString()); setPokemon(data); })
                 .catch(err => console.log(err))
 
         }
@@ -56,7 +56,13 @@ const Pokemon = ({ id }) => {
                     </div>
                     <div className={styles.bottom_spacer + " flex col center"}>
                         <div className={styles.pokedex_desc + " flex center"}>
-                            <p>{pokemon.description}</p>
+                            <p>{pokemon.description .replace(/\f/g, '\n')
+                                                    .replace(/\u00ad\n/g, '')
+                                                    .replace(/\u00ad/g, '')
+                                                    .replace(/ -\n/g, ' - ')
+                                                    .replace(/-\n/g, '-')
+                                                    .replace(/\n/g, ' ')}
+                            </p>
                         </div>
                         <button onClick={() => setPokemonId(null)}>Back</button>
                     </div>

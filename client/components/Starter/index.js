@@ -21,15 +21,16 @@ const Starter = () => {
 
         }
 
-        if (userPokemon.length === 0) fetchData();
+        if (userPokemon.length === 0 && !starters) fetchData();
 
-    }, [])
-
-    useEffect(() => { console.log(starters); }, [ starters ])
+    }, [ starters ]);
 
     return (
         <>
-        
+
+        {
+            starters && 
+
             <div className={styles.starter_spacer + " flex center col"}>
 
                 { !gen && <GenSelection setGen={setGen} /> }
@@ -40,6 +41,9 @@ const Starter = () => {
 
 
             </div>
+        }
+        
+            
 
         </>
     )
