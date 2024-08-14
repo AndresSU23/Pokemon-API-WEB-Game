@@ -1,0 +1,55 @@
+.item_menu_spacer {
+    position: relative;
+    width: 100%;
+    height: 180px;
+    background: linear-gradient(#f4f4f4, #ccc);
+    box-sizing: border-box;
+    border: none;
+    border-top: 2px solid #232323;
+    font-family: "pokemon";
+    letter-spacing: 2px;
+    font-size: 10px;
+    color: var(--color_white);
+    -webkit-text-stroke: 3px var(--color_black);
+    paint-order: stroke fill;
+    overflow: hidden;
+}
+
+.items_menu {
+    position: relative;
+    width: calc(100% - 30px);
+    margin-top: -30px;
+}
+
+.item {
+    width: 200px;
+    height: 60px;
+    background: linear-gradient(rgb(221, 184, 48) 50%, rgb(199, 165, 42) 50%) ;
+    margin: 4px 5px;
+    border-radius: 5px;
+    border: 2px solid #fff;
+    outline: 2px solid #444;
+    box-sizing: border-box;
+}
+
+.item_line {
+    padding: 3px;
+}
+
+.cancel_button {
+    position: absolute;
+    bottom: -4px;
+    width: 70%;
+    height: 30px;
+    background: linear-gradient(#1d5de7 50%, #1746ab 60%);
+    justify-self: center;
+    align-self: center;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border: 2px solid #f4f4f4;
+    outline: 3px solid #232323;
+}
+
+.selected {
+    outline: 3px solid red!important;
+}

@@ -14,7 +14,7 @@ export const useBattle = () => useContext(BattleContext);
 
 export const BattleProvider = ({ children }) => {
 
-    const { user, logout, userPokemon } = useAuth();
+    const { user, logout, userPokemon, getUserPokemon } = useAuth();
 
     const [ menu, setMenu ] = useState(null);
     const [ screen, setScreen ] = useState("map")
@@ -159,6 +159,7 @@ export const BattleProvider = ({ children }) => {
             console.error('Token invalid or other error occurred:', error);
             logout();
         }
+        
     }, [])
 
     useEffect(() => {
@@ -246,6 +247,12 @@ export const BattleProvider = ({ children }) => {
     useEffect(() => {
         (userAction && setOpponentAction(opponentMoves[0]))
     }, [userAction, opponentMoves]);
+
+    useEffect(() => {
+
+        if (screen === "map") getUserPokemon();
+
+    }, [ screen ])
 
     const context = {
 

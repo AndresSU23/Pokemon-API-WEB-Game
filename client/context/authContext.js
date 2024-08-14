@@ -12,6 +12,7 @@ export const AuthProvider = ({ children }) => {
 
     const [ user, setUser ] = useState();
     const [ userPokemon, setUserPokemon ] = useState([]);
+    const [ userItems, setUserItems ] = useState([]);
     const [ loginMenu, setLoginMenu ] = useState("login");
 
     const get = useCallback(async (url) => {
@@ -83,11 +84,21 @@ export const AuthProvider = ({ children }) => {
 
         const token = localStorage.getItem('token');
 
-        axios.get('http://localhost:3001/api/users/pokemon', { headers: { Authorization: `Bearer ${token}` } })
+        await axios.get('http://localhost:3001/api/users/pokemon', { headers: { Authorization: `Bearer ${token}` } })
             .then(async response => setUserPokemon(response.data))
             .catch(error => { console.error('Token invalid'); logout(); });
 
     }, []);
+
+    const getUserItems = useCallback(async () => {
+
+        const token = localStorage.getItem('token');
+
+        await axios.get('http://localhost:3001/api/users/items', { headers: { Authorization: `Bearer ${token}` } })
+            .then(async response => setUserItems(response.data))
+            .catch(error => { console.error('Token invalid'); logout(); });
+
+    })
 
     const getStarters = useCallback(async () => {
 
@@ -126,6 +137,9 @@ export const AuthProvider = ({ children }) => {
         user,
         userPokemon,    
         loginMenu,
+        userItems,
+        getUserItems,
+        getUserPokemon,
         register,
         setLoginMenu,
         getStarters,

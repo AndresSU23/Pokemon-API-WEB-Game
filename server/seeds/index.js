@@ -213,7 +213,7 @@ const seedTestData = async () => {
 
     if (user) {
 
-        const starters = pokemon.map(p => ({ pokemonId: p.pokemonId, level: p.level, shiny: p.shiny, ivs: p.ivs }));
+        const starters = pokemon.map(p => ({ pokemonId: p.pokemonId, level: p.level, shiny: p.shiny, ivs: p.ivs, moveSet: p.moveSet }));
         user.pokemon = starters;
         await user.save();
 
