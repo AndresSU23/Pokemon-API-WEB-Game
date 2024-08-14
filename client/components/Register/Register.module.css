@@ -1,5 +1,5 @@
 .form_spacer {
-    position: relative;
+    position: absolute;
     width: 360px;
     height: fit-content;
     padding: 20px;
@@ -9,6 +9,7 @@
     border-radius: 5px;
     justify-content: center;
     align-items: center;
+    right: 40px;
 }
 
 .login_header {
@@ -38,6 +39,7 @@
     border-radius: 5px;
     font-family: "pokemon";
     letter-spacing: 1px;
+    
 }
 
 .form_spacer button {

@@ -17,7 +17,7 @@ const Screen = () => {
 
     useEffect(() => {
 
-        console.log(opponent)   
+        console.log(opponent)
 
     }, [ opponent ])
 

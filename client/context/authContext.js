@@ -71,6 +71,7 @@ export const AuthProvider = ({ children }) => {
 
             await axios.post('http://localhost:3001/api/users/pokemon', { pokemon }, { headers: { Authorization: `Bearer ${token}` }})
                 .then(data => console.log(data))
+                .then(async () => await getUserPokemon())
                 .catch(err => console.log(err))
             
 
@@ -146,7 +147,7 @@ export const AuthProvider = ({ children }) => {
 
         }
 
-    }, []);
+    }, []); 
 
     useEffect(() => { getUserPokemon(); }, [ user, loginMenu ]);
 
@@ -157,7 +158,7 @@ export const AuthProvider = ({ children }) => {
     
     }, [ userPokemon] );
 
-    const context = {
+    const context = {   
         user,
         userPokemon,
         setUserPokemon,    

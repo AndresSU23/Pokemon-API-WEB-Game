@@ -18,8 +18,6 @@ const Login = () => {
     };
 
     return (
-        <section className="flex center">
-
             <form className={"flex col " + styles.form_spacer} onSubmit={handleSubmit}>
 
             <div className={styles.login_header + " flex center"}>
@@ -37,8 +35,6 @@ const Login = () => {
                 </div>
 
             </form>
-
-        </section>
     )
 
 }

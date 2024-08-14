@@ -8,6 +8,7 @@ import { useBattle } from '@/context/battleContext';
 import Footer from "@/components/Footer";
 import Register from "@/components/Register";
 import Starter from "@/components/Starter";
+import Banner from "@/components/Banner";
 
 
 export default function Home() {
@@ -16,7 +17,7 @@ export default function Home() {
   const { screen } = useBattle();
 
   return (
-    <section className="flex center">
+    <section className="flex center col">
 
       <Nav />
       { (user && loginMenu !== "starter") &&
@@ -29,9 +30,9 @@ export default function Home() {
         </>
       }
 
-      { (!user && loginMenu === "login") && <Login /> }
-      { (!user && loginMenu === "register") &&<Register /> }
-      { (user && loginMenu === "starter") &&<Starter /> }
+      { (!user && loginMenu === "login") && <Banner><Login /></Banner> }
+      { (!user && loginMenu === "register") && <Banner><Register /></Banner> }
+      { (user && loginMenu === "starter") && <Starter /> }
       
       <Footer />
 
